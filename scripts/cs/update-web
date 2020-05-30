@@ -23,14 +23,8 @@ rsync -raH $quiet -e 'ssh -q' --delete \
       --exclude='name.txt' \
       --exclude='*.htmlf' \
       --exclude='*.htmltop' \
-      --exclude='nowarning' \
-      --exclude='*-publisher.pdf' \
-      --exclude='*-private.pdf' \
-      --exclude=research/pre-download \
-      --exclude=research/pre-metadata \
-      --exclude=research/private \
-      --exclude=research/internal \
-      --exclude=research/postscript-old \
+      --exclude='%*' \
+      --exclude='*%*' \
       . d31379t@katahdin.dartmouth.edu:public_html/ \
     || exit 3
 
