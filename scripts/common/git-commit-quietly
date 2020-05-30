@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# This script is meant to be run from a crontab.
+#
+# Usage:
+#   git-commit-quietly "message" file...
+# The file(s) are expected to be in the current directory.
+#
+# We commit and push the given file(s), producing no output if
+# no commit was needed, or no errors occurred.
+
+if [ $# -lt 2 ]; then
+    echo "Usage:"
+    echo "  git-commit-quietly "message" file..."
+    exit 1
+fi
+
+# pop off the first argument as the message
+message="$1"
+shift
+
+# track output of git in this file
+output=/tmp/cron$$-output
+
+# update the local repo, to be ready for push
+git pull -q origin master || exit 2
+
+# add and commit the files listed on commandline
+git add "$@"
+(git commit -q -m "$message" && git push origin master) >> $output 2>&1
+
+if grep -q "nothing to commit, working tree clean"  $outputNormal 
+then
+    exit 0
+else
+    cat $output
+    exit 3
+fi
