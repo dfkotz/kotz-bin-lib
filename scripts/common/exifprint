@@ -1,0 +1,14 @@
+#!/bin/csh -f
+# exifprint - print photo info I care about
+#  david kotz, 2013
+
+exiftool -s \
+	-DateTimeOriginal \
+	-Title \
+	-IPTC:ObjectName \
+	-Description \
+	-IPTC:Caption-abstract \
+	-Subject \
+	-IPTC:Keywords \
+	-GPSPosition \
+	$argv:q

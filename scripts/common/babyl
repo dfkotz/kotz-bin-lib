@@ -1,0 +1,10 @@
+#!/bin/csh -f
+# Process all the eml files in the current directory, 
+# adding a copy of the first "Babyl" line to the head of the file.
+# For some reason, I have several hundred messages archived 
+# that are missing this line.
+
+foreach i (*.eml)
+	grep "Babyl to mail by b2m" $i | head -1 | cat - $i > tmp \
+	&& mv tmp $i
+end

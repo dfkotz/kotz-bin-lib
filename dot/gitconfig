@@ -1,0 +1,23 @@
+[user]
+	name = David Kotz
+	email = David.F.Kotz@dartmouth.edu
+[core]
+	# pager started by git when needed
+	pager = less -s -w -M
+	# editor started by git when needed
+	editor = emacs -nw -q
+	# common gitignore file lives in home dir
+	excludesfile = ~/.gitignore_global
+	# proceed with default merge message, rather than asking
+ 	mergeoptions = --no-edit
+[push]
+	default = simple
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[alias]
+	sdiff = !git diff && git submodule foreach 'git diff'
+	spush = push --recurse-submodules=on-demand
+	spull = pull origin master --recurse-submodules

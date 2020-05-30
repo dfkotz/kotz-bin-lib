@@ -1,0 +1,25 @@
+#!/bin/csh -f 
+# 
+# mailextract pattern
+#
+# We look in $MAIL for a message containing the provided pattern,
+# and print it out.  Typical usage might include a message id:
+#    mailextract 18313565@newcupid.Dartmouth.EDU
+# often the goal is to get attachments:
+#    mailextract 18313565@newcupid.Dartmouth.EDU | munpack
+#
+# The pattern is limited to 32 characters.
+
+if (! $?MAIL) then
+    echo you need to setenv MAIL
+    exit 1
+endif
+
+if ($#argv != 1) then
+    echo 'usage mailextract pattern'
+    exit 1
+endif
+
+agrep -0h -d "^From " -e $argv[1]:q $MAIL
+
+

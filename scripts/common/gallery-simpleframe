@@ -1,0 +1,35 @@
+#!/bin/csh -f
+#
+# Takes a single html file name (which will be the body of the page).
+# assumes existence of header.html, 
+# creates index.html.
+#
+# usage:
+#  simpleframe "page title" htmlfile
+#
+# the listfile is a file containing a list of names.
+
+if ($#argv != 2) then
+    echo 'Usage: simpleframe "page title" htmlfile'
+    exit 1
+endif
+
+set title="$argv[1]"
+set html="$argv[2]"
+
+# create index.html
+
+cat > index.html <<EOF
+<html>
+<head><title>$title</title></head>
+ <frameset rows="125,*" border=0 frameborder=1 framespacing=0>
+  <frame src=header.html name=header scrolling=yes resize marginwidth="0" marginheight="0">
+  <frame src=$html name=page marginwidth="1" marginheight="1">
+ </frameset>
+
+ <noframes>
+  Sorry, it's best to view this page with a frames-capable browser. 
+  Or, you can see this page by clicking <a href="$html">here</a>.
+ </noframes>
+</html>
+EOF

@@ -1,0 +1,18 @@
+#!/bin/bash
+# copy the folder named as $1 on the command line,
+#  EXCEPT the Google cloud-type files,
+# to the directory named as $2 on the command line.
+#
+
+rsync -ravH --exclude-from=- "$1"/ "$2"/ <<EOF
+.DS_Store
+Icon?
+*.gdoc
+*.gdraw
+*.gform
+*.gmap
+*.gsheet
+*.gslides
+*.gtable
+EOF
+

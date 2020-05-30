@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/usr/bin/ssh flume "cd /u/dfk/projects/splice/description/bib && bash cron.sh"

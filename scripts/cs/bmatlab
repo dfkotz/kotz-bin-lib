@@ -1,0 +1,47 @@
+#!/bin/csh -f
+#
+# bmatlab - execute matlab in batch mode
+#
+# usage: bmatlab file.m...
+
+set tmp=bmatlab$$
+set xstatus=1
+
+onintr cleanup
+
+cat > $tmp.m <<EOF
+% $argv:q
+
+% hide the plot window for batch mode
+set(gcf, 'visible', 'off');
+
+EOF
+
+# This approach is much better but unfortunately printing does not work
+# from within a script mfile for some mysterious reason.
+# foreach i ($*)
+#	# extend matlab's path if needed to reach this file
+#	if ($i:h != $i) then
+#		set dir=$i:h
+#		echo "path(path,'"$dir"');" >> $tmp.m
+#	endif
+#
+#	set file=$i:t
+#	set command=$file:r
+#	echo $command \; >> $tmp.m
+#end
+
+cat $* >> $tmp.m    || (rm -f $tmp.m ; exit 1)
+
+echo quit \; >> $tmp.m
+
+# more $tmp.m
+
+echo $tmp | matlab -nosplash -nojvm | sed 1,10d
+set xstatus=$status
+echo
+
+cleanup:
+rm -f $tmp.m
+
+exit $xstatus

@@ -1,0 +1,72 @@
+#!/bin/csh -f
+#
+#  list-group-check groupName [listpath] listName[...]
+#
+# This checks to see that the unix group "groupName" contains
+# members that correspond to the membership of the mailing list(s)
+# provided.  It ignores any addresses that are not "@cs".
+# If there is a difference, it prints an old and new list.
+# The optional listpath argument is a full pathname (starting with /)
+# where the given listNames can be found.
+# The default is specified herein.
+# $Id$
+
+# The default directory where mailing lists can be found.
+set mailingListDir=/net/quimby/deptmail
+# The file defining group membership; see GROUP(5) manpage.
+set groupFile=/etc/group
+
+# check arguments
+if ($#argv < 2) then
+   echo 'usage: list-group-check groupName listName[...]'
+   exit 1
+endif
+
+# strip off the group name from the arguments
+set groupName=$1
+shift
+
+# is the first argument a path to the lists? if so, pull it off the list.
+if ($1 =~ /*) then
+    set mailingListDir=$1
+    shift
+endif
+
+# now $* should be the list of mailing-list names 
+
+# First, check that we have access to data we need
+if (! -d $mailingListDir) then
+   echo cannot reach mailing-list directory $mailingListDir
+   exit 1
+endif
+if (! -r $groupFile) then
+   echo cannot reach group file $groupFile
+   exit 1
+endif
+
+# Get the current membership of the desired group
+set now=`sed -n /^${groupName}:/'s/.*: *//p' $groupFile | tr , \\n | sort | tr \\n , | sed 's/,$//'`
+
+# now build the list of users that should be in that group.
+# note a hack to substitute 'dfk' for 'kotz'
+cd $mailingListDir
+set should=`cat $* | tr A-Z a-z | sed -n -e /nobody@/d -e s/kotz/dfk/g -e 's/.*<\([a-z]*\)@cs>.*/\1/p' -e 's/.*<\([a-z]*\)@cs.dartmouth.edu>.*/\1/p'  | sort -u | tr \\n , | sed 's/,$//'`
+if ($status) then
+    echo There was some trouble in extracting mailing list members.
+    ls -ld $*
+    exit 1
+endif
+
+# are they different?  if so, print a warning
+if ("$now" != "$should") then
+cat <<EOF
+It appears that group $groupName should change membership to
+$should
+from what it is now
+$now
+based on the contents of the following mailing lists: 
+$*
+EOF
+endif
+
+exit 0

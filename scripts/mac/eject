@@ -1,0 +1,8 @@
+#!/bin/csh -f
+# usage: eject diskname
+
+osascript <<EOF
+tell application "Finder"
+ eject disk "$1"
+end tell
+EOF

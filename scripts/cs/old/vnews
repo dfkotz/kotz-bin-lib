@@ -1,0 +1,2 @@
+#!/bin/csh -f 
+echo http://www.vnews.com/`date +%m%d%Y`/`date +%m%d%Y`.htm | mail -s "Valley News" dfkotz@mac.com pcjenkins@mac.com

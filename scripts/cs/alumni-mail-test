@@ -1,0 +1,20 @@
+#!/bin/csh -f
+
+Mail -s "testing alumni mail - alum" david.f.kotz.86@alum.dartmouth.org <<EOF
+This message is going to my alum mail account.  Make sure both copies arrive.
+EOF
+
+Mail -s "testing alumni mail - blitz" David.F.Kotz@Dartmouth.edu  <<EOF
+This message is going to my Blitzmail account.  Make sure both copies arrive.
+If the alum mail does not arrive, it may be that the alum server is wedged.
+I currently have it forwarded to mac.com.
+
+If I stopped the forwarding, and pick it up directly, then it's possible 
+that my mailbox was moved to another server:
+    http://alumni.dartmouth.edu/default.aspx?id=435
+"Note: Your account may be moved to another server without notice, as
+it may be necessary to reduce the mail load on a server for
+maintenance purposes. If you stop receiving mail, please check your
+server again."
+EOF
+

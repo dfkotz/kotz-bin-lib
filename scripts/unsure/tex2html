@@ -1,0 +1,168 @@
+#!/usr/local/bin/perl
+#
+# tex2html - crude conversion of a few tex commands into html
+#
+# David Kotz , mostly borrowed from Alex Iliev
+
+use File::Basename;
+
+if ( scalar(@ARGV) != 1 ) {
+    die "usage: tex2html foo.tex\n";
+}
+
+$file =  shift @ARGV ;
+
+open INPUT, "$file";
+
+## stack of formatted text types that were started and did not finish on teh same line
+## elements are em, tt or b or i and when a candidate for a format-closing brace is found
+## this stack will be popped to see which format we have to close
+my @formatsToClose;
+
+while ( <INPUT> ) { 
+
+
+    ## accent handlers
+    ## these are quite definite about their replacemnets and so should
+    ## come before the more generic operations later
+    ## all braces in the latex constructs are optional
+    ## info on the html codes can be found at http://www.w3.org/TR/REC-html40/
+    s/\\ \` (?: \{ )? ([aeiouAEIOU]) (?: \} )?
+          /&$1grave;/gx;	# grave accent, not sure about the latex symbol though
+    s/ \\ \' (?: \{ )? ([aeiouAEIOU]) (?: \} )?
+          /&$1acute;/gx;	# 'acute accent
+    s/ \\ \^ (?: \{ )? ([aeiouAEIOU]) (?: \} )?
+          /&$1circ;/gx;		# circumflex
+    s/ \\ \" (?: \{ )? ([aeiouyAEIOUY]) (?: \} )?
+          /&$1uml;/gx;		# "umlaut
+    s/ \\ \~ (?: \{ )? ([anoANO]) (?: \} )?
+          /&$1tilde;/gx;	# tilde
+    s/ \\ c (?: \{ )? ([cC]) (?: \} )?
+          /&$1cedil;/gx;	# cedilla
+
+    ## several weird symbols
+    s/ \\copyright
+	/&copy;/gx;
+    s/ \\pounds
+	/&pound;/gx;
+    
+    ## weirder symbols
+    s/ \\ (ae|AE)
+	/&$1lig;/gx;
+
+    s/ \\ (o|O)
+	/&oslash;/gx;
+
+    ## greek letters, case insensitive matching, but upper case in latex and
+    ## html have the first letter of the english word capitalized
+    s/ \\ (?: var )? (alpha|beta|gamma|delta|epsilon|theta|lambda|pi|rho|sigma|omega)
+	/&$1;/gxi;
+
+
+    ## remove any \/ space-increasing symbols
+    s+ ([^\\]) \\ \/
+	+$1+gx;
+
+    ## deal with em and tt and bf text surrounded by braces
+    ## use minimal matching to ensure several of these on a line dont
+    ## get treated as one. this wont work with nested formats but those should be rare
+    ## the fancy groupings around the em etc are because in html bold font is not 'bf'
+    ## but just b and italic is i not 'it' so we have to pick out only a part of those
+    ## latex tags
+    s+ \{ \\ (?: (em)|(tt)|(b)f|(i)t )\ (.*?) \}
+        + join '', ("<", ($1 or $2 or $3 or $4), ">", $5, "</", ($1 or $2 or $3 or $4), ">") +gex;
+
+
+    ## deal with \cite stuff, cahnge it to a link to a record the same html file
+    s+ ([^\\]) \\cite\{ (.*?) \}
+        +$1<a href="#$2">$2</a>+xg;
+
+    ## These rules are to deal with my (DFK) macros
+    s/\\ie/i.e./g;
+    s/\\eg/e.g./g;
+    s/\\etc/etc./g;
+    s+\\vs\\+<EM>vs.</EM>+g;
+    s/\\usec/usec/g;
+    s/\\mbox //g;
+    s/\\par / <P> /g;
+    s/\\par$/ <P>/g;
+
+
+    s/\\\&/\&amp;/g;		# ampersand
+
+    s/-{2,3}/-/g;		# multiple dashes
+
+# a few rules are needed to compensate for BibTeXs way of splitting
+# long words over two lines by sticking a % (TeX comment character) at
+# the end of the line.  This works when one word (usually a URL) is
+# split over more than one line. 
+    ## if we have an unescaped % at the end of the line, remove it and the newline and
+    ## join the next line on
+    ## example straight out of the camel book, pg 204. amazing
+    if ( s/ ([^\\]) \% \n$ /$1/x and $nextline = <BBL> ) {
+	$_ .= $nextline;
+	redo;			# back to the top
+    }
+
+
+    ## --------------------------------------------------------
+    ## try and handle multiline em and tt formatted text
+
+    if ( / \{ \\ (em|tt|bf|it) .*\n$ /x ) {
+
+	## pick out all opened sequences that
+	## did not finish on this line
+	## push all the formats still to be closed onto the stack
+	## the actual contents of the formatted section are optional because
+	## a {\em could be at the end of the line.
+	while ( s/ \{ \\ (?: (em)|(b)f|(tt)|(i)t ) (?: \ (.*\n) )? $
+	       / join '', ("<", ($1 or $2 or $3 or $4), ">", ($5 or "") ) /ex )
+	{
+##	    print ( ($1 or $2 or $3 or $4), " - $.\n" ); ##debugging
+	    push ( @formatsToClose, ($1 or $2 or $3 or $4) );
+	}
+    
+	## get the next line
+	if ( $nextline = <BBL> ) {
+	    $_ .= $nextline;
+	    redo;
+	}
+    }    
+    ## --------------------------------------------------------
+
+    ## take care of any formats that might have to be closed on this line
+    if ( scalar (@formatsToClose) > 0 ) {
+	while ( s+ ([^\\]) \}
+	       + join '', ($1, "</", ($format = pop (@formatsToClose)), ">" ) +ex )
+	{
+##	    print "\t$format - $.\n";      ## debugging
+	}
+    }
+
+
+# tildes -
+#         tilde not preceded by \ or / is a nbsp
+#         \~{} is ~ (likely in a URL)
+#         all other tildes left alone, notably /~ (URL)
+    s+ ([^\\/]) ~ +$1&nbsp;+xg;	# normal standalone tilde - nbsp
+    s/ \\~ \{\} /~/xg;		# \~{} to ~
+
+    ##retrieve symbols escaped by backslashes
+    my $escapedChars = quotemeta ( '#$%&_{}' );
+    s/ ([^\\]) \\ ([$escapedChars]) 
+        /$1$2/gxo;
+
+    print $_;
+}
+
+
+
+
+
+
+
+
+
+
+
+

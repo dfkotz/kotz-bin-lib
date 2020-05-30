@@ -1,0 +1,65 @@
+#!/bin/csh
+#
+# Send the chubbers mailing list to the mailing list.
+# Retrieve the list from listserv, 
+# then pipe the response through this script.
+#
+# usage:
+#   chubbers < listserv-output
+
+cd ~dfk/chubbers
+if (-e  chubbers-header.gz) gunzip -q chubbers-header.gz
+if (-e  chubbers-intro.gz) gunzip -q chubbers-intro.gz
+if (-e  chubbers-notes.gz) gunzip -q chubbers-notes.gz
+if (-e  chubbers-extras.gz) gunzip -q chubbers-extras.gz
+
+onintr cleanup
+
+##################
+# Prepare this month's report as chubbers-clean
+
+echo "CHUBBERNET as of "`date +%D` > chubbers-clean
+echo "  Name                         Email    " >> chubbers-clean
+echo "----------------------------------------" >> chubbers-clean
+
+# Make sure that it has Unix, not Macintosh, line terminators,
+# remove non-printing characters resulting from Mail.app use,
+# Remove everything in mail header, blank lines, and listserv info,
+# Reformat to align email addresses,
+# Sort by last name (second name).
+tr \\r \\n \
+| tr -d '[\302\240]' \
+| tr -s '[:blank:]' ' '  \
+| sed  -e '/^[A-Z][a-z]*: /d' -e '/^$/d' -e '/^\*/d' -e 's/"//g' \
+| awk '{ printf "%-30s %s\n", gensub(/^[^ ]+ */, "", 1), $1 }' \
+| sort -f -k2 >> chubbers-clean
+
+# sanity check: it should have a substantial number of addresses!
+# (stop now if we get empty or corrupt input!)
+set count =  `grep @ chubbers-clean | wc -l`
+if ( "$count" < 50 ) then
+    echo 'ERROR: input does not look like what I expect.'
+    echo 'chubbers-clean now contains the following (top 10 lines):'
+    head chubbers-clean
+    goto cleanup
+endif
+
+#################
+# Diff with last month's list
+echo "" > chubbers-diffs
+echo "Changes since last month (if any) (< is old, > is new):" >>chubbers-diffs
+diff chubbers-old chubbers-clean | sed '/^[-0-9]/d' >> chubbers-diffs
+
+set extras=`extract-emails -c chubbers-extras`
+echo "Cc: $extras"  > chubbers-cc
+
+echo "" > chubbers-blank
+
+cat chubbers-{header,cc,blank,intro,clean,diffs,notes,blank,extras} \
+| sendmail $extras:q chubbers@dartmouth.edu
+
+mv -f chubbers-old chubbers-old-old
+mv -f chubbers-clean chubbers-old
+
+cleanup:
+rm -f chubbers-cc chubbers-blank chubbers-clean chubbers-diffs

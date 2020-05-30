@@ -1,0 +1,141 @@
+#!/bin/sh
+# Return-Path: gaudet
+# Date: Thu, 18 Jul 91 15:13:57 -0400
+# From: gaudet (Gary A. Gaudet)
+# To: kegel
+# Subject: recmail
+# 
+#
+# Mail answering machine. Set up the variables below to point to the right
+# files for your particular environment; the $replies file should be 
+# empty. The shell script itself must be setuid to you. If your UNIX
+# doesn't have setuid shell scripts, make the $replies file mode 666,
+# and substitute your login id for the `whoami` in setting $USER.
+# Or you can have the alias call recmail with your login name as argument
+# ($replies will still have to be 666.)  Otherwise, use mode 600.
+#
+# Check the definitions of USER, USERNAME, and NAMES below.
+#
+# After using this, $replies will contain a list of people that
+# received automatic replies. Be sure to clear it out when using this
+# program for your *next* vacation!
+# The $recording is sent verbatim, with a date stamp above it.
+# The subject of the message is used to construct the reply subject.
+# If you want something besides your name string as found in /etc/passwd
+# used in the message, be sure to set USERNAME at the beginning.
+#
+# To use: set up the files; create (or change) your ~/.forward to have
+# for example,
+#
+#		\cak, "|/usr/cak/bin/recmail"
+#
+# then be sure that the script is setuid you.
+#
+# Someday I'll add a -I flag to initialize all the silly files.
+#
+
+PATH=/bin:/usr/bin:/usr/ucb:/usr/local/bin
+
+debug=0
+if [ $debug = 1 ]; then echo "new message" >> $HOME/mailreply.out; fi
+
+# Name of the user
+# this assumes that whoami returns name of effective uid!
+#USER=${1-`whoami`}
+USER=dfk
+export USER
+
+# To include in the outgoing mail message.
+#USERNAME=`awk -F: '$1=="'$USER'"{print $5}' /etc/passwd|sed 's/,.*//'`
+USERNAME="David Kotz"
+
+# Possible names that might be used to directly address me
+# This catches dfk, david.kotz, dave.kotz, and kotz
+# thus catching all mail to all my unix accounts, and blitzmail
+# This should be a regexp, and be all lower case.
+NAMES="$USER"	 # default
+NAMES="dfk|kotz" # override
+
+HOME=`awk -F: '$1=="'$USER'"{print $6}' /etc/passwd`
+MAIL=mail
+if [ -r $HOME/.mh_profile ]; then
+	MAIL=`grep "^Path:" $HOME/.mh_profile | awk '{print $2}'`
+fi
+
+# Look at the .forward file; ignore message if we are not final destination
+host=`cat $HOME/.forward | sed -e 's/.*@//' -e 's/,.*//' -e 's/\..*//'`
+hostname=`hostname | sed 's/\..*//'`
+if [ $debug = 1 ]; then
+    echo "user=$USER home=$HOME mailhost=$host hostname=$hostname" >> $HOME/mailreply.out
+fi
+if [ "$host" != "$hostname" ]; then 
+    echo "wrong host; ignoring message" >> $HOME/mailreply.out
+    exit 0; 
+fi
+
+replies=$HOME/.Replies	# people already seen, mode 600!
+recording=$HOME/.Recording	# your recording, mode 644
+
+# extract the various message header fields
+
+#awk -f $HOME/bin/mailreply.awk
+eval `awk -f $HOME/bin/mailreply.awk`
+
+if [ $debug = 1 ]; then echo " to $to\n from $from\n cc $cc\n subject $subject\n date $date\n precedence $precedence" >> $HOME/mailreply.out; fi
+
+# if the Precedence is bulk or junk we do not reply to the message.
+
+if [ "$precedence" = "bulk" ]; then exit 0 ; fi
+if [ "$precedence" = "junk" ]; then exit 0 ; fi
+
+# if users name (or alternate name) does not appear in the mail's To: or Cc:
+# fields, the mail is addressed to a mailing list and will not be replied to;
+# if it is desirable to reply to such mail, comment out the if statement
+# that follows
+
+if test `echo $to $cc | tr "[A-Z]" "[a-z]" | \
+	awk '		{if ($0 ~ /'"$NAMES"'/) print "1" ;\
+			else	     print "0"}'`\
+	 -eq 0 ; then exit 0 ; fi
+
+# check for valid "From " line, or a message from Cron daemon
+if [ "$from" = "BOGUS" ] ; then exit 0; fi
+if [ -z "$from" ] ; then exit 0; fi
+#if [ "$from" ~ "Cron" ]; then exit 0 ; fi
+
+if [ $debug = 1 ]; then echo "looks ok so far" >> $HOME/mailreply.out; fi
+
+# Make sure it's not from some MAILER-DAEMON, or from myself!
+# Note I don't use $NAMES because I really only need to screen
+# mail from my local unix account, which has name $USER or $USER@.*
+# If I had to screen mail from my other names, I could use NAMES; but this
+# could mean I might screen out other users with similar names.
+if test `echo $from | tr "[A-Z]" "[a-z]" | \
+	awk '\
+	{if ($0 ~ /mailer.daemon|^'"$USER"'$|^'"$USER"'@/) \
+    	   print "1" ; else print "0"}'` \
+	 -eq 1 ; then exit 0 ; fi
+
+# if the sender has already received the pre-recorded message, do not
+# resend one;  this also has the effect of breaking infinite loops, if
+# the sender happens to have an automatic mail reply set.
+
+from=`echo $from | tr "[A-Z]" "[a-z]" | sed 's/.dartmouth.edu$//'`
+
+if [ $debug = 1 ]; then echo "from $from" >> $HOME/mailreply.out; fi
+
+if grep -qs "^$from\$" $replies ; then exit 0 ; fi
+echo $from >> $replies
+
+if [ $debug = 1 ]; then echo "ok, $from is new" >> $HOME/mailreply.out; fi
+
+# finally, send the pre-recorded reply
+
+(echo The following is a pre-recorded message from $USERNAME:
+  echo I have received your message of $date
+  echo regarding "$subject".
+  echo ) | \
+cat - $recording | \
+Mail -s "I'm away. [Re: $subj]" $from
+if [ $debug = 1 ]; then echo "replied to $from" >> $HOME/mailreply.out; fi
+exit 0

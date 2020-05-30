@@ -1,0 +1,13 @@
+#!/bin/csh -f
+#
+# getmaildfk - grab mail messages from sender $1 out of the ~dfk procmail 
+#    cache of messages, and send them to me.
+#
+
+if ($#argv != 1) then
+   echo usage: $0 from-address
+   exit 1
+endif
+
+ssh dfk@flume.cs.dartmouth.edu \
+    /u/kotz/bin/mailgrepsend -v "from=$1" -v "to=David.F.Kotz@Dartmouth.edu" email/dfk.1

@@ -1,0 +1,73 @@
+#!/bin/csh -f
+# grab a comic strip from arcamax and email it to me 
+# (run daily by cron)
+
+set mailfrom=David.F.Kotz@Dartmouth.edu
+
+if ($#argv < 2) then
+    echo usage: $0 comicname email...
+    exit 1
+endif
+
+set strip=$1:q
+
+set tmp=/tmp/comic$$
+
+onintr cleanup
+mkdir $tmp && cd $tmp
+if ($status) then
+    echo mkdir or cd failed
+    goto cleanup
+endif
+
+# grab the web page
+set page="http://www.arcamax.com/thefunnies/$strip"
+wget -q -k "$page"
+if ($status) then
+    echo wget page failed
+    echo "$page"
+    goto cleanup
+endif
+
+# extract the image URL from the page -- just the first one
+set img=`grep /newspics/ $strip | grep ^.img | sed '2,$d' | sed -e 's/.*src="//' -e 's/".*//'`
+if ("$img" == "") then
+    echo image name is empty, web page may have changed format
+    goto cleanup
+endif
+
+# now download the image
+#echo downloading "$img"
+wget -q "$img"
+if ($status) then
+    echo wget img failed
+    echo "$img"
+    goto cleanup
+endif
+
+## show me the image (for debugging)
+#open $img:t
+#sleep 1
+#goto cleanup
+
+## save the image (for debugging)
+#cp "$img:t" ~/Desktop/"$strip.gif"
+#if ($status) then
+#    echo cp failed
+#    goto cleanup
+#endif
+
+echo " " | mailx -r $mailfrom -s "Comic strip: $strip" -a $img:t $argv[2-]:q
+if ($status) then
+    echo mailx failed
+    goto cleanup
+endif
+
+# mpack -s "Comic strip: $strip" -c image/gif $img:t $argv[2-]:q
+# if ($status) then
+#     echo mpack failed
+#     goto cleanup
+# endif
+
+cleanup:
+rm -rf $tmp

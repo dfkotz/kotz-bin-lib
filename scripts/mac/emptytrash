@@ -1,0 +1,26 @@
+#!/bin/csh -f
+
+cd /Volumes
+foreach trash (*/.Trashes)
+  set vol="$trash:h"
+  if ("$vol" =~ "Kotzbook*") continue
+  if ("$vol" == "Recovery HD") continue
+
+  chmod u+rwx "$trash"
+  chmod u+rwx "$trash"/5??
+
+  echo -n "Empty trash on $vol? "
+  set ans=$<
+  if ("$ans" =~ [Yy]*) rm -rf "$trash"
+end
+
+echo if no match, then there are no central trashes.
+echo or, you forgot to run script under sudo.
+foreach trash (/.Trashes/*)
+  set user="$trash:t"
+  chmod u+rwx "$trash"
+
+  echo -n "Empty central trash for $user? "
+  set ans=$<
+  if ("$ans" =~ [Yy]*) rm -rf "$trash"/*
+end

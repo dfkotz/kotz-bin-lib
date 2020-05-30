@@ -1,0 +1,70 @@
+# bash sources this file for interactive non-login shells only.
+# - but our bashrc_profile also sources this file.
+# https://medium.com/@kingnand.90/what-is-the-difference-between-bash-profile-and-bashrc-d4c902ac7308
+
+# --------------------------------------------------------------------
+# Set environment iff needed
+# Most of the time, the environment is inherited from a parent shell.
+# But sometimes (e.g., arriving via ssh to execute a command-line)
+# the environment has not yet been set.
+
+if [ ! "$environset" ]; then source ~/.bash_environset; fi
+
+# --------------------------------------------------------------------
+# Set aliases and shell variables
+
+history_control=ignoredups
+
+# Set notify if you want to be asynchronously notified about
+# background job completion.
+notify=
+
+# Make it so that failed `exec' commands don't flush this shell.
+no_exit_on_failed_exec=
+
+command_oriented_history=
+
+# --------------------------------------------------------------------
+# aliases used for cs50
+
+alias mygcc='gcc -Wall -pedantic -std=c11 -ggdb'
+alias myvalgrind='valgrind --leak-check=full --show-leak-kinds=all'
+
+# safety aliases
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# convenience aliases
+alias ls='ls -F'
+alias mkdir='mkdir -p'
+alias which='type -all'
+alias du='du -kh'
+alias df='df -kTh'
+
+# --------------------------------------------------------------------
+# aliases used by David Kotz
+
+# pretty printing
+alias print='a2ps --landscape -2'
+alias print1='a2ps --portrait  -1'
+alias printwide='a2ps --landscape --columns=1 --chars-per-line=132'
+
+# not an exact substitute, but works for most; see also 'lam'
+alias abut=paste
+
+# convert ps to pdf
+alias distill='ps2pdf14 -dSubsetFonts=true -dEmbedAllFonts=true'
+
+if [ $(uname) == "Darwin" ]; then
+   # MacOS
+   # Dartmouth Name Directory
+   alias dnd='ssh flume.cs.dartmouth.edu scripts/cs/dnd'
+else
+   # Linux
+   alias dnd='scripts/cs/dnd'
+   alias ssh-polaris='ssh d31379t@polaris.dartmouth.edu'
+   alias ssh-katahdin='ssh d31379t@katahdin.dartmouth.edu'
+fi
+
+# --------------------------------------------------------------------

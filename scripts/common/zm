@@ -1,0 +1,4 @@
+#!/bin/csh -f
+# 'more' for a .Z file
+# only here in case I forget about zmore
+exec zmore $argv:q

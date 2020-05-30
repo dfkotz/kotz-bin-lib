@@ -1,0 +1,8 @@
+#!/bin/csh
+
+if ($#argv == 1) then
+  ssh flume scripts/common/extract-emails -s maillist/$1
+else
+  echo usage: $0 listname
+  exit 1
+endif

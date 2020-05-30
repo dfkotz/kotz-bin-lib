@@ -1,0 +1,10 @@
+#!/bin/csh -f
+# allkill - kill all the processes whose ps line contains a regexp
+#
+# usage:
+#  allkill <expression>
+#
+
+set list=`ps ax | grep -v allkill | grep "$1" | awk '{print $1}'`
+set echo
+/bin/kill $list

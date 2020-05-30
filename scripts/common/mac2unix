@@ -1,0 +1,18 @@
+#!/bin/csh -f
+#
+# convert a Macintosh text file to a unix text file.
+#
+
+set tmp=mac2unix.tmp.$$ 
+onintr cleanup
+
+if ($#argv >= 1) then
+    foreach i ($argv:q)
+	tr \\r \\n < $i:q > $tmp && mv $tmp $i:q
+    end
+else
+    tr \\r \\n
+endif
+
+cleanup:
+rm -f $tmp

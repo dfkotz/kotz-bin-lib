@@ -1,0 +1,12 @@
+#!/bin/csh -f
+
+# use EEEEEE for agent web pages
+# use FFFFFF for white
+
+foreach i ($*)
+  grep -i "^<BODY" $i /dev/null
+  mv $i $i~
+  sed -e '/^<BODY/s/.*/<BODY BGCOLOR="#EEEEEE" TEXT="#000000">/' \
+      -e '/^<body/s/.*/<BODY BGCOLOR="#EEEEEE" TEXT="#000000">/' $i~ > $i
+end
+

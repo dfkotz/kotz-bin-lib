@@ -1,0 +1,17 @@
+#!/bin/csh -f 
+#
+# Make a skeleton version of a gnuplot or gnutex plot.tex file
+# This can be used in the same way, and takes up the same amount of
+# space on the page, but will run through latex MUCH faster. Good
+# for quick drafts.
+#
+# Usage:
+#   plotskel plot.tex 
+# Standard output is skeleton file
+
+if ($#argv != 1) then
+	   echo usage: plotskel plot.tex
+	   exit 1
+endif
+
+sed -n -e '1,/begin{picture}/p' -e '/end{picture}/,$p' $1

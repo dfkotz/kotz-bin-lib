@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# generate a nice long random key
+key=`perl -e 'srand(time); printf int(rand(100000000000000000));'`
+# add to auth file. use $key$key to make sure even length.
+xauth add ${HOST}/unix:0 . $key$key
+xauth add ${HOST}:0 . $key$key

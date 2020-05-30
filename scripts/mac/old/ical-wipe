@@ -1,0 +1,8 @@
+#!/bin/csh -f
+# wipe all of iCal's memory!
+
+cd
+rm -rf Library/Application\ Support/iCal
+rm -rf Library/Caches/com.apple.iCal
+rm -rf Library/Preferences/com.apple.iCal.*
+# open /Applications/iCal.app

@@ -1,0 +1,3 @@
+#!/bin/csh -f
+
+srm -f ~/Pictures/ScanSnap/2*.pdf

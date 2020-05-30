@@ -1,0 +1,69 @@
+#!/bin/csh -f
+#
+# scatter - produce a scatter plot of two data sets
+#
+# usage:
+#   scatter [-t title] file1 file2
+# where each file has an ordered set of data values, one value per line.
+# They should have the same number of points.
+# File1 will appear on the y axis, file2 on the x axis.
+#
+
+# extract optional title
+if ($1 == -t) then
+    shift 
+    if ($#argv > 0) then
+    	   set title="$1"
+    	   shift
+    else
+    	   echo Usage: '[-t title]'
+    endif
+endif
+
+if ($#argv < 2) then
+	echo usage: scatter '[-t title]' file1 file2
+	exit 1
+endif
+
+set data=/tmp/scatter$$
+set plot=/tmp/scatterplot$$
+onintr cleanup
+
+set xdata=$2
+set ydata=$1
+
+if (! $?title) set title="Scatter $ydata vs $xdata"
+
+set nx=0
+set ny=0
+
+set nx=`stats n < $xdata`
+set ny=`stats n < $ydata`
+
+if ($nx != $ny) then
+	echo Error: $xdata has $nx points, $ydata has $ny points.
+	exit 1
+endif
+
+abut $xdata $ydata > $data
+
+if ($nx < 100) then
+	set style=points
+else 
+	set style=dots
+endif
+
+cp $data spoints
+
+# x-autoscale assumed
+echo set noclip > $plot
+echo set xlabel \"$xdata\" >> $plot
+echo set ylabel \"$ydata\" >> $plot
+echo set title \"$title\" >> $plot
+echo set nokey >> $plot
+echo set time >> $plot
+echo plot \"$data\" w $style, x w lines >> $plot
+lasergnu -f $plot
+
+cleanup:
+rm -f $data $plot

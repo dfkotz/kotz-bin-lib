@@ -1,0 +1,7 @@
+#!/bin/csh -f
+# copy the IPTC "caption" field to the IPTC "title" field
+# (useful for iWeb, which uses the latter for its descriptions)
+
+# usage: iptc-caption2title file.jpg...
+
+exiftool "-Title<IPTC:Caption-Abstract" $argv:q

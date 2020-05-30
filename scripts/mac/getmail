@@ -1,0 +1,13 @@
+#!/bin/csh -f
+#
+# getmail - grab mail messages from sender $1 out of the procmail 
+#    cache of messages, and send them to me.
+#
+
+if ($#argv != 1) then
+   echo usage: $0 from-address
+   exit 1
+endif
+
+ssh kotz@flume.cs.dartmouth.edu \
+    mailgrepsend -v "from=$1" -v "to=David.F.Kotz@Dartmouth.edu" email/received

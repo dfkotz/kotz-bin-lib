@@ -1,0 +1,6 @@
+
+An updated list of excluded files is in ~/lookhuge.exclude.ls;
+if the above should be excluded in the future, 
+   mv ~/lookhuge.exclude.ls ~/scripts/cs/lookhuge.exclude.ls
+otherwise
+   rm ~/lookhuge.exclude.ls

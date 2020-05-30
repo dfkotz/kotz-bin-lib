@@ -1,0 +1,8 @@
+#!/bin/bash
+dndlookup -f displayName -f mail -f eduPersonPrimaryAffiliation \
+	  -f dcDeptclass -f dcHinmanaddr -f telephoneNumber -f dcDartid -f dcUrl \
+	  "$@" \
+| awk -F, '{printf "%-20s %-34s %-8s %-20s %-7s %-12s %s %s\n", $1,$2,$3,$4,$5,$6,$7,$8;}'
+
+# for a list of field names,
+# less /usr/local/bin/dndlookup

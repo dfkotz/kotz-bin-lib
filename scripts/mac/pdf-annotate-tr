@@ -1,0 +1,37 @@
+#!/bin/csh -f
+#
+# annotate some pdf files; use Acrobat to paste in the annotation.
+#
+
+set tmp=temp$$.pdf
+onintr cleanup
+
+foreach paper ($*)
+  if ($paper:q !~ *.pdf) then
+     echo $paper:q is not a pdf file
+     continue
+  endif
+  if (-l $paper:q) then
+     echo skipping link $paper:q
+     continue
+  endif
+
+  cp $paper:q $tmp && chmod +w $tmp
+
+  echo ""
+  echo $paper:r
+  echo "Copyright by the authors; copyright on revised publications may be held by other parties."
+  echo "Available at <http://www.cs.dartmouth.edu/reports/"$paper
+  open $tmp
+  set x=$<
+
+  # if it changed, copy back
+  if ( ! { cmp --quiet $paper:q $tmp } ) then
+    chmod +w $paper:q 
+    cp -f $tmp $paper:q
+    chmod -w $paper:q
+  endif
+end
+
+cleanup:
+rm -f $tmp

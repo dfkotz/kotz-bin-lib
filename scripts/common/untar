@@ -1,0 +1,24 @@
+#!/bin/csh -f
+#
+# untar - unpack a tar file
+# 
+# Recommended: use tarsafe to check it first.
+#
+# usage: 
+#       untar tarfilename
+# compressed tar files are handled correctly.
+#
+# David Kotz  1992
+
+if ($#argv != 1) then 
+  echo usage: untar tarfilename
+  exit 1
+endif
+
+set f="$1"
+
+if ("$f" =~ *[zZ]) then 
+	   tar xfvz $f:q
+else
+	   tar xfv $f:q
+endif

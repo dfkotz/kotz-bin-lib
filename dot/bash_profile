@@ -1,0 +1,7 @@
+# bash sources this file for (interactive) login shells only.
+# https://medium.com/@kingnand.90/what-is-the-difference-between-bash-profile-and-bashrc-d4c902ac7308
+
+# I find bash_login to be a more descriptive name
+if [ -r ~/.bash_login ]; then
+   source ~/.bash_login
+fi

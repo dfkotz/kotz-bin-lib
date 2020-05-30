@@ -1,0 +1,96 @@
+#!/bin/csh -f
+#
+# Make a header file header.html
+#   
+#   The header has entries for each directory listed as arguments 2-#argv;
+#  the first argument identifies the directory in which this header will go.
+
+set dir=$1
+set title=`cathtml -nbsp $dir/title`
+set header=$dir/header.html
+
+set space='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+
+
+# Start the HTML
+cat > $header <<EOF
+<html><head><title>$title</title></head>
+<body bgcolor=#ffffff>
+EOF
+
+# Find ourselves ($dir) in the list, to identify Previous and Next links
+set prev=""
+set next=""
+unset lastpass
+foreach d ($argv[2-])
+    # we found $dir on the previous iteration; record next and leave loop 
+    if ($?lastpass) then
+	set next=$d
+	break
+    endif
+    if ($d == $dir) then
+	# prev is now correct; we need to get next.
+	set lastpass
+	continue
+    endif
+    set prev=$d
+end
+
+# set the title bar in a table
+echo "<table width=100%>" >> $header
+echo "<tr>" >> $header
+
+# print buttons for left and right
+echo "<td width=35>" >> $header
+if ("$prev" != "") then
+    echo '<a href="'../$prev/index.html'" target="_top"><img src='../'buttons/arrow.marble.left.gif width=30 height=30 valign=center alt="Prev"></a>' >> $header
+else
+    echo '<img src='../'buttons/arrow.marble.stop.gif width=30 height=30 valign=center alt="No prev">' >> $header
+endif
+echo "</td>" >> $header
+echo "<td width=35>" >> $header
+if ("$next" != "") then
+    echo '<a href="'../$next/index.html'" target="_top"><img src='../'buttons/arrow.marble.right.gif width=30 height=30 valign=center alt="Next"></a>' >> $header
+else
+    echo '<img src='../'buttons/arrow.marble.stop.gif width=30 height=30 valign=center alt="No next">' >> $header
+endif
+echo "</td>" >> $header
+
+
+# print the page's title, and a link to the index, to the right of the buttons.
+cat >> $header <<EOF
+<td align=left><font size=+2><b>$title</b></font></td>
+<td align=right><font size=+2><em><a href="../index.html" target="_top">Chapter index</a></em></font></td>
+<p>
+EOF
+echo "</tr>" >> $header
+echo "</table>" >> $header
+
+# print the header commentary if any
+if (-r $dir/header) then
+    echo "<p>" >> $header
+    cathtml $dir/header >> $header
+    echo '</p>' >> $header
+endif
+
+# Now print a list of links to all chapters.
+#cat >> $header <<EOF
+#All photo chapters:
+#<font size=-1>
+#EOF
+#
+#foreach d ($argv[2-])
+#    set t=`cathtml -nbsp $d/title`
+#    if ($d != $dir) then
+#	echo '<a href="'../$d/index.html'" target="_top">'$t'</a>'$space >> $header
+#    else
+#	echo '<b>'$t'</b>'$space >> $header
+#    endif
+#end
+#
+#echo "</font>"  >> $header 
+
+cat >> $header <<EOF
+</body>
+</html>
+EOF

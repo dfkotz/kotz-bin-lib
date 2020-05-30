@@ -1,0 +1,24 @@
+#!/bin/csh -f
+# meant to be run in the home directory,
+# to move a .file to lib/mac/dot/file
+# and set up a symlink instead,
+# and add it to this repo.
+
+if ($#argv != 1) then
+    echo "usage: dot file (without the dot)"
+    exit 1
+endif
+
+set dot=.$argv[1]:q
+set file=lib/mac/dot/$argv[1]:q
+if ( -r $dot:q ) then
+    echo move $dot to $file...
+    mv $dot:q $file:q \
+    && ln -s $file:q $dot:q \
+    && svn add $file:q \
+    && echo success
+else
+    echo missing file $dot:q
+    exit 1
+endif
+

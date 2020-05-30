@@ -1,0 +1,4 @@
+#!/bin/csh -f
+# look at /usr/share/zoneinfo for zone names
+
+env TZ=GMT  date

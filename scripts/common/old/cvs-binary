@@ -1,0 +1,46 @@
+#!/bin/csh -f
+# cvs-binary:  set the -kb flag on all binary files below current directory
+
+# I found that, if I simply ran "find" in . 
+# that I would pick up files in directories 
+# not controlled by CVS, and "cvs admin" would abort on such cases.
+# Furthermore, if I call "cvs admin" on files not controlled by cvs, 
+# it complains.
+# This script, therefore, gets filenames from CVS/Entries files.
+
+if (! -d CVS) then
+    echo To run this tool, you need to be in a cvs directory.
+    exit 1
+endif
+
+echo -n > cvs-kb
+
+# For each CVS-controlled subdirectory, set the kb flag on 'binary' files. 
+# Actually, we use the kb flag on any filetype for which cvs diffs and merging won't be good.
+foreach CVS (`find . -name CVS -type d -print`)
+    # make a list of files that we need to change, from the CVS/Entries file;
+    #  sed deletes the entries that are not files, 
+    #   strips the leading slash, 
+    #   strips everything after slash that follows the filename, 
+    #   adds the directory name, and
+    #   prefixes all spaces with backslash.
+    #  egrep picks out the files with the relevant extensions
+    sed \
+	-e '/^[^/]/d' \
+	-e 's+^/++' \
+	-e 's+/.*++' \
+	-e "s+^+$CVS:h/+" \
+	-e 's+ +\\ +g' \
+	$CVS/Entries \
+    | egrep -i '\.(ppt|pptx|doc|docx|dot|xls|xlsx|pdf|ps|eps|dvi|Z|gz|gzip|zip|jpg|jpeg|pict|tiff|tif|gif|svg|mov|mp3|m4v|psd|png|bmp|graffle|fig|dia|tar|tgz|a|o|jar|dat|data|bin|obj)$' \
+    >> cvs-kb
+
+end
+
+echo -n "files to update: "
+wc -l < cvs-kb
+echo -n "cvs admin... "
+xargs -P 1 cvs admin -kb  < cvs-kb
+echo -n "cvs update... "
+xargs -P 1 cvs -Q update -A  < cvs-kb
+echo "done; see list of files in ./cvs-kb"

@@ -1,0 +1,20 @@
+#!/bin/csh -f
+#
+# update-if-unchanged: replace $1 with contents of stdin, iff they differ
+#  (useful to avoid touching the target if no change occurred)
+
+if ($#argv != 1) then
+   echo 'usage: ... | update-if-unchanged target'
+   exit 1
+endif
+
+set tmp=/tmp/update$$
+onintr cleanup
+
+cat > $tmp
+if (! { cmp --silent $tmp $1:q } ) then
+   cat $tmp > $1:q
+endif
+
+cleanup:
+rm -f $tmp

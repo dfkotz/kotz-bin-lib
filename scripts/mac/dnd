@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh flume.cs.dartmouth.edu scripts/cs/dnd "$@"

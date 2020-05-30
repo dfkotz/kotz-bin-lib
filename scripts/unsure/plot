@@ -1,0 +1,100 @@
+#!/bin/csh -fv
+#
+# Simple data file plotting program
+#
+# usage:
+#  plot [-Pprinter] [-style] [-t title] [-x xmin:xmax] [file]...
+#
+# where the files (or stdin if none) are each a set of pairs of points,
+# one pair per line, with the x coord first, y second, separated by
+# space (this is for gnuplot/gnutex). Each file will be a separate
+# curve on the same plot. The style is one of
+#   {point, lines, linespoints, impulses, dots}.
+#
+# For lines and linespoints the data should be sorted by x coordinate.
+#
+
+onintr cleanup
+set plot=/tmp/plot$$
+
+set printer=-P$PRINTER
+set style=linespoints
+unset title
+
+while ("$1" =~ -*)
+    # extract optional title
+    if ("$1" == "-t") then
+        shift 
+        if ($#argv > 0) then
+        	  set title="$1"
+            shift
+        else
+        	   echo Usage: '[-t title]'
+        endif
+    	   continue
+    endif
+    
+    if ("$1" =~ "-P*") then
+	   set printer=$1 
+        shift 
+   	   continue
+    endif
+    
+    # extract xrange
+    if ("$1" == "-x") then
+        shift 
+        if ($#argv > 0) then
+        	  set xrange="$1"
+            shift
+        else
+        	   echo Usage: '[-x xrange]'
+        endif
+    	   continue
+    endif
+
+    # extract style
+    if ("$1" =~ "-?*") then
+    	   set style=`echo "$1" | sed 's/-//'`
+    	   shift
+	   continue
+    endif
+end
+
+if ($#argv == 0) then
+    set tmp=/tmp/plot$$-data
+    cat > $tmp
+    set files=$tmp
+else 
+    set files=($*)
+endif
+
+if ($#files == 1) then
+    set n=`wc -l < $files`
+else
+    set n=`wc -l $files | sed '$d' | stats max`
+endif
+
+echo set noclip points >> $plot
+echo set time >> $plot
+# echo set samples $n >> $plot
+if ($?xrange) then
+	   echo set xrange "[$xrange]" >> $plot
+endif
+echo -n plot \"$files[1]\" w $style >> $plot
+shift files
+foreach file ($files)
+ echo -n , \"$file\" w $style >> $plot
+end
+echo "" >> $plot
+
+if ($?title) then
+    lasergnu $printer -t "$title" -f $plot
+else
+    lasergnu $printer -f $plot
+endif
+
+cleanup:
+if ($?tmp) then
+	   rm -f $tmp
+endif
+rm -f $plot

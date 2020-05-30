@@ -1,0 +1,95 @@
+#!/bin/csh -f
+# Add a directory to a picture gallery
+#
+# David Kotz, 2000-01
+#
+# Adds a new newdir to the gallery.  We need to update
+# ./index, create newdir/title and newdir/header, and then create 
+# newdir/big and newdir/small, and newdir/*/*.html for each image.
+# Then we need to update every other newdir's header.html
+#
+# usage: gallery-add newdir
+# (see 'goto' below to shortcut after a partial failure)
+
+if ($#argv != 1) then
+     echo usage: $0 newdir
+     exit 1
+endif
+set newdir=$1:h
+if (! -d $newdir) then
+     echo $newdir is not a directory
+     echo usage: $0 newdir
+     exit 1
+endif
+
+# shortcut when the dir was built but the rest needs to be done again.
+#goto headers
+
+echo check to see that the jpg files are in $newdir/huge
+if (! -d $newdir/huge) then
+     echo $newdir/huge is missing... 
+     mkdir $newdir/huge && echo created.
+     (cd $newdir && mv *.jpg huge/ && echo moved jpg files.)
+endif
+
+echo ""
+echo add $newdir to end of ./index
+grep -v '^'$newdir'$' index > index.new
+echo $newdir >> index.new
+mv index index.old && mv index.new index
+tail index
+
+echo -n "Enter a short descriptive title: "
+set title="$<"
+echo "$title" > $newdir/title
+
+echo "Enter more descriptive header, and end with ^D:"
+cat > $newdir/header
+
+echo ""
+
+# create the HTML for the new directory
+echo Build the image files for $newdir...
+gallery-rebuild $newdir
+
+headers:
+echo create the header.html for all gallery directories.
+
+# Form a list of directories to use for the makeheader.
+# if ./index exists, use it.  Else make a list from */title.
+if (-r index) then
+    set dirs=`cat index`
+else
+    # build a list of directories
+    set dirs=()
+    foreach i (*/title)
+	set dirs=($dirs $i:h)
+    end
+endif
+
+# create the header HTML for every directory
+foreach dir ($dirs)
+    echo $dir
+
+    # create $dir/header.html
+    gallery-makeheader $dir $dirs
+end
+
+echo recreate the top-level movies page
+# creates movies/*
+# uses ./title and .header
+gallery-movies
+
+echo recreate the top-level index.html
+# creates ./index.html
+# uses ./title and ./header 
+gallery-makeindex $dirs
+
+echo add to svn
+svn add $newdir
+
+echo done gallery-add\; if ok, run
+echo svn ci 
+
+echo a link to the new page follows:
+echo http://www.cs.dartmouth.edu/~dfk/kids/$newdir

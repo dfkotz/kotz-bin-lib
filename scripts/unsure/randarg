@@ -1,0 +1,8 @@
+#!/bin/csh -f
+# pick a random argument from $*
+
+if (! $?environset) source ~/.environset
+
+set i=`rand 1 $#argv`
+echo $argv[$i]
+

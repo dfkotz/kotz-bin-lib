@@ -1,0 +1,46 @@
+#!/bin/csh -f
+#
+# fulldisplayname - print the current $DISPLAY with fully qualified host name
+#
+# usage:
+#   fulldisplayname
+#
+# This program must run in the same domain as the DISPLAY server.
+
+if ($#argv != 0) then
+	echo 'usage: fulldisplayname'
+	exit 1
+endif
+
+if (! $?DISPLAY) then
+	echo No DISPLAY
+	exit 1
+endif
+
+# the :screen form
+if ($DISPLAY =~ :*) then
+	echo `fullhostname`$DISPLAY
+	exit 0
+endif
+
+# the unix:screen form
+if ($DISPLAY =~ unix:*) then
+	echo `fullhostname``echo $DISPLAY | sed 's/^.*:/:/'`
+	exit 0
+endif
+
+# the host.domain:screen form (just leave it alone)
+if ($DISPLAY =~ *.*:*) then
+	echo $DISPLAY
+	exit 0
+endif
+
+# the host:screen form
+if ($DISPLAY =~ *:*) then
+	set part=`echo $DISPLAY | sed 's/:/ /'`
+	echo `fullhostname $part[1]`:$part[2]
+	exit 0
+endif
+
+echo Bad DISPLAY $DISPLAY
+exit 1

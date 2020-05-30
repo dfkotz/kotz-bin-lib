@@ -1,0 +1,41 @@
+# some (unused) settings, inherited from Shirang and others.
+[color "diff"]
+    old = red
+    new = white
+
+[color]
+    ui = true
+
+[alias]
+    lg = log --oneline --graph --decorate
+    lp = log -p
+    lm = log --oneline --graph --decorate --first-parent
+    llg = log --graph --all --format=format:'%C(red)%h%C(reset) %C(bold yellow)%d%C(reset) %C(white)(%ar)%C(reset) %C(green)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative
+    llm = log --graph --first-parent --format=format:'%C(red)%h%C(reset) %C(bold yellow)%d%C(reset) %C(white)(%ar)%C(reset) %C(green)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative
+    ll = log --graph --format=format:'%C(red)%h%C(reset) %C(bold yellow)%d%C(reset) %C(white)(%ar)%C(reset) %C(green)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative
+    ci = commit
+    co = checkout
+    con = checkout -b
+    br = branch
+    bs = branch -a
+    sb = show-branch
+    st = status
+    df = diff
+    wdf = diff --color-words
+    dfstat = diff --stat -r
+    mg = merge
+    mnf = merge --no-ff
+    ms = merge --squash
+    who = shortlog -s --
+    new = !sh -c 'git log --oneline --graph $1@{1}..$1@{0} "$@"'
+
+[merge]
+    tool = diffmerge
+
+[mergetool "diffmerge"]
+    cmd = diffmerge --merge --result=$MERGED $LOCAL $BASE $REMOTE
+    trustExitCode = false
+
+[mergetool "sourcetree"]
+    cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+    trustExitCode = true

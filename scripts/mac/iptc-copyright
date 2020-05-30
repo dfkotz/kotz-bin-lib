@@ -1,0 +1,6 @@
+#!/bin/csh -f
+# add a copyright notice to IPTC metadata in jpg files
+
+# usage: iptc-copyright file.jpg...
+
+exiftool '-IPTC:CopyrightNotice=Copyright by David Kotz' $argv:q

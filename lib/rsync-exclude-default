@@ -1,0 +1,10 @@
+.DS_Store
+*~
+*.out
+*.aux
+*.log
+*.bbl
+*.blg
+*.dvi
+*,v
+RCS

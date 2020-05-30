@@ -1,0 +1,37 @@
+#!/bin/sh
+# force an immediate update of my CS web page
+# (the script ../mac/update-web uses ssh to invoke this script)
+
+cd ~/projects/web || exit 1
+
+if [ "$1" == "-q" ]; then
+    quiet=-q
+else
+    quiet=
+    echo git pull...
+fi
+git pull $quiet || exit 2
+
+if [ "$1" == "-q" ]; then
+    quiet=-q
+else
+    quiet=-v
+    echo rsync...
+fi
+rsync -raH $quiet -e 'ssh -q' --delete \
+      --exclude=.git --exclude=.gitignore --exclude=blog \
+      --exclude='name.txt' \
+      --exclude='*.htmlf' \
+      --exclude='*.htmltop' \
+      --exclude='nowarning' \
+      --exclude='*-publisher.pdf' \
+      --exclude='*-private.pdf' \
+      --exclude=research/pre-download \
+      --exclude=research/pre-metadata \
+      --exclude=research/private \
+      --exclude=research/internal \
+      --exclude=research/postscript-old \
+      . d31379t@katahdin.dartmouth.edu:public_html/ \
+    || exit 3
+
+exit 0

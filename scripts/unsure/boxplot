@@ -1,0 +1,134 @@
+#!/bin/csh -f
+#
+# boxplot - plot a box plot of a set of points files 
+#
+# usage:
+#  boxplot [-t title] [-ns] [-5] [-x xmin:xmax] file...
+# Computes the box plot for each file and plots them all on one plot.
+# The box plot shows the min, max, median, and upper/lower fourths
+#  of the distribution. The plots are ordered in the order the files
+#  are given. The x axis is the data axis, the y axis is the file# axis.
+# If no files are given, stdin is used.
+#
+# If the -5 option is given, the input files are concatenated. They 
+# should contain one or more lines, each with a name and
+# five-point summary. This provides a quick way of plotting stored
+# 5-point summaries.
+#
+# The -ns option specifies no sort should be used; the default is 
+# to sort the boxplots by median. 
+#
+# The -x option specifies the xrange for the plot manually.
+# This can be used to zoom in on points of interest.
+# Note no brackets should be supplied.
+
+set given="distribution"
+unset title
+unset xrange
+set sort=1
+
+while ("$1" =~ -*) 
+    switch ($1)
+    # extract -5 option
+    case -5:
+        shift 
+        set given="five-point"
+    	   breaksw
+
+    # extract -ns option
+    case -ns:
+        shift 
+        set sort=0
+    	   breaksw
+
+    # extract optional title
+    case -t:
+        shift 
+        if ($#argv > 0) then
+        	   set title="$1"
+        	   shift
+        else
+        	   echo Usage: '[-t title]'
+        	   exit
+        endif
+        breaksw
+
+    # extract xrange specification
+    case -x:
+    	   shift
+        if ($#argv > 0) then
+        	   set xrange="$1"
+        	   shift
+        else
+        	   echo Usage: '[-x xmin:xmax]'
+        	   exit 1
+        endif
+        breaksw
+    default:
+    	   echo 'Usage: boxplot [-5] [-t title] [-x xmin:xmax] file...'
+    	   exit 1
+    endsw
+end
+
+
+set TMP=/tmp/boxplot$$
+
+onintr cleanup
+
+mkdir $TMP
+
+set five=$TMP/five
+set fivesort=$TMP/fivesort
+set data=$TMP/data
+set list=$TMP/list
+set plot=$TMP/plot
+echo "set nokey; set tics out" >> $plot
+
+if ($given == "five-point") then
+    # we are given the five-point data (and names) in advance
+    # if no args this uses stdin
+    cat $* > $five
+    set count=`wc -l < $five`
+else
+    if ($#argv > 0) then
+        fivepoint $* > $data
+        echo $* | transpose > $list
+        abut $list $data > $five
+        set count=$#argv
+    else
+        echo -n "stdin " > $five
+        fivepoint >> $five
+    	   set count=1
+    endif
+endif
+
+if ($sort) then
+	   sort +3n -4 $five > $fivesort
+else
+	   mv $five $fivesort
+endif
+
+# create the pointfile, the linefile, and catch the 'set ytics' line
+(cd $TMP; Awk -f $0.awk $fivesort > yticsfile)
+
+set samples=`wc -l < $TMP/linefile`
+
+cat $TMP/yticsfile >> $plot
+if (! $?title) set title="Box plot"
+echo set title \"$title:q\" >> $plot
+echo set ylabel \"data file\" >> $plot
+echo set xlabel \"data distribution\" >> $plot
+echo set samples $samples >> $plot
+if ($?xrange) then
+    echo set xrange "[$xrange]" >> $plot
+endif
+echo set yrange "[0:$count+1]" >> $plot
+echo plot \"pointfile\" w points, \"linefile\" w lines >> $plot
+
+cp $TMP/yticsfile $TMP/pointfile $TMP/linefile $plot .
+
+cd $TMP
+lasergnu -f $plot
+
+cleanup:
+rm -rf $TMP

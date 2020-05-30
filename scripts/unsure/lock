@@ -1,0 +1,8 @@
+#!/bin/csh -f
+# lock - place a filesystem lock 
+# first argument is the file to be locked
+# exits with non-zero status if lock fails
+
+umask 222
+/bin/cp /dev/null $1 >& /dev/null
+exit $status

@@ -1,0 +1,107 @@
+#!/bin/csh -f
+#
+# qqplot - plot a Quantile-Quantile plot of a given two data sets
+#
+# The data set is presented as a pair of files, each with 
+# one datum per line. They will be sorted if not already sorted.
+#
+# usage:
+#   qqplot [-s] [-t title] file1 file2
+#
+# specifying -s indicates that the data are sorted already
+# file1 will be on the y axis, file2 on the x axis
+#
+
+set TMP=/tmp/qqplot$$
+set data=$TMP/sorted
+set data1=${data}1
+set data2=${data}2
+set median=$TMP/median
+set plot=$TMP/plot
+set pairs=$TMP/pairs
+
+set quantiles1=$TMP/q1
+set quantiles2=$TMP/q2
+
+unset sorted
+
+while ($#argv > 0 && $1 =~ -*)
+    switch("$1")
+    case -t:
+        # extract optional title
+        shift 
+        if ($#argv > 0) then
+        	  set title="$1"
+            shift
+        else
+        	   echo Usage: '[-t title]'
+        endif
+    	   breaksw
+    case -s:
+    	   set sorted
+        shift
+    	   breaksw
+    default:
+    	   echo Unknown option "$1".
+    endsw
+end
+
+if ($#argv < 2) then
+    echo Usage: qqplot '[-s] [-t title]' file1 file2
+    exit 1
+endif
+
+onintr cleanup
+mkdir $TMP
+
+# Collect the sorted data
+if ($?sorted) then
+	cp $1 $data1
+	cp $2 $data2
+else
+	sort +0n -1 $1 > $data1
+	sort +0n -1 $2 > $data2
+endif
+
+if (! $?title) set title="QQplot of $1 vs $2"
+
+# Compute the median of each to be plotted as a single point
+set med1=`median $data1`
+set med2=`median $data2`
+echo $med2 $med1 > $median
+
+# Count the number of items
+set n1=`cat $data1 | stats n`
+set n2=`cat $data2 | stats n`
+
+# Compute the quantile pairs
+if ($n1 <= $n2) then
+	mv $data1 $quantiles1
+	echo $n2 $n1 | Awk -f $0.awk - $data2 > $quantiles2
+	set m=$n1
+else
+	mv $data2 $quantiles2
+	echo $n1 $n2 | Awk -f $0.awk - $data1 > $quantiles1
+	set m=$n2
+endif
+
+abut $quantiles2 $quantiles1 > $pairs
+
+if ($m < 100) then
+	set style=points
+else
+	set style=dots
+endif
+
+set xrange="`datarange $quantiles2`"
+set yrange="`datarange $quantiles1`"
+
+echo set noclip > $plot
+echo set title \""$title"\" >> $plot
+echo set samples $m >> $plot
+echo plot "$xrange $yrange" \"$pairs:t\" w $style, \"$median:t\" w points, x w lines >> $plot
+
+(cd $TMP; lasergnu -f $plot)
+
+cleanup:
+rm -f $data* $quantiles1 $quantiles2 $pairs $median $plot

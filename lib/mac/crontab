@@ -1,0 +1,53 @@
+# DFK crontab
+#=============================================
+#  Each crontab file entry consists of a line with six fields, separated by
+#  spaces and tabs.  The information in the fields specifies when the command
+#  runs and the name of the command.  The fields specify the following:
+#
+#    o  The first field specifies the minute (0 to 59).
+#
+#    o  The second field specifies the hour (0 to 23).
+#
+#    o  The third field specifies the day of the month (1 to 31).
+#
+#    o  The fourth field specifies the month of the year (1 to 12).
+#
+#    o  The fifth field specifies the day of the week (0 to 6 for Sunday to
+#       Saturday).
+#
+#    o  The sixth field specifies the shell command to be executed.
+#
+#  You can specify the following values in the fields that indicate the time:
+#
+#    o  An integer (within the appropriate range of values)
+#
+#    o  Two integers separated by a dash to indicate an inclusive range
+#
+#    o  A list of integers separated by commas
+#
+#    o  An asterisk to select all possible values
+#=============================================
+
+PATH=/usr/local/bin:/usr/bin:/bin
+# MAILTO=David.F.Kotz@Dartmouth.edu
+
+# don't forget my crontab
+0 7 * * * /usr/bin/crontab -l | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/mac/crontab
+2 7 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/mac/crontab
+
+# don't forget my hosts file
+4 7 * * * cat /etc/hosts | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/mac/etc-hosts
+6 7 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/mac/etc-hosts
+
+# track what I have installed with homebrew
+6 7 * * * /usr/local/bin/brew ls | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/mac/brew-list
+8 7 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/mac/brew-list
+
+# show me what files are left uncommitted
+# 0 9 * * * /u/dfk/bin/scripts/common/cvs-to-commit projects/*
+2 9 * * *   /u/dfk/bin/scripts/common/git-to-commit projects/* 
+4 9 * * *   /u/dfk/bin/scripts/common/svn-to-commit bin/scripts lib projects/* 
+
+# pull any changes to lib and scripts
+6 9 * * *   svn update --quiet --non-interactive bin/scripts lib
+8 9 * * *   svn update --quiet --non-interactive bin/scripts bin/scripts

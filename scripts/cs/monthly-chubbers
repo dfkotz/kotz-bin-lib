@@ -1,0 +1,23 @@
+#!/bin/csh
+#
+# Fetch the chubbers mailing list from majordomo.
+# Run by crontab on the first of every month.
+#
+# usage:
+#   monthly-chubbers
+#
+# $Id: monthly-chubbers,v 1.4 2005/11/06 11:10:15 dfk Exp $
+
+# ask for the mailing list; note reply-to
+sendmail listserv@listserv.dartmouth.edu <<EOF
+From: David Kotz <David.F.Kotz@Dartmouth.edu>
+To: listserv@listserv.dartmouth.edu
+Reply-to: David Kotz <dfkotz@mac.com>
+
+REVIEW CHUBBERS-ALUM (NOH ALL
+EOF
+
+# and send mail to remind me 
+# mail -s "Time for chubbernet update" dfkotz@mac.com <<EOF
+# Check mail on unix.  Pipe the listserv response through "chubbers".
+# EOF

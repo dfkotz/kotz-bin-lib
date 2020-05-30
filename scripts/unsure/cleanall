@@ -1,0 +1,47 @@
+#!/bin/csh
+# Cleanup unnecessary files in my home directory
+# This is like cleanold but with no time limits. Run when space is
+# really low. It leaves them in .trash.
+# It compresses old files earlier (7 days instead of 14).
+
+set znew=/usr/local/bin/znew
+
+# Remove from trash directory day-old files:
+find ~/.trash -atime +1 -exec /bin/rm -f {} \;
+
+# Remove certain older files from main directories into .trash directory,
+# and warn me about it. In addition, compress any other old files.
+#
+set remove=/tmp/dfkfind$$
+onintr cleanup
+echo > $remove
+
+cd
+
+# I use a loop to prune certain top-level directories
+# Because non-Sun 'find' does not have a -prune option
+foreach i (*)
+    if ($i != .trash && $i != bin && $i != Mail) then
+    find $i \( \
+	   -name '*.log'\
+	-o -name '*.blg'\
+	-o -name 'core' \
+	-o -name '*.dvi' \
+	-o -name '#*' \
+	-o -name '*~' \
+	-o -name '*~.Z' \
+	-o -name '*~.z' \
+	-o -name '*.aux' \
+	-o -name '*.o' \
+	\) -print >> $remove \
+	-o -name '*.Z'  -exec $znew -vP '{}' \; \
+	-o \! -name '*.Z' \! -name '*.z' \! -name '.*' -atime +7 \
+    	-exec gzip -v '{}' \;
+    endif
+end
+
+if (! -z $remove) mail -s "Moved to .trash" me < $remove;
+safe-rm -t -f `cat $remove` $remove
+
+cleanup:
+rm -f $remove

@@ -1,0 +1,27 @@
+#!/bin/csh -f
+#
+# tarsafe - is a tar file safe to untar?
+# 
+# It is safe if it does not refer to ../ or to files starting with / 
+#
+# Any file names like that are printed out. Otherwise nothing is
+# printed.
+#
+# usage: 
+#       tarsafe tarfilename
+# compressed tar files are handled correctly.
+#
+# David Kotz  1992
+
+if ($#argv != 1) then 
+  echo usage: tarsafe tarfilename
+  exit 1
+endif
+
+set f=$1
+
+if ("$f" =~ *.[zZ]) then 
+	   zcat $f | tar tf - | egrep '\.\./|^/'
+else
+	   tar tf $f | egrep '\.\./|^/'
+endif

@@ -1,0 +1,25 @@
+#!/bin/bash
+# send the daily calendar to the list of addresses on the command line
+
+if [[ $# -lt 1 ]]; then
+    echo usage: $0 email...
+    exit 1
+fi
+
+dir=~/calendar
+today=$(date +%F)
+html=$dir/$today.html
+jpg=$dir/$today.jpg
+
+if [[ ! -d $dir ]]; then
+   echo missing directory $dir
+   exit 2
+fi
+
+if [[ ! -r $html || ! -r $jpg ]]; then
+   echo missing calendar files for $today
+   exit 3
+fi
+
+export REPLYTO=dfkotz@mac.com
+mutt -e 'set content_type=text/html' -e 'set copy=no' -s "Today's calendar" < $html -a $jpg -- "$@"

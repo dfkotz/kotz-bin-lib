@@ -1,0 +1,4 @@
+#!/bin/bash
+# list all the files that are of Google cloud-type files,
+# within any of the directories provided on the commandline. 
+find "$@" -type f | egrep '(gdoc|gdraw|gform|gmap|gsheet|gslides|gtable)$'

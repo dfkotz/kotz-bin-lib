@@ -1,0 +1,81 @@
+#!/bin/csh -f
+# Cleanup unnecessary files in my home directory
+
+cd
+
+# Remove from trash directory day-old files:
+find .trash \! -path .trash \! -path .trash/.noclean \
+      -atime +1 -exec /bin/rm -f {} \;
+
+# Remove certain older files from main directories into .trash directory,
+# and warn me about it. In addition, compress any other old files.
+#
+set results=/tmp/dfkfind$$
+onintr cleanup
+
+# Any directory containing file .noclean will not be explored
+# for deletion or compression purposes.
+
+# Explore and delete backup files.
+find ~ \
+ -type d -exec test -f '{}'/.noclean \; -prune \
+ -name '*~' -atime +7 \
+ -print > $results
+set resultslist=(`cat $results`)
+
+if ($#resultslist > 0)  then
+  echo Removed files:
+  cat $results
+  rm -f $resultslist:q ~/.trash
+  echo status=$status
+  echo ""
+endif
+
+# Explore and trash cruft, and derived files.
+find ~ \
+ -type d -exec test -f '{}'/.noclean \; -prune \
+-o \( \
+       -name '*.log' -atime +1 \
+    -o -name '*.blg' -atime +1 \
+    -o \( -type f -name 'core' \) \
+    -o -name '*.dvi' -atime +7 \
+    -o -name '#*' -atime +2 \
+    -o -name '*~.Z' -atime +7 \
+    -o -name '*~.z' -atime +7 \
+    -o -name '*.aux' -atime +7 \
+    -o -name '*.o' -atime +14 \
+\) -print > $results 
+
+set resultslist=(`cat $results`)
+if ($#resultslist > 0)  then
+  echo Moving to .trash:
+  cat $results
+  mv $resultslist:q ~/.trash
+  echo status=$status
+  echo ""
+endif
+
+
+# Explore and compress old files.
+# Any directory containing file .nocompress, .noclean, .rsync, or .svn
+# will not be explored for compression purposes.
+
+find ~ \
+   -type d -exec test -f '{}'/.noclean \; -prune \
+-o -type d -exec test -f '{}'/.nocompress \; -prune \
+-o -type d -exec test -d '{}'/.rsync \; -prune \
+-o -type d -exec test -d '{}'/.svn \; -prune \
+-o \! -name '*.Z' \! -name '*.z' \! -name '*.gz' \! -name '.*' -atime +14 \
+   	-print > $results
+
+set resultslist=(`cat $results`)
+if ($#resultslist > 0)  then
+  echo Compressing:
+  cat $results
+  gzip -q $resultslist:q
+  echo status=$status
+  echo ""
+endif
+
+cleanup:
+rm -f $results

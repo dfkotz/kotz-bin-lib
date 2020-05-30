@@ -1,0 +1,33 @@
+#!/bin/csh -f
+#
+# donote: add notes to postscript files
+#   Given a file named foo.note, add the note to the bottom of the
+# first page of the file named foo.ps.Z.  Any existing notes are
+# removed first.   Long notes are added in 8pt Helvetica, short notes
+# in 11pt Helvetica.  Each file is output as foo.ps; after checking,
+# run 'compress foo.ps' and say yes to overwrite.
+# 
+
+set note=$1
+
+if ($note !~ *.note) then
+        echo not a note file: $note
+	exit 1
+endif
+
+set ps=$note:r.ps.Z
+echo $note --- $ps
+if (! -r "$ps") then
+	echo missing ps file $ps
+	exit 2
+endif
+
+set lines=`wc -l $note`
+if ("$lines[1]" <= 3) then
+    zcat $ps | psnote -U -F Helvetica11 -Yb -y 20 -N $note -o $ps:r || exit 3
+else
+    # at least, this works for kotz:dapple which has an ACM copyright.
+    zcat $ps | psnote -U -F Helvetica8 -Yb -y 18 -x .75in -N $note -o $ps:r || exit 4
+endif
+
+#    psselect -p1 $ps:r 1$ps:r && echo created 1$ps:r

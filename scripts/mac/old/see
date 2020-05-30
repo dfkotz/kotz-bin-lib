@@ -1,0 +1,22 @@
+#!/bin/csh -f
+#
+# see another Mac's screen (requires ssh access)
+#
+# usage: see hostname
+#
+
+if ($#argv != 1) then
+   echo usage: see hostname
+   exit 1
+endif
+
+set host=$1
+set sshuser=$host
+
+if ($host == masha) set sshuser=david@masha.local
+if ($host == chaska) set sshuser=dfk@chaska.local
+if ($host == sandy) set sshuser=dfk@sandy.local
+
+ssh $sshuser screencapture -x screen.png \
+&& scp $sshuser\:screen.png Desktop/ \
+&& open Desktop/screen.png

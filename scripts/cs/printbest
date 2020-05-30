@@ -1,0 +1,18 @@
+#!/bin/csh
+
+set tmp=/tmp/printbest$$
+onintr cleanup
+
+# stdin absorbed here, if $#argv == 0
+set lines=`cat $argv:q | tee $tmp | fold -80 | wc -l `
+
+if ($#argv > 1 || $#lines <= 73) then
+   # fits on one page, print 1 page/sheet
+   a2ps -H"$argv:q" -p $tmp
+else
+   # use 2 pages/sheet
+   a2ps -H"$argv:q" $tmp
+endif
+
+cleanup:
+rm -f $tmp

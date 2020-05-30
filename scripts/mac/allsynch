@@ -1,0 +1,10 @@
+#!/bin/csh -f
+#
+# synchronize in each of the top-level dirs that support it.
+#
+
+foreach sync (*/.rsync)
+	set dir="$sync:h"
+	echo $dir:q
+	(cd $dir:q; synchronize)
+end

@@ -1,0 +1,6 @@
+#!/bin/csh -f
+
+find . -name svn-commit\*.tmp\* | xargs rm -f
+find . -name svn-prop\*.tmp\*  | xargs rm -f
+find . -name \#svn-commit\*.tmp\* | xargs rm -f
+find . -name \#svn-prop\*.tmp\*  | xargs rm -f

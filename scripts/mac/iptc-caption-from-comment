@@ -1,0 +1,7 @@
+#!/bin/csh -f
+# copy the JPEG "comment" field to the IPTC "caption" field
+# and, for good measure, to the XMP "description" field.
+
+# usage: iptc-caption-from-comment file.jpg...
+
+exiftool -'IPTC:Caption-Abstract<Comment' -'XMP:Description<Comment' $argv:q

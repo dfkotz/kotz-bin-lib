@@ -1,0 +1,12 @@
+#!/bin/csh -f
+
+# make sure I am running from the right directory.
+cd "/Volumes/Lyme"
+
+# only run if the backup volume exists
+set dest=/Volumes/Kotz-TC-backup/
+if (-d $dest:q) then
+   rsync --delete-before --delete-excluded -rlptv . $dest:q
+else
+   echo backup disk is not mounted.
+endif

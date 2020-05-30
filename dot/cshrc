@@ -1,0 +1,77 @@
+# Loaded for every new instance of tcsh (or csh). 
+# My scripts use -f to prevent loading this file, but other scripts will load it!
+# For a login shell, csh loads .login after this file.
+
+# --------------------------------------------------------------------
+# Set environment? no.
+# we assume that the environment is inherited from a parent login shell.
+
+# --------------------------------------------------------------------
+# Set aliases and shell variables
+
+set history=100
+set notify
+
+# Use (parens) to distinguish from my bash prompt. 
+if (`uname` == "Darwin") then
+   # MacOS: remind me the shell is on my Mac.
+   set prompt="(MacOS:%c3) "
+else
+   # Linux: include hostname in prompt
+   if ( $?tcsh ) then
+       set prompt='\n%B(%n@%m:%.)%b '
+   else
+       set prompt='('`uname -n`') )'
+   endif
+endif
+
+# filename and cd completion
+set filec
+set fignore=()
+if (`uname` == "Darwin") then
+   set cdpath=(~ ~/projects ~/Desktop ~/Documents)
+else
+   set cdpath=(~ ~/projects)
+endif
+
+
+# --------------------------------------------------------------------
+# aliases used for cs50
+
+alias mygcc 'gcc -Wall -pedantic -std=c11 -ggdb'
+alias myvalgrind 'valgrind --leak-check=full --show-leak-kinds=all'
+
+# safety aliases
+alias rm 'rm -i'
+alias cp 'cp -i'
+alias mv 'mv -i'
+
+# convenience aliases
+alias ls 'ls -F'
+alias mkdir 'mkdir -p'
+alias which 'type -all'
+alias du 'du -kh'
+alias df 'df -kTh'
+
+# --------------------------------------------------------------------
+# aliases used by David Kotz
+
+# pretty printing
+alias print 'a2ps --landscape -2'
+alias print1 'a2ps --portrait  -1'
+alias printwide 'a2ps --landscape --columns=1 --chars-per-line=132'
+
+# not an exact substitute, but works for most; see also 'lam'
+alias abut paste
+
+# convert ps to pdf
+alias distill 'ps2pdf14 -dSubsetFonts=true -dEmbedAllFonts=true'
+
+if ( `uname` == "Darwin") then
+   # MacOS
+   # Dartmouth Name Directory
+   alias dnd 'ssh flume.cs.dartmouth.edu scripts/cs/dnd'
+else
+   # Linux
+   alias dnd 'scripts/cs/dnd'
+endif

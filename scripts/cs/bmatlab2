@@ -1,0 +1,60 @@
+#!/bin/csh -f
+#
+# bmatlab - execute matlab in batch mode
+#
+# usage: bmatlab settings.csh output file.m...
+# where $1 is a csh "source" file containing settings as follows:
+#   set print=eps2       # print device; or epsc2 or png
+#   set width=5          # width in inches
+#   set height=3.5       # height in inches
+# and $2 is the name of the output file, eg, plot.eps
+# and file.m... is a set of matlab files to be executed, in order.
+
+set tmp=bmatlab$$
+set xstatus=1
+
+onintr cleanup
+
+cat > $tmp.m <<EOF
+% $argv:q
+
+% hide the plot window for batch mode
+set(gcf, 'visible', 'off');
+
+EOF
+
+foreach i ($*)
+	if (! -r $i) then
+	    echo $i not found
+	    exit 2
+	endif
+
+	# extend matlab's path if needed to reach this file
+	if ($i:h != $i) then
+		set dir=$i:h
+		echo "path(path,'"$dir"');" >> $tmp.m
+	endif
+
+	set file=$i:t
+	set command=$file:r
+	echo $command \; >> $tmp.m
+end
+
+#  cat $* >> $tmp.m    || (rm -f $tmp.m ; exit 1)
+
+cat >> $tmp.m <<EOF
+set(gcf,'PaperPosition', [0 0 $width $height]);
+print -d$print $output
+quit;
+EOF
+
+more $tmp.m
+
+echo $tmp | matlab -nosplash -nojvm | sed 1,10d
+set xstatus=$status
+echo
+
+cleanup:
+rm -f $tmp.m
+
+exit $xstatus

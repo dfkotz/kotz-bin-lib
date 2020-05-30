@@ -1,0 +1,81 @@
+# bash_login and bashrc source this file when the environment has not been set.
+
+export environset=true
+
+export MAILFROM=David.F.Kotz@dartmouth.edu
+
+export PATH=$PATH:~/projects/bib-tools:~/bin:~/scripts/common:~/projects/vita/bin
+
+if [ $(uname) == "Darwin" ]; then
+   # MacOS
+   export PATH=$PATH:~/scripts/mac
+else
+   # Linux
+   export PATH=$PATH:~/scripts/cs
+fi
+
+# location of python libraries
+mypypath=$HOME/projects/bib-tools:$HOME/projects/uniclean:
+if [ -z "$PYTHONPATH" ]; then
+   export PYTHONPATH=.:$mypypath
+else
+   export PYTHONPATH=.:"$PYTHONPATH":$mypypath
+fi
+
+
+# location of java libraries
+myclasspath=$HOME/lib/java/Multivalent.jar
+if [ -z "$CLASSPATH" ]; then
+   export CLASSPATH=.:$myclasspath
+else
+   export CLASSPATH=.:"$CLASSPATH":$myclasspath
+fi
+
+# location of 'info' documents
+myinfopath=/usr/share/info:/usr/local/share/info
+if [ -z "$INFOPATH" ]; then
+   export INFOPATH=.:$myinfopath
+else
+   export INFOPATH=.:"$INFOPATH":$myinfopath
+fi
+
+# location of BibTeX BST files
+export BSTINPUTS=.:/u/dfk/projects/bib-styles
+
+# Use less as a paginator instead of more (e.g. for man pages).
+export PAGER=less
+# Make less more verbose than usual, and let it display ESC sequences.
+export LESS='-s -w -M -R'
+# tell 'less' not to use a history file
+export LESSHISTFILE=-
+
+# What editor should we use?
+export EDITOR=/usr/bin/emacs
+export VISUAL="$EDITOR"
+
+# do not allow printing with lpr
+export PRINTER=unknown
+
+# --------------------------------------------------------------------
+# Strip out the crap that /etc/profile.d adds to my environment
+unset DBUS_SESSION_BUS_ADDRESS
+unset KDEDIRS
+unset LOADEDMODULES
+unset MODULEPATH
+unset MODULEPATH_modshare
+unset MODULESHOME
+unset MODULES_CMD
+unset MODULES_RUN_QUARANTINE
+unset QTDIR
+unset QTINC
+unset QTLIB
+unset SSH_ASKPASS
+unset S_COLORS
+unset WISECONFIGDIR
+unset XDG_DATA_DIRS
+unset XDG_RUNTIME_DIR
+unset XDG_SESSION_CLASS
+unset XDG_SESSION_ID
+unset XDG_SESSION_TYPE
+# unset the BASH_FUNC_* variables:
+unset `env | sed -n 's/^BASH_FUNC_\([_a-z]*\)%%=().*/\1/p'`

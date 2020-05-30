@@ -1,0 +1,10 @@
+#!/bin/csh -f
+
+cd ~/papers/campus/kotz_jcampus/plots
+
+set where=campus@jobildunc:analysis/plots
+echo get the latest from $where
+rsync -e ssh -rlptz --delete --delete-excluded --log-format=%f \
+    -C --include=CVS/ \
+    --exclude=\*.data --exclude=\*.eps --exclude=\*.fig --exclude=data1 --exclude=data2 \
+    $where/ .

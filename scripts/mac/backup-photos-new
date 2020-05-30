@@ -1,0 +1,83 @@
+#!/bin/csh -f
+#
+# archives photos from my collection to this disk, without
+# ever deleting or overwriting files on this disk.
+#
+# ASSUMPTION: every photo filename is unique across the collection.
+#
+# David Kotz 2018
+
+# extensions used for photos
+set exts='(jpg|jpeg|tif|tiff|dng|png|psd|mov|m4v|mp4)'
+
+set self=`which backup-photos-new`
+set bin="$self:h"
+set awk="$bin/backup-photos-comm.awk"
+set exitStatus=0
+set tmp=/tmp/backup-photos-new
+onintr cleanup
+
+### SOURCE directory
+if ($#argv != 1) then
+    echo usage: $0 sourcePhotoFolder
+    exit 99
+endif
+
+set photos="$1"
+
+if (! -d $photos:q) then
+    echo "MISSING photos directory $photos"
+    set exitStatus=1
+    goto cleanup
+endif
+
+### DESTINATION directory
+set destDir='/Volumes/kotz-photos-backup/photos-as-added'
+
+# Check the destination directory
+if (! -d $destDir:q) then
+    echo "MISSING photo archive directory $destDir"
+    set exitStatus=2
+    goto cleanup
+endif
+
+echo Build a list of the photos existing on the backup...
+find $destDir -type f | egrep -i $exts\$ > $tmp.destpaths
+echo done.
+
+### PREPARE TO COPY
+
+echo ""; echo "------------------------------------------------"
+echo Backup new photos from \"$photos:q\"
+echo build a list of the photos existing there...
+(cd $photos:q && find . -type f | egrep -i $exts\$ | grep -v lrdata/ > $tmp.srcpaths)
+echo done.
+
+echo Make a list of newly appearing photos...
+gawk -f $awk:q -v DEST=$tmp.destpaths $tmp.srcpaths > $tmp.newpaths
+echo done.
+
+if (-z $tmp.newpaths) then
+    echo Found no new photos.
+else
+    echo Found new photo files:
+    more $tmp.newpaths
+
+    # create a new directory to hold copies of new files
+    set newDir=$destDir:q/`date +%Y-%m-%d-%H-%M`
+    mkdir -p $newDir:q
+    if (! -d $newDir:q) then
+	echo FAILED to create new directory $newDir:q
+	set exitStatus=3
+    else
+	echo Copy the new photo files into $newDir:q
+	(cd $photos:q \
+	     && rsync -aHv --files-from=$tmp.newpaths . $newDir/)
+	cp $tmp.newpaths $newDir/manifest.txt
+    endif
+endif
+
+cleanup:
+set nonomatch
+rm -f $tmp.*
+exit $exitStatus

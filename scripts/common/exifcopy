@@ -1,0 +1,30 @@
+#!/bin/csh -f
+# exifcopy - copy photo info I care about, from one photo to another
+#  david kotz, 2013
+
+if ($#argv != 2) then
+    echo usage: $0 fromfile tofile
+    exit 1
+endif
+
+exiftool -tagsFromFile 	$argv[1]:q \
+	-DateTimeOriginal \
+	-Title \
+	-IPTC:ObjectName \
+	-Description \
+	-IPTC:Caption-abstract \
+	-Subject \
+	-IPTC:Keywords \
+	-GPSLatitudeRef \
+	-GPSLongitudeRef \
+	-GPSAltitudeRef \
+	-GPSTimeStamp \
+	-GPSImgDirectionRef \
+	-GPSImgDirection \
+	-GPSDateStamp \
+	-GPSAltitude \
+	-GPSDateTime \
+	-GPSLatitude \
+	-GPSLongitude \
+	-GPSPosition \
+	$argv[2]:q

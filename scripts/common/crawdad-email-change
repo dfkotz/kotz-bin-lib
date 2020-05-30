@@ -1,0 +1,8 @@
+#!/bin/csh -f
+
+if ($#argv != 2) then
+  echo $0 user_name new_email
+  exit 1
+endif
+
+exec ssh crawdad@lobster.cs.dartmouth.edu /Library/WebServer/crawdad/templates/emailchange $1 $2

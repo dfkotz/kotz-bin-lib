@@ -1,0 +1,60 @@
+#!/usr/local/bin/perl
+use strict;
+use Getopt::Long;
+
+sub main {
+	# options
+	my $destdir = ".";
+	my $scale = 1;
+	
+	# locals
+	my $file;
+	my $cmd;
+	my $rc;
+	my @files;
+	my ($w,$h) = (612,792);	# ghostscript's ppm defaults, apparently
+	my $res = 72;
+	
+	$rc=GetOptions('destdir=s'=>\$destdir,
+			'scale=f'=>\$scale,
+			'resolution=i'=>\$res);
+	print STDERR "# getoptions=$rc\n";
+	
+	$w = int($w*$scale);
+	$h = int($h*$scale);
+	$res = int($res*$scale);
+
+	@files = @ARGV;
+	@files = ('-') if (@files==0);
+	
+	foreach $file (@files) {
+		print STDERR "# processing $file\n";
+		my $basefile = ($file =~ m/^(.*)\.e?ps/)[0];
+		if ($basefile eq '') {
+			print STDERR "# filename doesn't contain '.ps' -- skipping.\n";
+			next;
+		}
+		if ($file =~ m/\.gz$/) {
+			$cmd = "gunzip < $file > /usr/tmp/$$.ps";
+		} else {
+			$cmd = "cat $file > /usr/tmp/$$.ps";
+		}
+		doit($cmd);
+		print STDERR "# ($file) ($basefile)\n";
+		doit("gs -g$w"."x$h -r$res -sDEVICE=ppmraw -sOutputFile=/usr/tmp/$$.ppm -dNOPAUSE -dBATCH /usr/tmp/$$.ps");
+		doit("cat /usr/tmp/$$.ppm | pnmcrop -white | ppmquant 256 | ppmtogif -interlace -sort -transparent white > $destdir/$basefile.gif");
+		doit("rm /usr/tmp/$$.*");
+	}
+}
+
+sub doit {
+	my $cmd = shift;
+	my $rc;
+
+	print STDERR "# $cmd\n";
+	if ($rc=system($cmd)) {
+		print STDERR "# error (rc=$rc)\n";
+	}
+}
+
+main();

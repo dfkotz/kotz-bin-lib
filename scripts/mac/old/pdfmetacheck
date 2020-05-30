@@ -1,0 +1,24 @@
+#!/bin/csh -f
+#
+# check to see which pdf files have metadata, and alert me if some
+# need it
+# 
+
+set fail=0
+
+if ( { which pdftk } ) then
+    foreach pdf (*.pdf)
+	if (-r $pdf.meta) continue
+	pdftk $pdf dump_data output $pdf.meta
+	# if the string "bibtex" is not in the metadata, then
+	if ( ! { grep -q bibtex $pdf.meta } ) then
+	    echo Need to run bibpdfmeta on  $pdf:t 
+	    rm -f $pdf.meta
+	    @ fail = $fail + 1
+	endif
+    end
+    exit $fail
+else
+    echo this script requires "pdftk" to be installed
+    exit 99
+endif

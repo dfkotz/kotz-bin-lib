@@ -1,0 +1,21 @@
+#!/bin/csh -f
+
+if ($#argv != 2) then
+  echo usage: $0 imagefile volumedir
+  exit 1
+endif
+
+set imagefile="$argv[1]:q"
+set imagename="$imagefile:t"
+set imagename="$imagename:r"
+
+if (! -d $argv[2]:q) then
+    echo mounting "$imagename..."
+    open "$imagefile"
+endif
+
+while (! -d $argv[2]:q)
+    sleep 5
+    echo mounting...
+    open "$imagefile"
+end

@@ -1,0 +1,148 @@
+#!/bin/csh -f
+#
+# gallery-movies - create html for movie index in a picture gallery.
+#  Makes a subdirectory "movies" for the top-level directory of the gallery.
+# Creates movies/{index.html, navigation.html, header.html, empty.html}.
+# It looks for movies to be found in */movies/*.mov, and links in */movies/*.url,
+# and expects that all the other gallery infrastructure is already complete.
+#
+# usage:
+#  gallery-movies
+#
+
+
+# first, make a list of movies.
+set movies=(*/movies/*.{mov,m4v,url})
+
+if ($#movies == 0) then
+    echo no movies, not building movies/*.html
+    exit 1
+endif
+
+#######################################################
+# work in subdirectory 'movies'
+
+if (! -d movies) then
+    mkdir movies || exit 1
+endif
+
+cd movies
+
+# Widths of the 'small' pictures (should be same as in gallery-picframe)
+set smallwidth=200
+
+# height to reserve for header.html (top frame)
+# can override with environment variable
+if ($?PICFRAME_HEADER_ROWS) then
+    set headerRows=$PICFRAME_HEADER_ROWS
+else
+    set headerRows=60
+endif
+
+# <body> options: color, etc
+set bodyopts="bgcolor=#FFFFFF"
+set title=`cathtml -nbsp ../title`
+
+set tmpCommentFile=tmp$$
+onintr cleanup
+
+#######################################################
+# Create navigation.html
+
+cat > navigation.html <<EOF
+<html>
+<body $bodyopts>
+<table cellspacing=10 cellpadding=2 border=0>
+<tr> <td> <h3>Index</h3></td> </tr>
+EOF
+
+foreach movie ($movies)
+    set dir=$movie:h
+    set dir=$dir:h
+    set file=$movie:t
+    set name=$file:r
+
+    # file paths must be from perspective of subdirectory 'movies'
+    set smallimg=../$dir/small/$name.jpg
+    set bigimg=../$dir/big/$name.jpg
+    set bightml=../$dir/big/$name.html
+    set hugeimg=../$dir/huge/$name.jpg
+
+    # skip the .mov file if a .m4v exists
+    if ($file:e == "mov" && -r $file:r.m4v) continue
+
+    # build a link from the filename, or file contents
+    if ($file:e == "mov") set link=../$dir/movies/$file
+    if ($file:e == "m4v") set link=../$dir/movies/$file
+    if ($file:e == "url") set link=`cat ../$movie`
+
+    cat >> navigation.html <<EOF
+    <tr> <td align=center><a href="$link" target="picture"><img src="$smallimg" border=0 width=$smallwidth></a></td> </tr>
+EOF
+
+    # extract photo caption
+    set comments=`exiftool -E -b -IPTC:Caption-abstract $hugeimg`
+    # old method for extracting caption from JPEG comment
+    # jpegcomment  $hugeimg > $tmpCommentFile
+    # set comments=`cathtml $tmpCommentFile`
+
+    if ("$comments" != "") then
+    cat >> navigation.html <<EOF
+    <tr> <td align=left>$comments:q</td></tr>
+EOF
+    endif
+
+end
+
+cat >> navigation.html <<EOF
+</table>
+</body>
+</html>
+EOF
+
+#######################################################
+# create header.html
+
+if (-f ../header) then
+    cathtml ../header > header.html
+else
+    echo > header.html
+endif
+
+echo "<p><a href=../index.html>Back to the photos</a></p>" >> header.html
+
+#######################################################
+# create index.html
+
+@ colwidth = $smallwidth + 40
+
+cat > index.html <<EOF
+<html>
+<head><title>$title</title></head>
+ <frameset rows="$headerRows,*" border=1 frameborder=1 framespacing=0>
+  <frame src=header.html name=header scrolling=yes resize=yes marginwidth="0" marginheight="0">
+  <frameset cols="$colwidth,*">
+   <frame src=navigation.html name=navigation marginwidth="0" marginheight="0">
+   <frame src=empty.html name=picture marginwidth="10" marginheight="10">
+  </frameset>
+ </frameset>
+
+ <noframes>
+  Sorry, you need to view this page with a frames-capable browser. 
+  You can see most of this page by clicking <a href="navigation.html">here</a>.
+ </noframes>
+</html>
+EOF
+
+#######################################################
+# create empty.html
+
+cat > empty.html <<EOF
+<html><body $bodyopts>
+<br><br><br>
+Click on a picture to the left to see the movie here.
+</body></html>
+EOF
+
+cleanup:
+rm -f $tmpCommentFile

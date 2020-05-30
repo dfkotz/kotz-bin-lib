@@ -1,0 +1,114 @@
+#!/bin/sh
+#
+# Backup photo collection to a drive/folder specified as the first argument
+#
+# See https://www.lightroomqueen.com/backup-lightroom-files/
+
+function usage() {
+    echo "usage: $0:t destination-directory { older | newer | other }..."
+}
+
+function backupOlder() {
+    echo ""; echo "====================================-"
+    echo Clone the older photos, for recovery purposes
+    clone="$dest/photos-older-clone"
+    if "$bin/backup-photos-clone" "$olderPhotos" "$clone" ; then
+        echo >>"$clone/BACKUP" "cloned from $olderPhotos on" `date`
+    else
+        echo >>$errors " backup-photos-clone (older) FAILED"
+    fi
+}
+
+function backupNewer() {
+    echo ""; echo "====================================-"
+    echo Clone the newer photos, for recovery purposes
+    clone="$dest/photos-newer-clone"
+    if "$bin/backup-photos-clone" "$newerPhotos" "$clone" ; then
+	echo >>"$clone/BACKUP" "cloned from $newerPhotos on" `date`
+    else
+	echo >>$errors " backup-photos-clone (newer) FAILED"
+    fi
+}
+
+function backupOther() {
+    echo ""; echo "====================================-"
+    echo Back up other material
+    for from in "$organizing" "$plugins" "$support1" "$support2"
+    do
+        echo ""; echo backup \""$from"\"
+        to="$dest/$from"
+        mkdir -p "$to" && \
+            (cd && rsync -Hav --exclude .DS_Store "$from/" "$to/")
+    done
+}
+
+function cleanup() {
+    if [ -s $errors ]; then
+        echo ""; echo "=============================="
+        echo SOMETHING FAILED:
+        cat $errors
+        rm -f $errors
+        exit 1
+    else
+        rm -f $errors
+        exit 0
+    fi
+}
+
+###################################################################
+# main program
+
+# handle arguments
+if [ $# -lt 2 ]; then usage; exit 1; fi
+
+# pull off first parameter as the destination 
+dest="$1"
+shift
+if [ ! -d "$dest" ]; then
+    echo "missing destination directory $dest"
+    usage
+    exit 2
+fi
+
+echo "backup $@ to $dest"
+
+# set up
+self=`which backup-photos`
+bin="${self%/*}"
+errors=/tmp/backup-photos
+cat > $errors < /dev/null
+trap cleanup sigint
+trap exit ERR
+
+# photo directories
+newerPhotos=~/Personal/Photos/Lightroom
+olderPhotos=~/Dropbox/Lightroom
+# other things (relative to ~)
+plugins=Personal/Photos/Lightroom/Plug-ins 
+organizing=Personal/Photos/photo-organizing
+support1=Library/Application\ Support/Adobe/Lightroom 
+support2=Library/Application\ Support/Adobe/CameraRaw/Settings/User\ Presets 
+
+# check the source locations
+for source in "$newerPhotos" "$olderPhotos" ~/"$plugins" ~/"$organizing" ~/"$support1" ~/"$support2"
+do
+    if [ ! -d "$source" ]; then
+        echo "missing source directory $source"
+        usage
+        exit 3
+    fi
+done
+
+# loop over arguments to backup the desired pieces
+for piece in "$@"
+do  case "$piece" in
+    "older" ) backupOlder;;
+    "newer" ) backupNewer;;
+    "other" ) backupOther;;
+    "others") backupOther;;
+    *       ) echo ""; echo "unknown option $piece";;
+    esac
+done
+
+cleanup
+

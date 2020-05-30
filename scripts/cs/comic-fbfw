@@ -1,0 +1,73 @@
+#!/bin/csh -f
+# grab the FBFW comic strip and email it to me 
+# (run daily by cron)
+
+set mailfrom=David.F.Kotz@Dartmouth.edu
+
+if ($#argv < 1) then
+    echo usage: $0 email...
+    exit 1
+endif
+
+set tmp=/tmp/stripfix$$
+
+onintr cleanup
+mkdir $tmp && cd $tmp
+if ($status) then
+    echo mkdir or cd failed
+    goto cleanup
+endif
+
+# grab the php page for today's strip
+set page="http://www.fborfw.com/strip_fix/index.php"
+wget -q -k "$page"
+if ($status) then
+    echo wget page failed
+    echo "$page"
+    goto cleanup
+endif
+
+# extract the image URL from the page
+set img=`sed -n 's+.*src="\(https:.*/strip_fix/strips/[^"]*\)".*+\1+p' "$page:t"`
+
+if ("$img" == "") then
+    echo failed to extract img address from "$page:t"
+    grep strip_fix/strips "$page:t"
+    goto cleanup
+endif
+
+# now download the image
+wget -q "$img"
+if ($status) then
+    echo wget img failed
+    echo "$img"
+    goto cleanup
+endif
+
+## show me the image (for debugging)
+#open $img:t
+#sleep 1
+#goto cleanup
+
+## save the image (for debugging)
+#cp $img:t ~/Desktop/
+#if ($status) then
+#    echo cp failed
+#    goto cleanup
+#endif
+
+# mail me the image
+echo " " | mailx -r $mailfrom -s "Comic strip: For Better or For Worse" -a $img:t $argv:q
+if ($status) then
+    echo mailx failed
+    goto cleanup
+endif
+
+# mpack -s "Comic strip: For Better or For Worse" -c image/gif $img:t $argv:q
+# if ($status) then
+#     echo mpack failed
+#     goto cleanup
+# endif
+
+cleanup:
+rm -rf $tmp

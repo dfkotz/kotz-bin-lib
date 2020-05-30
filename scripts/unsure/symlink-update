@@ -1,0 +1,41 @@
+#!/bin/csh -f
+#
+# symlink-update: update all symlinks in a directory tree
+#
+# meant for use when you move a home directory
+#
+# david kotz 1996
+#
+# usage:
+set usage="symlink-update oldprefix newprefix file..."
+# where file... is a list of file or directory names to be recursively
+# updated.  All symlinks found in those subtrees will be examined.  If
+# the symlink has prefix "oldprefix", i.e., it is to oldprefix/foo,
+# it will be removed and relinked to newprefix/foo
+# 
+# output:
+#   a list of all links changed, and their new value
+
+if ($#argv < 3) then
+	echo "$usage"
+	exit 1
+endif
+
+set oldprefix=$1
+set newprefix=$2
+
+# find all the symlinks in those directories, and their current targets
+# select only those that involve the oldprefix
+# map the old prefix into the new prefix
+# save that list of changes in a file
+# convert the list of filename/target pairs into list of shell commands
+# execute the list of commands
+find $argv[3-] -type l -exec ls -ld '{}' \; | colex 9 11 \
+ | tee symlinks-old \
+ | sed -n -e "s|	$oldprefix|	$newprefix|p" \
+ | tee symlinks-new \
+ | awk '{print "rm", $1, "&& ln -s", $2, $1}' \
+ | sh
+
+echo list of ALL  ORIGINAL links can be found in ./symlinks-old
+echo list of ONLY NEW      links can be found in ./symlinks-new

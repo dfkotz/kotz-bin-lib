@@ -1,0 +1,27 @@
+#!/bin/csh -f
+#
+# cdf - convert a points file into a cdf-style file
+#
+# usage:
+#  cdf file...
+# sorts all files together, assigns distribution values, and puts
+# it on the stdout. If no files are given the stdin is used.
+#
+
+onintr cleanup
+set data=/tmp/cdfdata$$
+
+# Sort won't take exponential notation for numbers, so we use awk to 
+# force it into %f format, as well as catting files. 
+awk '{printf "%.10f\n", $1}' $* | sort -n > $data
+
+# count the number of data
+set n=`wc -l < $data`
+
+# print each with the appropriate y-value
+awk -v N=$n '{print $1, NR/N}' < $data
+
+cleanup:
+rm -f $data
+
+

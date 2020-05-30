@@ -1,0 +1,40 @@
+#!/bin/csh -f
+#
+# usage: backup-photos-clone sourceDir destDir
+#
+# creates a 'clone' backup of photos from the source collection to
+# the destination folder.
+#
+# David Kotz 2018
+
+if ($#argv != 2) then
+    echo usage: backup-photos-clone sourceDir destDir
+    exit 1
+endif
+
+set sourceDir="$1"
+set destDir="$2"
+set exitStatus=99
+onintr cleanup
+
+if (! -d $sourceDir:q) then
+    echo "Missing source directory $sourceDir"
+    exit 2
+endif
+if (! -d $destDir:q) then
+    echo "Missing dest directory $destDir"
+    exit 3
+endif
+
+# Use rsync to update the destination to be exactly like the original,
+# excluding certain unnecessary files.
+echo backup \"$sourceDir:q\"
+rsync -Hav --delete --delete-excluded \
+      --exclude .DS_Store --exclude \*Previews.lrdata --exclude Backups \
+      --exclude Plug-ins --exclude 'Lightroom Settings' \
+      $sourceDir:q/ $destDir:q
+set exitStatus=$status
+
+cleanup:
+
+exit $exitStatus

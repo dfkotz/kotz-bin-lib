@@ -1,0 +1,32 @@
+#!/bin/csh -f
+#
+# thinjpeg - shrink jpeg files to a given max width
+#
+# usage:
+#  thinjpeg #pixels infile outfile
+#
+# where #pixels is an integer specifying maximum width
+# and the files are jpeg files.
+# require outfile != infile
+# comments are preserved.
+
+if ($#argv != 3) then
+   echo 'usage: thinjpeg #pixels infile outfile'
+   exit 1
+endif
+
+set width=$1
+set in=$2
+set out=$3
+set tmp=tmp$$.jpg
+
+# echo $in $width $out
+
+onintr cleanup
+
+djpeg $in | pnmscale -xsize $width | cjpeg -progressive > $tmp
+rdjpgcom $in | wrjpgcom $tmp > $out
+
+cleanup:
+rm -f $tmp
+

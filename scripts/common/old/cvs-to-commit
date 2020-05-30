@@ -1,0 +1,24 @@
+#!/bin/csh -f 
+# print a list of files that I've forgotten to commit, or forgotten to add
+# usage: cvs-to-commit [dir]...
+# with no argument, it defaults to .
+
+if ($#argv == 0) then
+    set dirs=.
+else
+    set dirs=($argv:q)
+endif
+
+foreach dir ($dirs:q)
+    # skip any directory that
+    if (! -d $dir:q/CVS) continue
+
+    # keep ?CARM and unadded directories; but delete PU and unfetched directories
+    (cd $dir:q; \
+	cvs -n -q update \
+	|& sed -e '/^[PU] /d' -e '/New directory/d' -e "s=^=$dir:q ="\
+    )
+end
+
+
+

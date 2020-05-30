@@ -1,0 +1,4 @@
+#!/bin/csh -f
+# prepare to edit the given files in cvs
+
+cvs up $* && cvs edit $* && cvs editors $*

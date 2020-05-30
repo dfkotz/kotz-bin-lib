@@ -1,0 +1,27 @@
+#!/bin/csh -f
+#
+# 'ls' on a CVS directory
+#
+
+if (! $?CVSROOT) then
+   echo CVSROOT must be set
+   exit 1
+endif
+
+if ($#argv > 1) then
+    echo 'usage: cvsls [directory]'
+    exit 2
+endif
+
+set repository=`echo "$CVSROOT" | sed -e 's/:pserver://' -e 's/:ext://'`
+set userhost=`echo "$repository" | sed 's/:.*//'`
+set dir=`echo "$repository" | sed 's/.*://'`
+
+if ($#argv == 0) then
+    set subdir=""
+else
+    set subdir=$argv[1]:q
+endif
+
+ssh $userhost ls -CF $dir/$subdir:q
+

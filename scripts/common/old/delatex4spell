@@ -1,0 +1,55 @@
+#!/bin/csh -f
+# 
+# Delete all \keywords...
+# and equations (you know what you are doing);
+# \cite, \ref, \label commands;
+# \begin {environment} and \end {environment};
+# and comments.
+#
+# DFK 1999 created delatex from spelltex, which was taken 7/88 from LSN 5/87
+
+# Expand filenames to include ".tex" extension
+set files
+foreach i ($*)
+	   if ($i:e == tex) then
+	   	   set files=($files $i)
+	   else
+	   	   set files=($files $i.tex)
+	   endif
+end
+
+# If there is a .spelltex file, read additional sed commands from there
+if (-r .spelltex) then
+	   set script="-f .spelltex"
+else
+	   set script=""
+endif
+
+sed \
+	-e 's/\\%//g' \
+	-e 's/%.*//' \
+	-e 's/\\ie/ie/g' \
+	-e 's/\\eg/eg/g' \
+	-e 's/\\etc/etc/g' \
+	-e 's/\\vs/vs/g' \
+	-e 's/\\usec/usec/g' \
+	-e 's/\\_//g' \
+	-e 's/\\cite[ ]*{[^}]*}//g' \
+	-e 's/\\ref[ ]*{[^}]*}//g' \
+	-e 's/\\label[ ]*{[^}]*}//g' \
+	-e 's/\\begin[ ]*{[^}]*}//g' \
+	-e 's/\\end[ ]*{[^}]*}//g' \
+	-e 's/\\pagestyle[ ]*{[^}]*}//g' \
+	-e 's/\\setlength[ ]*{[^}]*}{[^}]*}//g' \
+	-e 's/\\documentstyle[ ]*{[^}]*}//g' \
+	-e 's/\\documentstyle[ ]*\[[^\]]*\]{[^}]*}//g' \
+	-e 's/\\documentclass[ ]*{[^}]*}//g' \
+	-e 's/\\documentclass[ ]*\[[^\]]*\]{[^}]*}//g' \
+	-e 's/\\input[ ]*{[^}]*}//g' \
+	-e 's/\\bibliography[ ]*{[^}]*}//g' \
+	$script \
+	-e 's/\\[a-zA-Z]*/ /g' \
+	-e 's/\$[^$]*\$/ /g' \
+	-e "s/[A-Za-z]'[st] /x /g" \
+	-e 's/[{}~,.;:`"$()=+*<>'\'\!'-]/ /g' \
+	 $files

@@ -1,0 +1,36 @@
+#!/bin/csh -f
+# assumes the DVD is named "Kids..." 
+
+set disk=(/Users/dfk/Desktop/Kids*)
+if (! -d $disk:q) then
+    echo 'disk name must be "Kids..." and contain no spaces'
+    exit 1
+endif
+
+echo WARNING: only backing up 2008-09 because of space limit.
+# it used to be ls kids/[12]*/...
+# but that is now too big, so I do subset...
+
+cd ~/public_html
+set manifest=kids-backup-list
+echo -n > $manifest
+ls -d kids/[a-zA-Z]* >> $manifest
+ls kids/200[89]*/header >> $manifest
+ls kids/200[89]*/title >> $manifest
+ls kids/200[89]*/page.html | sed s/.page.html// >> $manifest
+ls kids/200[89]*/huge/*.jpg >> $manifest
+ls kids/200[89]*/movies/*.mov >> $manifest
+
+set echo
+rsync -rlptvE --relative --files-from=$manifest . $disk
+
+cd
+rsync -rlptvE --relative \
+		bin/scripts/common/gallery-* \
+		bin/scripts/common/jpegcomment \
+		bin/scripts/common/cathtml \
+		bin/scripts/mac/backup-kids \
+		$disk
+
+# old approach: make a tar file (doesn't preserve MacOS metadata)
+# tar cvfz $disk/kids.tgz --files-from $manifest

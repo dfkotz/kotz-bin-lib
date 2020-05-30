@@ -1,0 +1,4 @@
+#!/bin/csh -f
+# a shell-script wrapper to run the applescript by the same name
+
+osascript $0.scpt $argv:q

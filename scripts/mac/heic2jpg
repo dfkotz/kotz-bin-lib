@@ -1,0 +1,9 @@
+#!/bin/sh
+# 
+# convert to jpg all photos listed as arguments 
+#
+
+for i in "$@"
+do
+  convert "$i" "${i%HEIC}jpg"
+done

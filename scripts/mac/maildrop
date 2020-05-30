@@ -1,0 +1,7 @@
+#!/bin/csh -f
+
+cd ~/Desktop
+if (! -d Scans) mkdir Scans
+cd Scans
+
+munpack && open *.pdf

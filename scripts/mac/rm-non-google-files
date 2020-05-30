@@ -1,0 +1,14 @@
+#!/bin/bash
+# remove all the files that are NOT Google cloud-type files,
+# within any of the directories provided on the commandline. 
+if [ $# -gt 0 ]; then
+    find "$@" \( \
+	-type f               -and \
+	-not -name \*.gdoc    -and \
+	-not -name \*.gdraw   -and \
+	-not -name \*.gform   -and \
+	-not -name \*.gmap    -and \
+	-not -name \*.gsheet  -and \
+	-not -name \*.gslides -and \
+	-not -name \*.gtable \) -print -delete
+fi

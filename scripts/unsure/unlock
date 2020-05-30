@@ -1,0 +1,5 @@
+#!/bin/csh -f
+# unlock - remove a filesystem lock 
+# first argument is the file to be locked
+
+/bin/rm -f $1

@@ -1,0 +1,33 @@
+#!/bin/csh -f
+# pick - pick out lines of some files
+#
+# usage:
+#   pick [-] n [file]...
+# to get the nth line of the files, or
+#   pick [-] a,b [file]...
+# to get lines a-b, inclusive, of the files.
+# If file is not given the standard input is used.
+# If - is first argument, then all lines EXCEPT those in range are printed.
+# The lines are numbered consecutively from the beginning of the first
+# file through the end of the last.
+#
+# Note that since sed is used, any valid sed range is allowable, 
+# providing you can escape it from the shell.
+
+if ($1 == -) then
+	   set invert
+	   shift
+else
+	   unset invert
+endif
+
+if ($#argv < 1) then
+	   echo usage: 'pick [-] <range> [file]...'
+	   exit 1
+endif
+
+if ($?invert) then
+	   sed "$1:q d" $argv[2-]
+else
+	   sed -n "$1:q p" $argv[2-]
+endif

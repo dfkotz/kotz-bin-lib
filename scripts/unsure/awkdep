@@ -1,0 +1,25 @@
+#!/bin/csh -f
+#
+# awkdep: print make-like dependency rules for
+#         awk scripts used by a shell script
+#
+# usage: awkdep scriptFileName...
+
+set awkpath=(`echo $AWKPATH | sed 's/:/ /g'`)
+
+# we look through each input script file
+foreach script ($*)
+
+  # we get a list of all awk files used by that script
+  set awkfiles=`tr -c '[-_/0-9a-zA-Z.]' \\n < $script | grep \\.awk$ | sort -u`
+
+    # then we scan the AWKPATH to find those awk files.
+    foreach awk ($awkfiles) 
+	foreach dir ($awkpath) 
+	    if (-r $dir/$awk) then
+		echo $script : $dir/$awk
+		break
+	    endif
+	end
+    end
+end

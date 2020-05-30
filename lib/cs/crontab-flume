@@ -1,0 +1,119 @@
+# DFK crontab
+SHELL=/bin/bash
+PATH=/usr/bin:/bin:/usr/sbin:/usr/local/bin:/u/dfk/bin/scripts/common:/u/dfk/bin/scripts/cs
+MAILTO=David.F.Kotz@Dartmouth.edu
+MAILFROM=David.F.Kotz@dartmouth.edu
+DAVE=dfkotz@mac.com
+PAM=pcjenkins@mac.com
+JOHN=john.lyme@mac.com
+MARA=mara.lyme@mac.com
+ANDY=andy.lyme@mac.com
+ISABEL=isabel_eich@hotmail.com
+DAD=johnkotz@mac.com
+MOM=katiekotz@icloud.com
+AMY=aejenkins1263@gmail.com
+KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com 
+
+TERM=VT100
+
+# SCRIPTS, LIB, CONTRABS
+# mm hh day month weekday command
+# pull updates into lib and scripts once a day
+00 09 * * * svn --quiet --non-interactive update lib bin/scripts
+# and let me know if there are any uncommitted files there
+10 09 * * * /u/dfk/bin/scripts/common/svn-to-commit lib bin/scripts
+# don't forget my crontab
+20 05 * * * crontab -l | update-if-changed /u/dfk/lib/cs/crontab-flume
+25 05 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/cs/crontab-flume
+
+# CHUBBERS
+# mm hh day month weekday command
+# monthly mailing to ChubberNet
+01 00 1 * * monthly-chubbers
+# back up the Woodsmens' Weekend Wiki
+33 3 * * * cd /u/dfk/woodsmens-weekend && ./wget-wiki
+
+# WEBSITE
+# mm hh day month weekday command
+# Update my website, hourly
+55 * * * * update-web -q
+
+# COMICS
+# send me the daily comic strips (timed for morning delivery)
+0 6 * * * comic-fbfw               $DAVE  
+0 6 * * * comic-arcamax babyblues  $DAVE
+0 6 * * * comic-arcamax doonesbury $DAVE  $DAD $MOM
+
+# CALENDAR
+# send the Kotz daily calendar
+# mm hh day month weekday command
+  01  1 * * * daily-calendar $DAVE
+  02  1 * * * daily-calendar $ANDY
+  03  3 * * * daily-calendar $PAM
+  04  7 * * * daily-calendar $DAD $MOM
+  05  7 * * * daily-calendar $AMY
+  06  8 * * * daily-calendar $MARA
+  07  8 * * * daily-calendar $ISABEL
+  08 11 * * * daily-calendar $JOHN
+
+# MAIL
+# mm hh day month weekday command
+# save a copy of my mailing lists, every night.
+00 1 * * * find /net/quimby/other-lists -user dfk -exec rsync -a '{}' /u/dfk/lib/cs/maillist/ \;
+05 1 * * * svn --quiet --non-interactive --message "crontab maillist" commit /u/dfk/lib/cs/maillist
+# rotate my procmail logs
+10 00 * * * logrotate -s /u/dfk/.procmail/logrotate.status /u/dfk/.procmail/logrotate
+
+# CLEAN UP HOME DIR
+# mm hh day month weekday command
+# Cleanup older files (daily)
+# 05 4 * * * cleanold
+# bi-monthly search for huge files
+10 04 3,17 * * lookhuge
+
+# TECH REPORTS
+# mm hh day month weekday command
+# bi-monthly mailing of TR digest
+00 06 1 2,4,6,8,10,12 *  /u/trdata/TRdata/send-digest
+# backup any changes to the TR database
+01 04 * * * tr-backup
+# Check weekly for old, pending TR assignments 
+02 06 * * 1 find /u/trdata/TRdata/pending -mtime +7 -name \*.xbib -print | xargs grep -H REQUESTED-
+
+# BIBLIO
+# Kotzgroup, THaW, Amulet, Auracle
+# update bibliographies, every day
+# mm hh day month weekday command
+02 12 * * * cd /u/dfk/projects/bib-kotzgroup    &&    bib-mendeley/bin/cron.sh bib-mendeley/group/kotzgroup kotzgroup.bib
+04 12 * * * cd /u/dfk/projects/thaw-papers      &&    bib-mendeley/bin/cron.sh user-thaw.json thaw.bib
+06 12 * * * cd /u/dfk/projects/amulet-docs/web  && ../bib-mendeley/bin/cron.sh user-amulet.json amulet.bib
+08 12 * * * cd /u/dfk/projects/auracle-docs/web && ../bib-mendeley/bin/cron.sh user-auracle.json auracle.bib
+
+# CNS proposal
+# update bibliography repo, every hour
+# mm hh day month weekday command
+# 00 * * * * cd /u/dfk/projects/cns2019/bibliography && bin/cron.sh user-thaw.json thaw.bib
+# 05 * * * * cd /u/dfk/projects/cns2019/bibliography && bin/cron.sh user-splice.json splice.bib
+
+###################################################
+# GIT and SVN REPOs
+# mm hh day month weekday command
+
+# track what repos exist in kotzgroup on GitHub
+00 3 * * * /u/dfk/bin/scripts/common/repolist.py | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/cs/repolist
+
+# pull a copy of our bitbucket repos, every night
+# 00 4 * * * sh /net/kotz/projects-no-backup/clone-repos-bitbucket/gitpull-cron.sh
+
+# pull a copy of our svn repos, every night
+00 4 * * * sh /net/kotz/projects-no-backup/clone-repos-svn/svnupdate-cron.sh
+
+# pull a copy of our gitlab repos, every night
+# 14 4 * * * sh /net/kotz/projects-no-backup/clone-repos-gitlab/gitpull-cron.sh
+
+# track new branches on our github repos, every night
+24 4 * * * sh /net/kotz/projects-no-backup/clone-repos-github/gitpull-track.sh
+
+# pull a copy of our github repos, every night
+34 4 * * * sh /net/kotz/projects-no-backup/clone-repos-github/gitpull-cron.sh
+

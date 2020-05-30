@@ -1,0 +1,6 @@
+#!/bin/csh -f
+# print a list of files I've forgotten to add
+
+cvs -n -q update |& sed -n -e 's/^? //p'
+
+

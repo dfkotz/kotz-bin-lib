@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# checkfiles-google - scan a directory tree and report on files that may cause
+# trouble if the tree is moved to a Google Drive service, or used on MacOS.
+# Looks at filenames, hard links, symbolic links, and unusual permission bits.
+# Google Drive can’t support hard links or symlinks, and permissions &= 0700.
+#
+# usage:  checkfiles-google dir...
+#
+# David Kotz, 2019
+#
+
+# how many directories will we scan?
+if [[ $# -lt 1 ]]; then 
+    echo "usage: checkfiles-google dir..."
+    exit 1;
+fi
+
+# what platform are we on? 'find' differs on MacOS vs Linux
+if [ `uname` == "Darwin" ]; then
+    perm=+07000  # MacOS
+else
+    perm=/07000  # Linux
+fi
+
+echo checking "$@"
+tmp=/tmp/checkfiles$$
+
+echo ""; echo look for filenames that may not work well on Google or MacOS
+find "$@" -print | gawk -f $0.awk macos=1 google=1 | tee -a $tmp
+
+echo ""; echo looking for files and folders you do not own
+find "$@" -not -user `whoami` -print | tee -a $tmp
+
+echo ""; echo looking for files and folders with unusual permission bits
+find "$@" -perm $perm -print | tee -a $tmp
+
+echo ""; echo looking for files with more than one hardlink
+find "$@" -type f -links +1 -print | tee -a $tmp
+
+echo ""; echo looking for symbolic links
+find "$@" -type l -print | tee -a $tmp
+
+# was there any output?
+test -s $tmp; errors=$?
+rm -f $tmp
+
+echo ""
+if [[ $errors != 1 ]]; then
+    echo "TROUBLE FOUND"
+    exit 1
+else
+    echo "all is well"
+    exit 0
+fi

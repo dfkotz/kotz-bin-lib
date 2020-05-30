@@ -1,0 +1,41 @@
+#!/bin/csh -f
+# (Re)build a picture gallery
+#
+# David Kotz, 2000-05
+#
+# Rebuilds all the html files for the picture gallery, for all subdirs.
+# To rebuild a single subdir, use "gallery-rebuild".
+#
+# $Id: gallery-build,v 1.4 2006/02/13 11:42:58 dfk Exp $
+
+# Form a list of directories to use.
+# if ./index exists, use it.  Else make a list from */title.
+if (-r index) then
+    set dirs=`cat index`
+else
+    # build a list of directories
+    set dirs=()
+    foreach i (*/title)
+	set dirs=($dirs $i:h)
+    end
+endif
+
+# create the HTML for each directory
+foreach dir ($dirs)
+    echo $dir
+    gallery-rebuild $dir
+
+    # create $dir/header.html
+    gallery-makeheader $dir $dirs
+end
+
+movies:
+# try to build an index of all movies
+# creates movies.*
+# uses ./title and ./header.
+gallery-movies
+
+index:
+# creates ./index.html
+# uses ./title and ./header.
+gallery-makeindex $dirs

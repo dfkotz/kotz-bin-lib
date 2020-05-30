@@ -1,0 +1,69 @@
+#!/bin/csh -f
+#
+# printman - troff a man page to the printer
+#
+# usage:
+#  printman [section] name
+# if the section is not given, it is looked up, and the first one
+# found is used. If name is a filename, it is printed directly.
+
+if ($#argv == 0) then
+	echo usage: printman '[section]' name
+	exit 1
+endif
+
+if ($?MANPATH) then
+	   set manpath=`echo $MANPATH | sed 's/:/ /g'`
+else
+	   set manpath=/usr/man
+endif
+
+if ($#argv == 2) then
+	set section=$1
+	set sectionnum=`echo $1 | sed 's/[^0-9].*//'`
+	set name=$2
+else
+     unset section
+     set name=$1
+endif
+
+set troff=`which groff`
+if ($#troff == 0) then
+	set troff=no
+endif
+if ($troff[1] == no) then
+    set troff=(rsh zealand.cs.dartmouth.edu -l dfk groff -man)
+else
+    set troff=(groff -man -Tps)
+endif
+
+if (-r $name) then
+	   echo printing $name
+
+	   set cat=cat
+	   if ($name =~ *.gz) set cat=zcat
+	   $cat $name | tbl | neqn -Tps | $troff | lpr -P$PRINTER
+	   exit $status
+endif
+
+foreach dir ($manpath)
+	   if ($?section) then
+	   		 set list=`ls $dir/man$sectionnum/$name.$section*`
+	   else
+	   		 set list=`ls $dir/$name.* $dir/man?/$name.*`
+	   endif
+	   if ($#list > 0) then
+	   		 set file=$list[1]
+	   		 break
+	   endif
+end
+
+if ($?file) then
+	   echo printing $file
+	   set cat=cat
+	   if ($file =~ *.gz) set cat=zcat
+	   $cat $file | tbl | $troff | lpr -P$PRINTER
+	   exit $status
+else
+	   echo Manual page for $name not found
+endif

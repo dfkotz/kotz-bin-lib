@@ -1,0 +1,42 @@
+#!/bin/csh -f
+# Rebuild one directory
+#
+# David Kotz, 2001
+#
+# used by build
+# can be used alone, but note it does not rebuild dir/header.html
+# usage: 
+#   rebuild directoryName
+# $Id: gallery-rebuild,v 1.5 2006/12/31 21:04:25 dfk Exp $
+
+if ($#argv != 1) then
+   echo usage: rebuild directoryName
+   exit 1
+endif
+
+set dir=$1
+
+set title=(`cathtml -nonl $dir/title`)
+
+if (-r ./headerRows) then
+  setenv PICFRAME_HEADER_ROWS `cat ./headerRows`
+endif
+
+# Look in $dir.  If page.html exists, then I've written a page by hand.
+# else, we need to create a page automatically.
+if (-r $dir/page.html) then
+    (cd $dir; gallery-simpleframe "$title" page.html)
+else
+    # in $dir, create index.html, navigation.html, and empty.html
+    # use index if it exists, otherwise create a simple list
+    if (-r $dir/index) then
+	(cd $dir; gallery-picframe "$title" `cat index`)
+    else
+	(cd $dir; gallery-picframe "$title" `(cd huge && ls *.{jpg,jpeg})`)
+    endif
+endif
+
+# Make sure the Spotlight comments are all up to date
+set-finder-comments-jpeg $dir/huge/*.{jpg,jpeg}
+add-finder-tag KotzKids $dir/huge/*.{jpg,jpeg}
+

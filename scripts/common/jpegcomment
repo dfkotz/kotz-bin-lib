@@ -1,0 +1,14 @@
+#!/bin/csh -f
+# extract jpeg comments from the file named in the argument
+
+if ($#argv != 1) then
+  echo usage: jpegcomment filename.jpg
+  exit 1
+endif
+
+#/usr/local/bin/identify -format %c $1 \
+rdjpgcom $1 \
+ | tr \\r \\n \
+ | sed -e 's/HOST: Mac OS X 10\.[0-9]*\.[0-9]*//' -e 's/AppleMark//' -e 's/^DESCRIPTION: *//'
+
+# the sed line strips out things that cameras and GraphicConverter added to my comments.

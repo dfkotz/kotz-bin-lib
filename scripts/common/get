@@ -1,0 +1,22 @@
+#!/bin/bash
+# 
+# get updates to any of the directories listed in arguments
+# supports git, svn, cvs
+#
+
+for dir in "$@"
+do
+    if [ ! -d "$dir" ]; then
+       echo "$dir" skipped - not a directory
+       continue
+    fi
+
+    (cd "$dir"; 
+        if [ -d .git ]; then git pull -q --rebase || echo "$dir": failed; fi
+        if [ -f .gitmodules ]; then git submodule update --init --recursive; fi
+        if [ -f .gitmodules ]; then git submodule foreach --recursive 'git checkout master'; fi
+        if [ -d .svn ]; then svn update; fi
+        if [ -d CVS ]; then cvs update; fi
+    )
+    sleep 1  # for some reason, things lock up if I move too fast
+done

@@ -1,0 +1,5 @@
+#!/bin/sh
+# force an immediate update of my CS web page
+# (see ../cs/update-web)
+ssh flume.cs.dartmouth.edu update-web "$@"
+

@@ -1,0 +1,22 @@
+#!/bin/csh -f
+# make an aliases file from .mailrc file
+
+# we're called from cron sometimes, so be careful...
+if (! $?environset) source ~/.environset
+
+# join the continued lines into single lines
+# pull out the alias definitions
+# compact space series into commas
+# change first two commas back into spaces 
+#    (from alias,foo,name,... to alias foo name,...)
+# strip a final comma if present
+cd
+joinlines < .mailrc \
+   | grep ^alias \
+   | sed 's/[ 	][ 	]*/,/g' \
+   | sed 's/,/ /' \
+   | sed 's/,/ /' \
+   | sed 's/,$//' \
+   | sort -f > aliases 
+
+Mail -s "Eudora Nicknames" dfk < aliases

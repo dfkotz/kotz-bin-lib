@@ -1,0 +1,9 @@
+;
+; .emacs file. the work is done in my-init.el and other personalization files.
+;
+; David Kotz (Kotz@Dartmouth.edu)
+;
+
+(add-to-list 'load-path "/u/dfk/.emacs.d")
+(add-to-list 'load-path "/u/dfk/lib/emacs")
+(load "my-init")

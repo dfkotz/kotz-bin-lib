@@ -1,0 +1,4 @@
+#!/bin/csh -f
+
+echo enter one filename or pattern per line
+svn propedit svn:ignore .

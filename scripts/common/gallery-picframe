@@ -1,0 +1,229 @@
+#!/bin/csh -f
+#
+# gallery-picframe - create html for a picture gallery.
+#  Takes a list of file names, that should exist as huge/$name.
+# Assumes existence of header.html, 
+# Creates index.html, navigation.html, empty.html.
+#
+# usage:
+#  gallery-picframe "page title" imagename...
+#
+# the imagenames are filenames that can be found in huge/
+# they should be jpeg files.
+#
+
+# Widths of the scaled-down pictures
+set smallwidth=200
+set bigwidth=500
+
+# can override with environment variable
+if ($?PICFRAME_HEADER_ROWS) then
+    set headerRows=$PICFRAME_HEADER_ROWS
+else
+    set headerRows=230
+endif
+
+# Directories for scaled-down images
+if (! -d big) mkdir big
+if (! -d small) mkdir small
+
+# <body> options: color, etc
+set bodyopts="bgcolor=#FFFFFF"
+
+if ($#argv < 2) then
+    echo 'Usage: gallery-picframe "page title" imagename...'
+    exit 1
+endif
+
+# get title from command line and convert to html format
+set title=`echo $argv[1]:q | cathtml -nonl`
+
+set tmpCommentFile=tmp$$
+onintr cleanup
+
+#######################################################
+# Create navigation.html
+
+cat > navigation.html <<EOF
+<html>
+<body $bodyopts>
+<table cellspacing=10 cellpadding=2 border=0>
+<tr> <td> <h3>Index</h3></td> </tr>
+EOF
+
+set imin=2
+set imax=$#argv
+set i=$imin
+while ($i <= $imax)
+    set imgname=$argv[$i]
+
+    set smallimg=small/$imgname
+    set bigimg=big/$imgname
+    set hugeimg=huge/$imgname
+    set bightml=big/$imgname:r.html
+    set hugehtml=huge/$imgname:r.html
+    set mov=movies/$imgname:r.mov
+    set mpg=movies/$imgname:r.mpg
+    set murl=movies/$imgname:r.url
+
+    # find the previous and next image html files
+    if ($i > $imin) then
+	@ iminusone = $i - 1
+	set previmg=$argv[$iminusone]
+	set prevhtml=$previmg:r.html
+        set prevbutton='<a href="'$prevhtml'"><img src=../../buttons/arrow.marble.left.gif width=30 height=30 border=0 valign=center alt="Prev"></a>'
+    else
+        set prevbutton='<img src=../../buttons/arrow.marble.stop.gif width=30 height=30 border=0 valign=center alt="Prev">'
+    endif
+    if ($i < $imax) then
+	@ iplusone = $i + 1
+	set nextimg=$argv[$iplusone]
+	set nexthtml=$nextimg:r.html
+        set nextbutton='<a href="'$nexthtml'"><img src=../../buttons/arrow.marble.right.gif width=30 height=30 border=0 valign=center alt="Next"></a>'
+    else
+        set nextbutton='<img src=../../buttons/arrow.marble.stop.gif width=30 height=30 border=0 valign=center alt="Next">'
+    endif
+
+    # We expect hugeimg to exist
+    if (! -e $hugeimg) then
+	echo ERROR: missing $hugeimg
+	continue
+    endif
+
+    # ... but create the others if needed
+    if (! -e $bigimg)   convert -resize $bigwidth"x"   -interlace plane  $hugeimg $bigimg
+    if (! -e $smallimg) convert -resize $smallwidth"x" -interlace plane  $hugeimg $smallimg
+
+    # protect the hugeimg from future changes
+    chmod -wx $hugeimg
+
+    cat >> navigation.html <<EOF
+    <tr> <td align=center><a href="$bightml" target="picture"><img src="$smallimg" border=0 width=$smallwidth></a></td> </tr>
+EOF
+
+    # extract photo caption
+    set comments=`exiftool -E -b -IPTC:Caption-abstract $hugeimg`
+    # old method for extracting caption from JPEG comment
+    # jpegcomment  $hugeimg > $tmpCommentFile
+    # set comments=`cathtml $tmpCommentFile`
+
+    if ("$comments" == "") then
+    echo no comments in $hugeimg
+    else
+    cat >> navigation.html <<EOF
+    <tr> <td align=left>$comments:q</td></tr>
+EOF
+    endif
+
+# is there a movie?
+    if (-e $mov) then
+	set movie='<a href="'movies/$mov:t'" target="picture">movie</a>...'
+    else if (-e $mpg) then
+	set movie='<a href="'movies/$mpg:t'" target="picture">movie</a>...'
+    else if (-e $murl) then
+	set movie='<a href="'`cat $murl`'" target="picture">movie</a>...'
+    else
+	set movie=""
+    endif
+
+# create the links in the navigation frame
+    cat >> navigation.html <<EOF
+    <tr><td align=center>
+      (<a href="$bightml" target="picture">big</a>...
+       <a href="$hugehtml" target="picture">huge</a>...
+       $movie
+       <a href="$hugeimg" target="_new">print</a>)
+    </td></tr>
+    <tr> <td>&nbsp;</td></tr>
+EOF
+
+# is there a movie?
+    if (-e $mov) then
+	set du=`du $mov`
+	set movie='<a href="'../movies/$mov:t'">Play movie</a> ('$du[1]'KB).'
+    else if (-e $mpg) then
+	set du=`du $mpg`
+	set movie='<a href="'../movies/$mpg:t'">Play movie</a> ('$du[1]'KB).'
+    else if (-e $murl) then
+	set movie='<a href="'`cat $murl`'">Play movie</a> (url).'
+    else
+	set movie=""
+    endif
+
+    # create the two html files to hold the larger images
+    # in the "big" file, we set a link to the "huge" image, indicating size
+    set du=`du $hugeimg`
+cat > $bightml <<EOF
+<html><body $bodyopts>
+<font size=+2>
+${prevbutton}&nbsp;"big" photos&nbsp;${nextbutton}&nbsp;&nbsp;
+and <a href="../$hugeimg" target="_new">Printable</a>&nbsp;($du[1]KB).&nbsp;
+$movie<p>
+<center><img src=$bigimg:t width=$bigwidth><p>$comments:q</center>
+</font>
+</body></html>
+EOF
+cat > $hugehtml <<EOF
+<html><body $bodyopts>
+<font size=+2>
+${prevbutton}&nbsp;"huge" photos&nbsp;${nextbutton}&nbsp;&nbsp;$movie<p>
+<center><img src=$hugeimg:t><p>$comments:q</center>
+</font>
+</body></html>
+EOF
+
+    @ i = $i + 1
+end
+
+cat >> navigation.html <<EOF
+</table>
+</body>
+</html>
+EOF
+
+
+#######################################################
+# create index.html
+
+@ colwidth = $smallwidth + 40
+
+cat > index.html <<EOF
+<html>
+<head><title>$title</title></head>
+ <frameset rows="$headerRows,*" border=1 frameborder=1 framespacing=0>
+  <frame src=header.html name=header scrolling=yes resize=yes marginwidth="0" marginheight="0">
+  <frameset cols="$colwidth,*">
+   <frame src=navigation.html name=navigation marginwidth="0" marginheight="0">
+   <frame src=empty.html name=picture marginwidth="10" marginheight="10">
+  </frameset>
+ </frameset>
+
+ <noframes>
+  Sorry, you need to view this page with a frames-capable browser. 
+  You can see most of this page by clicking <a href="navigation.html">here</a>.
+ </noframes>
+</html>
+EOF
+
+#######################################################
+# create empty.html
+
+cat > empty.html <<EOF
+<html><body $bodyopts>
+<br><br><br>
+Click on a picture to the left to see a larger version here.
+<p>
+The "big" version is adequate for screen viewing.
+The "huge" version is the biggest available, usually
+but not always larger than "big", and would be the best version for
+printing.
+<p>
+
+To print, click on the "print" link, which will open a new window with
+the "huge" image.
+
+</body></html>
+EOF
+
+cleanup:
+rm -f $tmpCommentFile

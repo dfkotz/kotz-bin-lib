@@ -1,0 +1,6 @@
+#!/bin/sh
+# must run this as root
+# run this on any computer that needs to mount the WD My Book disk drives
+# see http://superuser.com/questions/44318/how-do-i-remove-a-mybooks-wd-smartware-virtual-cd-from-my-desktop
+
+echo UUID=`diskutil info /Volumes/WD\ SmartWare/ | grep 'UUID' | awk '{print $NF}'` none hfs rw,noauto 0 0  >> /etc/fstab

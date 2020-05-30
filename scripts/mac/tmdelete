@@ -1,0 +1,12 @@
+#!/bin/csh
+# delete time-machine backups; run under sudo.
+# for example:
+#   cd /Volumes/KotzPortable2TB/Backups.backupdb/Kotzbook16sep 
+#   sudo tmdelete 2015* 2016-01*
+
+# The idea came from
+# http://thegreyblog.blogspot.com/2014/03/shrink-your-time-machine-backups-and.html
+
+foreach backup ($argv:q)
+  tmutil delete $backup:q
+end

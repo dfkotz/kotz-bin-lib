@@ -1,0 +1,68 @@
+#!/bin/csh -f
+#
+# Make a file index.html for the top level of a gallery
+# The arguments should have the list of subdirectories, each of which 
+# contains a gallery chapter.
+
+set index=index.html
+set title=`cathtml -nbsp ./title`
+set space='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+
+# Start the HTML
+cat > $index <<EOF
+<html><head><title>$title</title></head>
+<body bgcolor=#ffffff>
+EOF
+
+# print the page's title 
+cat >> $index <<EOF
+<font size=+2><b>$title</b></font>
+<p>
+EOF
+
+# print the header commentary if any
+if (-r ./header) then
+    cathtml ./header >> $index
+    echo '<p>' >> $index
+endif
+
+# If there is a movie page, make a link...
+if (-f movies/index.html) then
+    echo 'See also the <a href="movies/index.html">movie</a> index!' >> $index
+    echo '<p>' >> $index
+endif
+
+# Now print a list of links to all chapters.
+cat >> $index <<EOF
+All photo chapters:
+<font size=-1>
+EOF
+
+foreach d ($argv)
+    set t=`cathtml -nbsp $d/title`
+    echo '<a href="'$d/index.html'" target="_top">'$t'</a>'$space >> $index
+end
+
+echo "</font>"  >> $index 
+
+# Now if there is a header picture, include it.
+if (-r ./header.jpg) then
+    echo "<p><center><img src=header.jpg></center>" >> $index 
+
+    # extract photo caption
+    set comments=`exiftool -E -b -IPTC:Caption-abstract ./header.jpg`
+    # old method for extracting caption from JPEG comment
+    # set tmpCommentFile=header.comment
+    # jpegcomment ./header.jpg > $tmpCommentFile
+    # set comments=`cathtml $tmpCommentFile`
+    # rm -f $tmpCommentFile
+
+    if ("$comments" != "") then
+	echo "<center>$comments</center>" >> $index
+    endif
+endif
+
+cat >> $index <<EOF
+</body>
+</html>
+EOF

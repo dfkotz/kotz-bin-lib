@@ -1,0 +1,41 @@
+#!/bin/csh -f
+#
+# makeimgindex - make an index.html file for all images in a directory, 
+# for easier browsing.
+#
+# usage:
+#   makeimgindex [imgfile]...
+# will move any index.html to index-old.html, then create index.html
+# from the list of files (default: *.{gif,GIF,jpg,JPG,jpeg,JPEG})
+#
+# dfk@cs.dartmouth.edu
+# December 1998
+
+if ($#argv == 0) then
+	set files=(*.{gif,GIF,jpg,JPG,jpeg,JPEG})
+else
+	set files=$argv:q
+endif
+		
+if (-e index.html) mv index.html index-old.html
+
+cat > index.html <<EOF
+<!DOCTYPE HTML PUBLIC "-//Netscape Comm. Corp.//DTD HTML//EN">
+<html> <head>
+<title>Images</title>
+</head>
+<body>
+
+<!-- Produced automatically by makeimgindex, by dfk@cs.dartmouth.edu -->
+
+EOF
+
+ls -1 $files:q \
+ | awk '{print "<img src=\"" $0 "\" align=center>&nbsp;" $0 "<p>"}' \
+ >> index.html
+
+cat >> index.html <<EOF
+</body>
+</html>
+EOF
+

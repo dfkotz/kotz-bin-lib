@@ -1,0 +1,36 @@
+#!/bin/csh -f
+# cpdir - copy a directory heirarchy with tar
+# preserves owner, mode, time, links, etc
+#
+# usage: cpdir from to
+# creates to/from/... if to already exists
+#
+
+if ($#argv != 2) then
+	echo usage: cpdir fromdir todir
+	exit 1
+endif
+
+if (-e "$2" && ! -d "$2") then
+	echo "file $2 exists and is not a directory - no copy done"
+	exit 1
+endif
+
+if (-d "$2") then
+	set new="$2/$1:t"
+else
+	set new="$2"
+endif
+echo "copying $1 to $new"
+
+if (! -d "$new") then
+    mkdir -p "$new"
+    if (! -d "$new") then
+    	   echo "cannot make $new"
+    	   exit 1
+    endif
+endif
+
+(cd "$1"; tar cf - .) | ( cd "$new" ; tar xfBp - )
+
+echo copy complete

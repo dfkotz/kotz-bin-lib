@@ -1,0 +1,35 @@
+#!/bin/csh -f
+#
+# checkin - run rcs check-in on all listed files, prompting for
+# message first
+#
+
+if ($1 == -n) then
+    shift
+    echo -n "Name of revision: "
+    set name=$<
+    echo Named revision - all files forced checkin to state $name
+else
+    unset name
+endif
+
+if ($#argv == 0) then
+   echo usage: checkin '[-n] file...'
+   exit 1
+endif
+
+pwd
+echo Enter message for all files:
+set message=$<
+
+#set lock="-u"
+set lock="-l"
+
+if ($?name) then
+    rcs -l $*
+    ci -f $lock -s$name -m"$message:q" $*
+else
+    ci -q $lock -m"$message:q" $*
+endif
+
+exit $status

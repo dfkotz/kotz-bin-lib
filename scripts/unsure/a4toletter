@@ -1,0 +1,11 @@
+#!/bin/csh -f
+# 
+# a4toletter [ infile [outfile] ]
+# 
+# converts Postscript for A4 (or any other) paper into letter-size paper
+#
+# FrameMaker inserts code in the Postscript that prevents it
+# from working even after resize... some editing fixes that.
+
+psresize -pletter $* \
+ | sed 's/\(FMAllowPaperSizeMismatch *\)false/\1 true/'

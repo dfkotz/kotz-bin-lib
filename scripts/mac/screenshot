@@ -1,0 +1,10 @@
+#!/bin/csh -f
+# change the default screenshot format
+
+if ($#argv != 1) then
+   echo usage: $0 'JPEG|TIFF|PNG|PICT'
+   exit 1
+endif
+
+defaults write NSGlobalDomain AppleScreenShotFormat $1
+echo now log out and log back in

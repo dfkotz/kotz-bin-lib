@@ -1,0 +1,13 @@
+#!/bin/csh -f
+#
+# convert a DOS text file to a unix text file by stripping CR
+#
+
+if ($#argv >= 1) then
+    foreach i ($argv:q)
+	sed -i s'/$//' $i:q
+    end
+else
+    echo usage: dos2unix filename...
+    exit 1
+endif

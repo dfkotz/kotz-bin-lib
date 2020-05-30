@@ -1,0 +1,19 @@
+#!/bin/csh -f
+#
+# cdf-reduce - reduce the output of cdf to a smaller size
+#
+# usage:
+#  cdf-reduce <size>
+# takes stdin and writes stdout, using <size>+1 points for the output CDF.
+# (the first and last points are guaranteed to be output)
+#
+# The output is not technically a CDF, but will look like the input CDF
+# when plotted.
+
+
+if ($#argv != 1) then
+    echo usage: cdf-reduce '#points'
+    exit 1
+endif
+
+awk -v N=$1 '$2 >= n || $2==1 { print $1,$2; n += 1.0/N}'

@@ -1,0 +1,51 @@
+#!/bin/csh -f
+
+set dir=.
+
+# climb up, if necessary, to find a synchronization configuration
+while ("$cwd:h" != "" && ! -f .rsync/where)
+    echo .rsync not found in $cwd...
+    set dir="$cwd:t/$dir"
+    cd "$cwd:h"
+end
+
+if (! -f .rsync/where) then
+  echo .rsync not found in $cwd...
+  echo you must put server:dir in file .rsync/where
+  exit 1
+endif
+
+if (! -f .rsync/exclude) then
+  cp ~/lib/rsync-exclude-default .rsync/exclude
+  echo you should update file .rsync/exclude, and optionally .rsync/include
+  exit 1
+endif
+
+if (! -f .rsync/include) then
+    echo > .rsync/include
+endif
+
+set where=`cat .rsync/where`
+if ("$where" =~ */) then
+   echo $where should not end in a slash
+   exit 1
+endif
+
+if ("$where" !~ *:*) then
+   echo $where must include a colon, to be of form server:directory
+   exit 1
+endif
+
+if (! -e .rsync/no-get && x"$1" != x"put") then
+echo get the latest from the server $where/$dir
+rsync -e ssh -rlpt -buz --log-format=%f \
+    --exclude-from .rsync/exclude --include-from .rsync/include \
+    $where/$dir/ $dir
+endif
+
+if (! -e .rsync/no-put && x"$1" != x"get") then
+ echo put the latest to the server $where/$dir
+ rsync -e ssh -rlpt -buz --log-format=%f \
+     --exclude-from .rsync/exclude --include-from .rsync/include \
+    $dir $where/$dir
+endif

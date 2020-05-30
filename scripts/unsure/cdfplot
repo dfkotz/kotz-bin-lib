@@ -1,0 +1,27 @@
+#!/bin/csh -f
+#
+# cdfplot - plot CDF of a points file 
+#
+# usage:
+#  cdfplot file...
+# Finds the cdf curve for each file and plots them all on one plot.
+# If no files given, stdin is used.
+
+set TMP=/tmp/cdfplot$$
+onintr cleanup
+mkdir $TMP
+
+if ($#argv > 0) then
+    foreach i ($*)
+	   set file=$TMP/`echo $i | tr / -`
+	   cdf $i > $file
+    end
+else
+    cdf > $TMP/stdin
+endif
+
+cd $TMP
+plot -linespoints -t cdfplot *
+
+cleanup:
+rm -rf $TMP

@@ -1,0 +1,30 @@
+#!/bin/csh -f
+# extract all email addresses from stdin or text file(s);
+# basically, finds words containing @ separated by non-email characters.
+# Not particularly smart about fancy email address formats;
+#   https://en.wikipedia.org/wiki/Email_address#Validation_and_verification
+# Excludes duplicates and "nobody@" addresses.
+#
+# usage extract-emails [-s|-c] [inputfile]...
+# where
+#   -s adds semicolon to end of each line
+#   -c adds comma to end of each line
+
+set eol=""
+
+if ("$1" == "-s") then
+    set eol=";"
+    shift
+endif
+
+if ("$1" == "-c") then
+    set eol=","
+    shift
+endif
+
+cat $* \
+| tr -c -s 'a-zA-Z0-9@._+-' \\n | grep @ \
+| grep -v -i ^nobody@ \
+| sort -u \
+| sed -e 's/$/'"$eol"/
+

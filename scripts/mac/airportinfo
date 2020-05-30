@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# print some info about local Wi-Fi networks
+#
+
+system_profiler SPAirPortDataType

@@ -1,0 +1,5 @@
+#!/bin/csh
+# this is a wrapper for the csh *alias* called "print"
+# it's a command so that it can be used from emacs
+
+print $argv:q

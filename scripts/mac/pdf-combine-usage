@@ -1,0 +1,3 @@
+#!/bin/sh
+echo pdf-combine -o output.pdf input.pdf...
+

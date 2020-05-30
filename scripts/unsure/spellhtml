@@ -1,0 +1,44 @@
+#!/bin/csh -f
+#
+# Strips out html commands (anything in <..> brackets) and pipes it
+# to the Unix spell program.
+#
+# by Rick LaRowe, based on spelltex by David Kotz
+# 1996
+#
+
+# Expand filenames to include ".html" extension
+set files
+foreach i ($*)
+           if ($i:e == html) then
+                   set files=($files $i)
+           else
+                   set files=($files $i.html)
+           endif
+end
+
+# If there is a .spellhtml file, read additional sed commands from there
+if (-r .spellhtml) then
+           set script="-f .spellhtml"
+else
+           set script=""
+endif
+
+# If there is a .spellwords file, use it as a local spell file
+if (-r .spellwords) then
+           set local="+.spellwords"
+else
+           set local=""
+endif
+
+sed \
+        -e 's/&quot;//g'\
+        -e 's/&amp;//g'\
+        -e 's/&nbsp;//g'\
+        -e 's/&gt;//g'\
+        -e 's/<[^>]*>//g' \
+        $script \
+         $files \
+| spell $local
+
+

@@ -1,0 +1,12 @@
+#!/bin/csh -f
+# prep - break a document into lines, one word per line
+#   Basically, it replaces all white space by newlines, 
+#   then deletes all blank lines.
+# Usage: prep < input > output
+#   or  ... | prep | ...
+#
+# DFK 1999
+
+sed 's/[ 	][ 	]*/\\
+/g' | sed '/^$/d'
+

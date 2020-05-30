@@ -1,0 +1,39 @@
+#!/bin/csh -f
+# Look for huge, old files in my home directory.
+# Huge is defined as > 10MB (> 20000 blocks)
+# Old is defined as > 60 days
+# This should be run once a month or so.
+
+# for some reason, crontab and interactive shells run 
+# under different collation settings, affecting the way sort works.
+# I don't care about the order, but I need consistency.
+setenv LC_COLLATE C
+
+set huge=/tmp/dfkhuge$$
+onintr cleanup
+
+set exclude=$0.exclude
+ 
+cd
+
+# make a list of big files that haven't been accessed in a while
+# and escape any quotation marks in the filename
+# and remove any double-escaping
+find . -atime +60 -size +20000 -print \
+ | sed -e "s/'/\\'/g" -e 's/\\\\/\\/g' \
+ | sort > $huge
+
+# ignore files that I've seen before, and ignore some patterns.
+comm -23 $huge $exclude.ls | sed -f  $exclude.sed > $huge.new
+
+# if there's anything new, print it out
+if (! -z $huge.new) then
+    tr \\n \\000 < $huge.new | xargs -0 ls -ld | cat - $exclude.mail
+endif
+
+# combine the old list and the new one; if I like that list I can 
+# replace the old list (manually)
+sort -u  $huge.new $exclude.ls > ~/$exclude:t.ls
+
+cleanup:
+rm -f $huge $huge.new

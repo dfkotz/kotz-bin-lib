@@ -1,0 +1,6 @@
+#!/bin/csh -f
+
+cat $argv:q \
+ | tr \\r \\n \
+ | sed -n 's/^Attachment converted: DFKG4://p' \
+ | sed -e 's/(.*//' -e 's/<br>//' -e 's+/+:+g'

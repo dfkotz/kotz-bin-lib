@@ -1,0 +1,13 @@
+#!/bin/csh -f
+# Add finder comments to all photos below the current directory
+#
+# David Kotz, 2007
+#
+# $Id: gallery-tag-all,v 1.1 2007/07/21 10:09:06 dfk Exp $
+
+# Make sure the Spotlight comments are all up to date
+foreach dir (*/huge)
+    echo $dir
+    set-finder-comments-jpeg $dir/*.{jpg,jpeg}
+    add-finder-tag KotzKids $dir/*.{jpg,jpeg}
+end

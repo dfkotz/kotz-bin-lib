@@ -1,0 +1,43 @@
+# bash sources this file for (interactive) login shells only.
+# https://medium.com/@kingnand.90/what-is-the-difference-between-bash-profile-and-bashrc-d4c902ac7308
+
+# reasonable terminal settings
+stty sane dec
+
+export LOGIN_SHELL=1
+
+# --------------------------------------------------------------------
+# Set up environment
+source ~/.bash_environset
+
+# --------------------------------------------------------------------
+# set up environment for interactive use
+
+# Set PS1 prompt with \u: userid, \h:hostname, \w: pwd
+# and set path for cd shortcuts.
+if [ $(uname) == "Darwin" ]; then
+   # MacOS
+   PS1='[MacOS:\w]\$ '
+   CDPATH=.:~:~/projects:~/Desktop:~/Documents
+else
+   # Linux
+   PS1='[\u@\h \w]\$ '
+   CDPATH=.:~:~/projects
+fi
+
+# --------------------------------------------------------------------
+# Set ignoreeof if you don't want EOF as the sole input to the
+# shell to immediately signal a quit condition.  This only happens
+# at the start of a line if the line is empty, and you haven't
+# just deleted a character with C-d.  I turn this on in
+# ~/.bash_profile so that only login shells have the right to be
+# obnoxious.
+ignoreeof=3
+
+# --------------------------------------------------------------------
+# Include all the usual shell-specific settings for interactive shells
+if [ -r ~/.bashrc ]; then
+   source ~/.bashrc
+fi
+
+# --------------------------------------------------------------------

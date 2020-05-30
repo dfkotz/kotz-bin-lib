@@ -1,0 +1,11 @@
+#!/bin/csh -f
+# wordfreq - prints the word frequencies in a tex document
+#
+# Delete all latex gunk and then count the number of occurrences of each word.
+# Best usage: wordfreq foo.tex | head
+#
+# DFK 1999 
+
+delatex $* | prep | sort | uniq -c | sort +0nr 
+
+

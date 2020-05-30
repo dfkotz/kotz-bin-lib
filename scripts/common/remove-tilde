@@ -1,0 +1,12 @@
+#!/bin/csh -f
+#
+# remove tilde file left by emacs or by rsync backup
+#
+
+if ($#argv == 0) then
+   set dirs=(.)
+else
+   set dirs=($argv:q)
+endif
+
+find $dirs:q -name \*~ | sed -e s/^/\\\'/ -e s/'$'/\\\'/  | xargs rm -f

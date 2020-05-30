@@ -1,0 +1,49 @@
+#!/bin/csh -f
+#
+# cathtml - cat a file but transform to be html text
+# Usage: cathtml [-nbsp] [-br] [-nonl] [file...]
+#
+# Transformations:
+# & becomes &amp;
+# < becomes &amp;
+# > becomes &amp;
+# if -nbsp is given then 
+#   white space regions becomes single &nbsp;
+# if -br is given then 
+#   newlines are mapped to <br>\n.
+# if -nonl is given then
+#   newlines are mapped to space (before the nbsp or br filter), 
+#   except the final newline.
+#
+# If no files are mentioned, the stdin is processed instead.
+
+set filter1=""
+set filter2=""
+set newline='\n'
+
+set files=()
+
+foreach i ($*)
+    if ("$i" == "-nbsp")  then
+	set filter1="-e s/[ 	][ 	]*/\&nbsp;/g"
+	continue
+    endif
+    if ("$i" == "-br")  then
+	set filter2='-e s/$/<br>/'
+	continue
+    endif
+    if ("$i" == "-nonl")  then
+	set newline=' '
+	continue
+    endif
+
+    set files=($files $i)
+end
+
+cat $files | \
+    tr '\n' $newline:q \
+    | sed \
+    -e 's/&/\&amp;/g' \
+    -e 's/</\&lt;/g' \
+    -e 's/>/\&gt;/g' \
+    $filter1:q  $filter2:q 

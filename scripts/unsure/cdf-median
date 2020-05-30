@@ -1,0 +1,12 @@
+#!/bin/csh -f
+#
+# given a cdf file as an argument or in stdin, print the median value
+#
+
+if ($#argv == 0) then
+	gawk '$2>=0.5 {print $1; exit}'
+else
+	foreach i ($*)
+		gawk '$2>=0.5 {print FILENAME, $1; nextfile}' $i
+	end
+endif

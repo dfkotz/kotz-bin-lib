@@ -1,0 +1,39 @@
+#!/bin/csh -f
+#
+# median - Print the median number in a sorted list of numbers
+#
+# usage:
+#    median [file]...
+# where the sorted list is the concatenation of the set of files, or
+# the standard input if no files are given. 
+#
+# A single value (line) from the set of files is printed on the output.
+# If standard input is used, it is captured in a temp file for a
+# second pass.
+# 
+
+onintr cleanup
+
+if ($#argv == 0) then
+	   set tmp=/tmp/median$$
+	   cat > $tmp
+	   set files=$tmp
+else
+	   set files=($*)
+endif
+
+set n=`cat $files | stats n`
+@ m = $n / 2
+@ r = $n % 2
+
+if ($r) then
+	   @ m1 = $m + 1
+	   pick $m,$m1 $files | transpose | dm '(x1+x2)/2'
+else
+	   pick $m $files
+endif
+
+cleanup:
+if ($?tmp) then
+	   rm -f $tmp
+endif

@@ -1,0 +1,54 @@
+# loaded by tcsh (or csh) only for login shells.
+# this is loaded AFTER cshrc
+
+# reasonable terminal settings
+stty sane dec
+
+# --------------------------------------------------------------------
+# Set environment
+
+setenv LOGIN_SHELL 1
+
+setenv MAILFROM David.F.Kotz@dartmouth.edu
+
+setenv PATH "$PATH":~/projects/bib-tools:~/bin:~/scripts/common
+if (`uname` == Darwin) then
+    # MacOS
+    setenv PATH "$PATH":~/scripts/mac
+else
+    # Linux
+    setenv PATH "$PATH":~/scripts/cs
+endif
+
+# location of java libraries
+set myclasspath=$HOME/lib/java/Multivalent.jar
+if (! $?CLASSPATH) then
+   setenv CLASSPATH .:$myclasspath
+else
+   setenv CLASSPATH .:"$CLASSPATH":$myclasspath
+endif
+
+set myinfopath=/usr/share/info:/usr/local/share/info
+if (! $?INFOPATH) then
+   setenv INFOPATH .:$myinfopath
+else
+   setenv INFOPATH .:"$INFOPATH":$myinfopath
+endif
+
+
+# --------------------------------------------------------------------
+# set up for interactive use
+
+# Use less as a paginator instead of more (e.g. for man pages).
+setenv PAGER less
+# Make less more verbose than usual.
+setenv LESS '-s -w -M'
+# tell 'less' not to use a history file
+setenv LESSHISTFILE -
+
+# What editor should we use?
+setenv EDITOR '/usr/bin/emacs -nw -q'
+setenv VISUAL "$EDITOR"
+
+# do not allow printing with lpr
+setenv PRINTER unknown

@@ -1,0 +1,8 @@
+#!/bin/csh -f
+# is a directory empty?
+
+cd $1
+set c=`ls | wc -l`
+if ($c == 0) then
+    echo $1
+endif

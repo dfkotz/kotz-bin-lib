@@ -1,0 +1,74 @@
+#!/bin/csh -f
+#
+# plotyx - plot one file versus another
+#
+# usage:
+#  plotyx [-style] [-t title] filey filex
+#
+# where the files have the same number of lines, one number per line
+# The style is one of
+#   {point, lines, linespoints, impulses, dots}.
+#
+# For lines and linespoints the data should be sorted by x coordinate.
+#
+
+onintr cleanup
+set plot=/tmp/plot$$
+set tmp=/tmp/plotdata$$
+
+set style=linespoints
+unset title
+
+while ($1 =~ -*)
+    # extract optional title
+    if ("$1" == "-t") then
+        shift 
+        if ($#argv > 0) then
+        	  set title="$1"
+            shift
+        else
+        	   echo Usage: '[-t title]'
+        endif
+    	   continue
+    endif
+    
+    # extract style
+    if ("$1" =~ -?*) then
+    	   set style=`echo "$1" | sed 's/-//'`
+    	   shift
+    endif
+end
+
+if ($#argv < 2) then
+    echo Usage: 'plotyx [-style] [-t title] filey filex'
+    exit 1
+endif
+
+set yfile=$1;
+set xfile=$2;
+
+set nx=`wc -l $xfile`; set nx=$nx[1]
+set ny=`wc -l $yfile`; set ny=$ny[1]
+
+if ($nx != $ny) then
+    echo Error: file $xfile has $nx lines and $yfile has $ny lines
+    exit 1
+endif
+
+abut $xfile $yfile > $tmp
+
+# set xrange="`datarange $tmp`"
+
+echo set samples $nx >> $plot
+echo set nokey >> $plot
+echo plot \"$tmp\" w $style >> $plot
+# echo plot "$xrange" \"$tmp\" w $style >> $plot
+
+if ($?title) then
+    lasergnu -t "$title" -f $plot
+else
+    lasergnu -t "$yfile vs $xfile" -f $plot
+endif
+
+cleanup:
+rm -f $plot $tmp

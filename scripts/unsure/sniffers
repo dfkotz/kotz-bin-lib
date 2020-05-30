@@ -1,0 +1,30 @@
+#!/bin/csh -f
+
+
+set gterm=(gnome-terminal \
+ --start-factory-server --use-factory \
+ --background pink --foreground black \
+ --font '-*-fixed-medium-r-normal--12-*-*-*-*-*-*-*,*-r-*' \
+)
+
+set sniffdomain=dartmouth.edu
+
+$gterm:q --geometry=80x14+0+0     --title berry -x ssh root@berry1-aps.$sniffdomain  &
+sleep 5
+$gterm:q --geometry=80x14+600+0   --title brown -x ssh root@brown1-aps.$sniffdomain  &
+sleep 5
+
+$gterm:q --geometry=80x14+0+230   --title collis -x ssh root@collis1-aps.$sniffdomain  &
+sleep 5
+$gterm:q --geometry=80x14+600+230 --title sudi -x ssh root@sudi-aps.cs.dartmouth.edu  &
+sleep 5
+
+$gterm:q --geometry=80x14+0+460 --title whittemore -x ssh root@whittemore1-aps.$sniffdomain &
+sleep 5
+$gterm:q --geometry=80x14+600+460 --title agent1 -x ssh campus@agent1  &
+sleep 5
+
+$gterm:q --geometry=80x14+0+690   --title agentnews -x ssh root@agentnews  &
+sleep 5
+$gterm:q --geometry=80x14+600+690 --title klebb -x ssh root@klebb  &
+sleep 5
