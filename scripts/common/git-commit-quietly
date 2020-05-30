@@ -26,10 +26,9 @@ output=/tmp/cron$$-output
 git pull -q origin master || exit 2
 
 # add and commit the files listed on commandline
-git add "$@"
-(git commit -q -m "$message" && git push origin master) >> $output 2>&1
-
-if grep -q "nothing to commit, working tree clean"  $output
+if (git add "$@"                          \
+        && git commit -q -m "$message"    \
+        && git push origin master) > $output 2>&1
 then
     exit 0
 else
