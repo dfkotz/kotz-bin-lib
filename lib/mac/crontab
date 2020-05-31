@@ -28,26 +28,23 @@
 #    o  An asterisk to select all possible values
 #=============================================
 
-PATH=/usr/local/bin:/usr/bin:/bin
+PATH=/usr/local/bin:/usr/bin:/bin:/u/dfk/scripts/common:/u/dfk/scripts/mac
 # MAILTO=David.F.Kotz@Dartmouth.edu
 
 # don't forget my crontab
-0 7 * * * /usr/bin/crontab -l | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/mac/crontab
-2 7 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/mac/crontab
+0 7 * * * cd /u/dfk/lib/mac && crontab -l > crontab && git-commit-quietly "crontab" crontab
 
 # don't forget my hosts file
-4 7 * * * cat /etc/hosts | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/mac/etc-hosts
-6 7 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/mac/etc-hosts
+4 7 * * * cd /u/dfk/lib/mac && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab" etc-hosts
 
 # track what I have installed with homebrew
-6 7 * * * /usr/local/bin/brew ls | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/mac/brew-list
-8 7 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/mac/brew-list
+8 7 * * * cd /u/dfk/lib/mac && brew ls > brew-list && git-commit-quietly "crontab" brew-list
+
+# pull any changes to lib, dot, scripts
+0 9 * * *   cd projects/kotz-bin-lib && git pull
 
 # show me what files are left uncommitted
-# 0 9 * * * /u/dfk/bin/scripts/common/cvs-to-commit projects/*
-2 9 * * *   /u/dfk/bin/scripts/common/git-to-commit projects/* 
-4 9 * * *   /u/dfk/bin/scripts/common/svn-to-commit bin/scripts lib projects/* 
+2 9 * * *   git-to-commit projects/* 
+4 9 * * *   svn-to-commit projects/* 
+# 6 9 * * * cvs-to-commit projects/*
 
-# pull any changes to lib and scripts
-6 9 * * *   svn update --quiet --non-interactive bin/scripts lib
-8 9 * * *   svn update --quiet --non-interactive bin/scripts bin/scripts
