@@ -1,6 +1,6 @@
 # DFK crontab
 SHELL=/bin/bash
-PATH=/usr/bin:/bin:/usr/sbin:/usr/local/bin:/u/dfk/bin/scripts/common:/u/dfk/bin/scripts/cs
+PATH=/usr/bin:/bin:/usr/sbin:/usr/local/bin:/u/dfk/scripts/common:/u/dfk/scripts/cs
 MAILTO=David.F.Kotz@Dartmouth.edu
 MAILFROM=David.F.Kotz@dartmouth.edu
 DAVE=dfkotz@mac.com
@@ -19,12 +19,10 @@ TERM=VT100
 # SCRIPTS, LIB, CONTRABS
 # mm hh day month weekday command
 # pull updates into lib and scripts once a day
-00 09 * * * svn --quiet --non-interactive update lib bin/scripts
-# and let me know if there are any uncommitted files there
-10 09 * * * /u/dfk/bin/scripts/common/svn-to-commit lib bin/scripts
+00 09 * * * cd projects/kotz-bin-lib && git pull
 # don't forget my crontab
-20 05 * * * crontab -l | update-if-changed /u/dfk/lib/cs/crontab-flume
-25 05 * * * svn --quiet --non-interactive --message "crontab" commit /u/dfk/lib/cs/crontab-flume
+20 05 * * * crontab -l > /u/dfk/lib/cs/crontab-flume
+25 05 * * * cd /u/dfk/lib/cs && git-commit-quietly "crontab" crontab-flume
 
 # CHUBBERS
 # mm hh day month weekday command
@@ -60,7 +58,7 @@ TERM=VT100
 # mm hh day month weekday command
 # save a copy of my mailing lists, every night.
 00 1 * * * find /net/quimby/other-lists -user dfk -exec rsync -a '{}' /u/dfk/lib/cs/maillist/ \;
-05 1 * * * svn --quiet --non-interactive --message "crontab maillist" commit /u/dfk/lib/cs/maillist
+05 1 * * * cd /u/dfk/lib/cs && git-commit-quietly "crontab maillist" maillist
 # rotate my procmail logs
 10 00 * * * logrotate -s /u/dfk/.procmail/logrotate.status /u/dfk/.procmail/logrotate
 
@@ -100,7 +98,7 @@ TERM=VT100
 # mm hh day month weekday command
 
 # track what repos exist in kotzgroup on GitHub
-00 3 * * * /u/dfk/bin/scripts/common/repolist.py | /u/dfk/bin/scripts/common/update-if-changed /u/dfk/lib/cs/repolist
+00 3 * * * cd /u/dfk/lib/cs && repolist.py > repolist && git-commit-quietly "crontab" repolist
 
 # pull a copy of our bitbucket repos, every night
 # 00 4 * * * sh /net/kotz/projects-no-backup/clone-repos-bitbucket/gitpull-cron.sh
