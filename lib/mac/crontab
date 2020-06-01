@@ -41,7 +41,7 @@ PATH=/usr/local/bin:/usr/bin:/bin:/u/dfk/scripts/common:/u/dfk/scripts/mac
 8 7 * * * cd /u/dfk/lib/mac && brew ls > brew-list && git-commit-quietly "crontab" brew-list
 
 # pull any changes to lib, dot, scripts
-0 9 * * *   cd projects/kotz-bin-lib && git pull
+0 9 * * *   cd projects/kotz-bin-lib && git pull --quiet
 
 # show me what files are left uncommitted
 2 9 * * *   git-to-commit projects/* 
