@@ -3,6 +3,7 @@ adwaita-icon-theme
 aspell
 atk
 bash
+bdw-gc
 bfg
 bibclean
 cabal-install
@@ -36,6 +37,7 @@ graphite2
 gsasl
 gsettings-desktop-schemas
 gtk+3
+guile
 harfbuzz
 hicolor-icon-theme
 icu4c
