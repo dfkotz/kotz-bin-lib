@@ -19,7 +19,7 @@ TERM=VT100
 # SCRIPTS, LIB, CONTRABS
 # mm hh day month weekday command
 # pull updates into lib and scripts once a day
-00 09 * * * cd projects/kotz-bin-lib && git pull
+00 09 * * * cd projects/kotz-bin-lib && git pull -q
 # don't forget my crontab
 20 05 * * * crontab -l > /u/dfk/lib/cs/crontab-flume
 25 05 * * * cd /u/dfk/lib/cs && git-commit-quietly "crontab" crontab-flume
