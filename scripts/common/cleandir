@@ -1,0 +1,7 @@
+#!/bin/bash
+# run 'cleantex' on every directory given on the commandline
+
+for dir in "$@"
+do
+    (cd "$dir" && echo "$dir" && cleantex)
+done
