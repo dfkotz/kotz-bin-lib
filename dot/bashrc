@@ -62,7 +62,7 @@ if [ $(uname) == "Darwin" ]; then
    alias dnd='ssh flume.cs.dartmouth.edu scripts/cs/dnd'
 else
    # Linux
-   alias dnd='scripts/cs/dnd'
+   alias dnd="$HOME/scripts/cs/dnd"
    alias ssh-polaris='ssh d31379t@polaris.dartmouth.edu'
    alias ssh-katahdin='ssh d31379t@katahdin.dartmouth.edu'
 fi
