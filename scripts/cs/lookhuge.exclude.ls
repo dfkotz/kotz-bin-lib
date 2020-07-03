@@ -198,6 +198,7 @@
 ./projects/amulet-docs/papers/published/perhealth2017/SUBMIT.pdf
 ./projects/amulet-docs/papers/published/pope-bsn2018/THE_FINAL_SUBMITTED_BSN_ORIG.pdf
 ./projects/amulet-docs/papers/published/pope-bsn2018/source_files/BSN_system_pics.pdf
+./projects/auracle-docs/papers/children20-sm/SUBMIT.pdf
 ./projects/auracle-docs/papers/published/IMWUT18/REVISED.pdf
 ./projects/auracle-docs/papers/published/IMWUT18/SUBMIT.pdf
 ./projects/auracle-docs/proposals/nsf-abr-2018/Auracle-ABR-confidential-MARKUP.pdf
