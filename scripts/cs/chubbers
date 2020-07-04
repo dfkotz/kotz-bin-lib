@@ -47,8 +47,8 @@ endif
 #################
 # Diff with last month's list
 echo "" > chubbers-diffs
-echo "Changes since last month (if any) (< is old, > is new):" >>chubbers-diffs
-diff chubbers-old chubbers-clean | sed '/^[-0-9]/d' >> chubbers-diffs
+echo "Changes since last month (if any) (- left, + joined):" >>chubbers-diffs
+diff chubbers-old chubbers-clean | sed -e '/^[-0-9]/d' -e 's/^</-/' -e 's/^>/+/' >> chubbers-diffs
 
 set extras=`extract-emails -c chubbers-extras`
 echo "Cc: $extras"  > chubbers-cc
