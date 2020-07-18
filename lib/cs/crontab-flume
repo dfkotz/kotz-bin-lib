@@ -45,9 +45,9 @@ TERM=VT100
 # CALENDAR
 # send the Kotz daily calendar
 # mm hh day month weekday command
-  01  1 * * * daily-calendar $DAVE
-  02  1 * * * daily-calendar $ANDY
-  03  3 * * * daily-calendar $PAM
+  01  6 * * * daily-calendar $DAVE
+  02  8 * * * daily-calendar $ANDY
+  03  8 * * * daily-calendar $PAM
   04  7 * * * daily-calendar $DAD $MOM
   05  7 * * * daily-calendar $AMY
   06  8 * * * daily-calendar $MARA
