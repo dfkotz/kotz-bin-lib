@@ -48,3 +48,6 @@ PATH=/usr/local/bin:/usr/bin:/bin:/u/dfk/scripts/common:/u/dfk/scripts/mac
 4 9 * * *   svn-to-commit projects/* 
 # 6 9 * * * cvs-to-commit projects/*
 
+# warn me if there are any changes to published research bibs,
+# that may require me to update the respective index.htmltop
+0 10 * * * cd /u/dfk/projects/web && git diff tags/research research/project*/kotz-project-*.bib
