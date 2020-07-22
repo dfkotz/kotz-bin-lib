@@ -85,7 +85,6 @@ pixman
 pkg-config
 protobuf
 py3cairo
-python
 python@2
 python@3.8
 qt
