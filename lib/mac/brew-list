@@ -97,6 +97,7 @@ shellcheck
 sphinx-doc
 sqlite
 tree
+unrar
 valgrind
 webp
 wget
