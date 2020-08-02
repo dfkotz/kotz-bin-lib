@@ -13,7 +13,7 @@
 # No changes should be made to TR directory while this is running
 
 set dbackup=/u/dfk/TR-backup
-set dtr=/u/trdata/public_html/reports
+set dtr=/u/trdata/reports
 cd $dtr # tickle the file system to be sure it's mounted
 cd
 
