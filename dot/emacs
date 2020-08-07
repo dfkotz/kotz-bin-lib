@@ -4,6 +4,8 @@
 ; David Kotz (Kotz@Dartmouth.edu)
 ;
 
-(add-to-list 'load-path "/u/dfk/.emacs.d")
-(add-to-list 'load-path "/u/dfk/lib/emacs")
+(defvar user-home-directory)
+(setq user-home-directory (getenv "HOME"))
+(add-to-list 'load-path (concat user-home-directory "/lib/emacs"))
+
 (load "my-init")

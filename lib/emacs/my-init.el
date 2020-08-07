@@ -166,9 +166,10 @@
 ;;; ------------------------------------------------------------------
 
 ;;; Set directories appropriately.
+;;; Expect var user-home-directory to have been set in .emacs, before loading this file.
 
-(setq user-home-directory (getenv "HOME"))
-(setq a-home-directory (concat "/a" (substring user-home-directory 4)))
+(defvar  a-home-directory)
+(setq    a-home-directory (concat "/a" (substring user-home-directory 4)))
 
 (setq directory-abbrev-alist
       (append (list (cons (concat "^/u/" (user-login-name) "/") "~/")
