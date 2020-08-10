@@ -50,7 +50,11 @@ export LESS='-s -w -M -R'
 export LESSHISTFILE=-
 
 # What editor should we use?
-export EDITOR=/usr/bin/emacs
+if [ -x /usr/bin/emacs ]; then
+   export EDITOR=/usr/bin/emacs
+else
+   export EDITOR=/usr/local/bin/emacs
+fi
 export VISUAL="$EDITOR"
 
 # do not allow printing with lpr
