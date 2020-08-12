@@ -135,7 +135,6 @@
       (setq bibtex-text-indentation 18)
       (setq bibtex-entry-format
 	    '(opts-or-alts numerical-fields last-comma delimeters))
-      (setq bibtex-string-files '("macros.bib"))
       (setq bibtex-user-optional-fields 
 	    '( ("earlier" "earlier version of paper") 
 	       ("later" "later version of paper") 
