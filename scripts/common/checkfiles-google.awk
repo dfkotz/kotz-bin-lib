@@ -1,1 +1,1 @@
-checkfiles.awk
+/Users/dfk/projects/checkfiles/checkfiles-google.awk
