@@ -1,4 +1,4 @@
-# DFK crontab
+# DFK crontab (CS server)
 SHELL=/bin/bash
 PATH=/usr/bin:/bin:/usr/sbin:/usr/local/bin:/u/dfk/scripts/common:/u/dfk/scripts/cs
 MAILTO=David.F.Kotz@Dartmouth.edu
@@ -16,7 +16,7 @@ KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com
 
 TERM=VT100
 
-# SCRIPTS, LIB, CONTRABS
+# SCRIPTS, LIB, CRONTABS
 # mm hh day month weekday command
 # pull updates into lib and scripts once a day
 00 09 * * * cd projects/kotz-bin-lib && git pull -q
@@ -35,12 +35,6 @@ TERM=VT100
 # mm hh day month weekday command
 # Update my website, hourly
 55 * * * * update-web -q
-
-# COMICS
-# send me the daily comic strips (timed for morning delivery)
-0 6 * * * comic-fbfw               $DAVE  
-0 6 * * * comic-arcamax babyblues  $DAVE
-0 6 * * * comic-arcamax doonesbury $DAVE  $DAD $MOM
 
 # CALENDAR
 # send the Kotz daily calendar
