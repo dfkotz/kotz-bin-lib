@@ -2,8 +2,6 @@
 # grab the FBFW comic strip and email it to me 
 # (run daily by cron)
 
-set mailfrom=David.F.Kotz@Dartmouth.edu
-
 if ($#argv < 1) then
     echo usage: $0 email...
     exit 1
@@ -57,7 +55,7 @@ endif
 #endif
 
 # mail me the image
-echo " " | mailx -r $mailfrom -s "Comic strip: For Better or For Worse" -a $img:t $argv:q
+echo " " | mutt -s "Comic strip: For Better or For Worse" -a $img:t -- $argv:q
 if ($status) then
     echo mailx failed
     goto cleanup
