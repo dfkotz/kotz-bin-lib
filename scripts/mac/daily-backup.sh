@@ -25,4 +25,9 @@ metacheck --verify "${dirs[@]}" > "$log" \
     || mail -s "metacheck-verify" $USER < "$log"
 
 # run the Time Machine backup, and inherit its exit status
-tm-backup.sh
+if tm-backup.sh
+then
+    terminal-notifier -title "daily-backup" -sound Hero -message "backup succeeded"
+else
+    terminal-notifier -title "daily-backup" -sound Basso -message "backup failed"
+fi
