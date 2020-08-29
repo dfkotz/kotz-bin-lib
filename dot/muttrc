@@ -1,0 +1,9 @@
+# settings for 'mutt' email program, to allow me to send mail via iCloud
+
+set use_from
+set from="David Kotz <dfkotz@mac.com>"
+
+set use_envelope_from
+set envelope_from_address="David Kotz <dfkotz@mac.com>"
+
+set reply_to
