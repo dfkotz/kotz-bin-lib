@@ -1,53 +1,66 @@
-# DFK crontab
-#=============================================
-#  Each crontab file entry consists of a line with six fields, separated by
-#  spaces and tabs.  The information in the fields specifies when the command
-#  runs and the name of the command.  The fields specify the following:
-#
-#    o  The first field specifies the minute (0 to 59).
-#
-#    o  The second field specifies the hour (0 to 23).
-#
-#    o  The third field specifies the day of the month (1 to 31).
-#
-#    o  The fourth field specifies the month of the year (1 to 12).
-#
-#    o  The fifth field specifies the day of the week (0 to 6 for Sunday to
-#       Saturday).
-#
-#    o  The sixth field specifies the shell command to be executed.
-#
-#  You can specify the following values in the fields that indicate the time:
-#
-#    o  An integer (within the appropriate range of values)
-#
-#    o  Two integers separated by a dash to indicate an inclusive range
-#
-#    o  A list of integers separated by commas
-#
-#    o  An asterisk to select all possible values
-#=============================================
+# DFK crontab (Mac)
+# Basic environment variables
+HOME=/Users/dfk
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin:/Users/dfk/scripts/common:/Users/dfk/scripts/mac
+TERM=VT100
 
-PATH=/usr/local/bin:/usr/bin:/bin:/u/dfk/scripts/common:/u/dfk/scripts/mac
-# MAILTO=David.F.Kotz@Dartmouth.edu
+# Mail-related variables
+MAILTO=dfk
+MAILFROM=dfk
+DAVE=dfkotz@mac.com
+PAM=pcjenkins@mac.com
+JOHN=john.lyme@mac.com
+MARA=mara.lyme@mac.com
+ANDY=andy.lyme@mac.com
+ISABEL=isabel_eich@hotmail.com
+DAD=johnkotz@mac.com
+MOM=katiekotz@icloud.com
+AMY=aejenkins1263@gmail.com
+KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com 
 
 # don't forget my crontab
-0 7 * * * cd /u/dfk/lib/mac && crontab -l > crontab && git-commit-quietly "crontab" crontab
+# mm hh day month weekday command
+0 7 * * * cd $HOME/lib/mac && crontab -l > crontab && git-commit-quietly "crontab" crontab
 
 # don't forget my hosts file
-4 7 * * * cd /u/dfk/lib/mac && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab" etc-hosts
+# mm hh day month weekday command
+4 7 * * * cd $HOME/lib/mac && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab" etc-hosts
 
 # track what I have installed with homebrew
-8 7 * * * cd /u/dfk/lib/mac && brew ls > brew-list && git-commit-quietly "crontab" brew-list
+# mm hh day month weekday command
+8 7 * * * cd $HOME/lib/mac && brew ls > brew-list && git-commit-quietly "crontab" brew-list
 
 # pull any changes to lib, dot, scripts
+# mm hh day month weekday command
 0 9 * * *   cd projects/kotz-bin-lib && git pull --quiet
 
 # show me what files are left uncommitted
+# mm hh day month weekday command
 2 9 * * *   git-to-commit projects/* 
 4 9 * * *   svn-to-commit projects/* 
 # 6 9 * * * cvs-to-commit projects/*
 
 # warn me if there are any changes to published research bibs,
 # that may require me to update the respective index.htmltop
-0 10 * * * cd /u/dfk/projects/web && git diff tags/research research/project*/kotz-project-*.bib
+# mm hh day month weekday command
+0 10 * * * cd $HOME/projects/web && git diff tags/research research/project*/kotz-project-*.bib
+
+# COMICS
+# send me the daily comic strips (timed for morning delivery)
+# mm hh day month weekday command
+0 7 * * * comic-fbfw               $DAVE  
+0 7 * * * comic-arcamax babyblues  $DAVE
+0 7 * * * comic-arcamax doonesbury $DAVE  $DAD $MOM
+
+# CALENDAR
+# send the Kotz daily calendar
+# mm hh day month weekday command
+  01  7 * * * daily-calendar $DAVE
+  02  8 * * * daily-calendar $ANDY
+  03  8 * * * daily-calendar $PAM
+  04  7 * * * daily-calendar $DAD $MOM
+  05  7 * * * daily-calendar $AMY
+  06  8 * * * daily-calendar $MARA
+  07  8 * * * daily-calendar $ISABEL
+  08 11 * * * daily-calendar $JOHN
