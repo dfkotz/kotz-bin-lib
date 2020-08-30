@@ -3,16 +3,6 @@ SHELL=/bin/bash
 PATH=/usr/bin:/bin:/usr/sbin:/usr/local/bin:/u/dfk/scripts/common:/u/dfk/scripts/cs
 MAILTO=David.F.Kotz@Dartmouth.edu
 MAILFROM=David.F.Kotz@dartmouth.edu
-DAVE=dfkotz@mac.com
-PAM=pcjenkins@mac.com
-JOHN=john.lyme@mac.com
-MARA=mara.lyme@mac.com
-ANDY=andy.lyme@mac.com
-ISABEL=isabel_eich@hotmail.com
-DAD=johnkotz@mac.com
-MOM=katiekotz@icloud.com
-AMY=aejenkins1263@gmail.com
-KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com 
 
 TERM=VT100
 
@@ -35,18 +25,6 @@ TERM=VT100
 # mm hh day month weekday command
 # Update my website, hourly
 55 * * * * update-web -q
-
-# CALENDAR
-# send the Kotz daily calendar
-# mm hh day month weekday command
-  01  6 * * * daily-calendar $DAVE
-  02  8 * * * daily-calendar $ANDY
-  03  8 * * * daily-calendar $PAM
-  04  7 * * * daily-calendar $DAD $MOM
-  05  7 * * * daily-calendar $AMY
-  06  8 * * * daily-calendar $MARA
-  07  8 * * * daily-calendar $ISABEL
-  08 11 * * * daily-calendar $JOHN
 
 # MAIL
 # mm hh day month weekday command
