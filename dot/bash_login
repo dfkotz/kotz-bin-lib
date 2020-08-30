@@ -4,7 +4,11 @@
 # reasonable terminal settings
 stty sane dec
 
+# to allow conditional settings for login shells
 export LOGIN_SHELL=1
+
+# silence the MacOS warning about zsh replacing bash as default
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # --------------------------------------------------------------------
 # Set up environment
