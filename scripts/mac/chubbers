@@ -7,11 +7,7 @@
 # usage:
 #   chubbers < listserv-output
 
-cd ~dfk/chubbers
-if (-e  chubbers-header.gz) gunzip -q chubbers-header.gz
-if (-e  chubbers-intro.gz) gunzip -q chubbers-intro.gz
-if (-e  chubbers-notes.gz) gunzip -q chubbers-notes.gz
-if (-e  chubbers-extras.gz) gunzip -q chubbers-extras.gz
+cd ~/lib/mac/chubbers
 
 onintr cleanup
 
@@ -50,16 +46,20 @@ echo "" > chubbers-diffs
 echo "Changes since last month (if any) (- left, + joined):" >>chubbers-diffs
 diff chubbers-old chubbers-clean | sed -e '/^[-0-9]/d' -e 's/^</-/' -e 's/^>/+/' >> chubbers-diffs
 
-set extras=`extract-emails -c chubbers-extras`
-echo "Cc: $extras"  > chubbers-cc
-
 echo "" > chubbers-blank
 
-cat chubbers-{header,cc,blank,intro,clean,diffs,notes,blank,extras} \
-| sendmail $extras:q chubbers@dartmouth.edu
+cat chubbers-{intro,clean,diffs,notes,blank,extras} > chubbers-message
 
-mv -f chubbers-old chubbers-old-old
+set subject="Monthly ChubberNet Update"
+set extras=`extract-emails chubbers-extras`
+
+# email to the list and to each of the extras
+foreach address (chubbers@dartmouth.edu $extras)
+    echo email to "$address"
+    mutt -s "$subject" "$address" < chubbers-message
+end
+
 mv -f chubbers-clean chubbers-old
 
 cleanup:
-rm -f chubbers-cc chubbers-blank chubbers-clean chubbers-diffs
+rm -f chubbers-blank chubbers-clean chubbers-diffs chubbers-message
