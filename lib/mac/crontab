@@ -49,9 +49,9 @@ KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com
 # COMICS
 # send me the daily comic strips (timed for morning delivery)
 # mm hh day month weekday command
-0 7 * * * comic-fbfw               $DAVE  
-0 7 * * * comic-arcamax babyblues  $DAVE
 0 7 * * * comic-arcamax doonesbury $DAVE  $DAD $MOM
+2 7 * * * comic-arcamax babyblues  $DAVE
+4 7 * * * comic-fbfw               $DAVE  
 
 # CALENDAR
 # send the Kotz daily calendar
