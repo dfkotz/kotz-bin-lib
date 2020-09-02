@@ -14,13 +14,6 @@ TERM=VT100
 20 05 * * * crontab -l > /u/dfk/lib/cs/crontab-flume
 25 05 * * * cd /u/dfk/lib/cs && git-commit-quietly "crontab" crontab-flume
 
-# CHUBBERS
-# mm hh day month weekday command
-# monthly mailing to ChubberNet
-01 00 1 * * monthly-chubbers
-# back up the Woodsmens' Weekend Wiki
-# 33 3 * * * cd /u/dfk/woodsmens-weekend && ./wget-wiki
-
 # WEBSITE
 # mm hh day month weekday command
 # Update my website, hourly
