@@ -64,3 +64,8 @@ KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com
   06  8 * * * daily-calendar $MARA
   07  8 * * * daily-calendar $ISABEL
   08 11 * * * daily-calendar $JOHN
+
+# CHUBBERS
+# mm hh day month weekday command
+# monthly mailing to ChubberNet
+01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
