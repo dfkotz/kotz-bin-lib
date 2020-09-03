@@ -1,4 +1,6 @@
 # DFK crontab (Mac)
+# see also Launchd scripts
+
 # Basic environment variables
 HOME=/Users/dfk
 SHELL=/bin/bash
@@ -8,16 +10,6 @@ TERM=VT100
 # Mail-related variables
 MAILTO=dfk
 MAILFROM=dfk
-DAVE=dfkotz@mac.com
-PAM=pcjenkins@mac.com
-JOHN=john.lyme@mac.com
-MARA=mara.lyme@mac.com
-ANDY=andy.lyme@mac.com
-ISABEL=isabel_eich@hotmail.com
-DAD=johnkotz@mac.com
-MOM=katiekotz@icloud.com
-AMY=aejenkins1263@gmail.com
-KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com 
 
 # don't forget my crontab
 # mm hh day month weekday command
@@ -46,26 +38,6 @@ KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com
 # mm hh day month weekday command
 0 10 * * * cd $HOME/projects/web && git diff tags/research research/project*/kotz-project-*.bib
 
-# COMICS
-# send me the daily comic strips (timed for morning delivery)
+# CHUBBERS - monthly mailing to ChubberNet
 # mm hh day month weekday command
-0 7 * * * comic-arcamax doonesbury $DAVE  $DAD $MOM
-2 7 * * * comic-arcamax babyblues  $DAVE
-4 7 * * * comic-fbfw               $DAVE  
-
-# CALENDAR
-# send the Kotz daily calendar
-# mm hh day month weekday command
-  01  7 * * * daily-calendar $DAVE
-  02  8 * * * daily-calendar $ANDY
-  03  8 * * * daily-calendar $PAM
-  04  7 * * * daily-calendar $DAD $MOM
-  05  7 * * * daily-calendar $AMY
-  06  8 * * * daily-calendar $MARA
-  07  8 * * * daily-calendar $ISABEL
-  08 11 * * * daily-calendar $JOHN
-
-# CHUBBERS
-# mm hh day month weekday command
-# monthly mailing to ChubberNet
 01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
