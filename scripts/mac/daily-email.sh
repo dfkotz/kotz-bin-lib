@@ -10,7 +10,7 @@ ISABEL=isabel_eich@hotmail.com
 DAD=johnkotz@mac.com
 MOM=katiekotz@icloud.com
 AMY=aejenkins1263@gmail.com
-KIDS=john.lyme@mac.com mara.lyme@mac.com andy.lyme@mac.com
+KIDS="$JOHN $MARA $ANDY"
 
 # COMICS
 # send me the daily comic strips (timed for morning delivery)
