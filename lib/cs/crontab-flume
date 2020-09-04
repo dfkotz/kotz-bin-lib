@@ -27,13 +27,6 @@ TERM=VT100
 # rotate my procmail logs
 10 00 * * * logrotate -s /u/dfk/.procmail/logrotate.status /u/dfk/.procmail/logrotate
 
-# CLEAN UP HOME DIR
-# mm hh day month weekday command
-# Cleanup older files (daily)
-# 05 4 * * * cleanold
-# bi-monthly search for huge files
-10 04 3,17 * * lookhuge
-
 # TECH REPORTS
 # mm hh day month weekday command
 # bi-monthly mailing of TR digest
@@ -51,12 +44,6 @@ TERM=VT100
 04 12 * * * cd /u/dfk/projects/thaw-papers      &&    bib-mendeley/bin/cron.sh user-thaw.json thaw.bib
 06 12 * * * cd /u/dfk/projects/amulet-docs/web  && ../bib-mendeley/bin/cron.sh user-amulet.json amulet.bib
 08 12 * * * cd /u/dfk/projects/auracle-docs/web && ../bib-mendeley/bin/cron.sh user-auracle.json auracle.bib
-
-# CNS proposal
-# update bibliography repo, every hour
-# mm hh day month weekday command
-# 00 * * * * cd /u/dfk/projects/cns2019/bibliography && bin/cron.sh user-thaw.json thaw.bib
-# 05 * * * * cd /u/dfk/projects/cns2019/bibliography && bin/cron.sh user-splice.json splice.bib
 
 ###################################################
 # GIT and SVN REPOs
