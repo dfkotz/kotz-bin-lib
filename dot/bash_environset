@@ -2,19 +2,24 @@
 
 export environset=true
 
-export MAILFROM=David.F.Kotz@dartmouth.edu
-
-export PATH=$PATH:~/projects/bib-tools:~/bin:~/scripts/common:~/projects/vita/bin
+#### extend the PATH
+PATH=$PATH:/usr/local/bin
+PATH=$PATH:~/projects/bib-tools:~/bin:~/scripts/common:~/projects/vita/bin
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
-   export PATH=$PATH:~/scripts/mac
+   PATH=$PATH:~/scripts/mac
 else
    # Linux
-   export PATH=$PATH:~/scripts/cs
+   PATH=$PATH:~/scripts/cs
 fi
 
-# location of python libraries
+export PATH
+
+#### mail "From" -- except for mutt (see .muttrc)
+export MAILFROM=David.F.Kotz@dartmouth.edu
+
+#### location of python libraries
 mypypath=$HOME/projects/bib-tools:$HOME/projects/uniclean:
 if [ -z "$PYTHONPATH" ]; then
    export PYTHONPATH=.:$mypypath
@@ -22,8 +27,7 @@ else
    export PYTHONPATH=.:"$PYTHONPATH":$mypypath
 fi
 
-
-# location of java libraries
+#### location of java libraries
 myclasspath=$HOME/lib/java/Multivalent.jar
 if [ -z "$CLASSPATH" ]; then
    export CLASSPATH=.:$myclasspath
@@ -31,7 +35,7 @@ else
    export CLASSPATH=.:"$CLASSPATH":$myclasspath
 fi
 
-# location of 'info' documents
+#### location of 'info' documents
 myinfopath=/usr/share/info:/usr/local/share/info
 if [ -z "$INFOPATH" ]; then
    export INFOPATH=.:$myinfopath
@@ -39,9 +43,10 @@ else
    export INFOPATH=.:"$INFOPATH":$myinfopath
 fi
 
-# location of BibTeX BST files
+#### location of BibTeX BST files
 export BSTINPUTS=.:/u/dfk/projects/bib-styles
 
+#### pager: less is more
 # Use less as a paginator instead of more (e.g. for man pages).
 export PAGER=less
 # Make less more verbose than usual, and let it display ESC sequences.
@@ -49,7 +54,7 @@ export LESS='-s -w -M -R'
 # tell 'less' not to use a history file
 export LESSHISTFILE=-
 
-# What editor should we use?
+#### editor: What editor should we use?
 if [ -x /usr/bin/emacs ]; then
    export EDITOR=/usr/bin/emacs
 else
@@ -57,7 +62,7 @@ else
 fi
 export VISUAL="$EDITOR"
 
-# do not allow printing with lpr
+#### printing: do not allow printing with lpr
 export PRINTER=unknown
 
 # --------------------------------------------------------------------
