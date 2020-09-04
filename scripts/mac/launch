@@ -1,0 +1,8 @@
+#!/bin/sh
+# This script is a wrapper for scripts run by launchd
+# from /Users/dfk/Library/LaunchAgents/*.plist
+
+# They need my usual environment
+source ~/.bash_environset
+
+exec "$@"
