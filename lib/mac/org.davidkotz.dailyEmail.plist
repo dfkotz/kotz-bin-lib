@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- David Kotz 2020 -->
+<!-- This file belongs in ~/Library/LaunchAgents/org.davidkotz.dailyEmail.plist -->
+<!-- For more information on these values, see the manual page for launchd.plist and the following page: -->
+<!-- https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html -->
+<!-- after editing this file, first unload and then reload this agent: -->
+<!-- launchctl bootout gui/502 ~/Library/LaunchAgents/org.davidkotz.dailyEmail.plist -->
+<!-- launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.dailyEmail.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>org.davidkotz.dailyEmail</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/dfk/scripts/mac/launch</string>
+        <string>daily-email.sh</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>06</integer>
+        <key>Minute</key>
+        <integer>01</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/dfk/Desktop/daily.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/dfk/Desktop/daily.log</string>
+</dict>
+</plist>
