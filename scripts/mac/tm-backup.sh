@@ -22,7 +22,7 @@ function backup-then-eject() {
 }
 
 # backup to black SSD disk
-backup-then-eject Kotz-TM-SSD-black 1E4862C4-197B-4854-AE0E-79793A173D9F
+backup-then-eject Kotz-TM-SSD-black 5CB5E284-44CE-4BF4-9FAC-809CE6BC0658
 black=$?
 
 # backup to blue SSD disk
