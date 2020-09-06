@@ -6,13 +6,15 @@
 
 for dir in "$@"
 do
-    if [ ! -d "$dir" ]; then
-       echo "$dir" skipped - not a directory
-       continue
+    if [ -d "$dir" ]; then
+        echo "getting $dir..."
+    else
+        echo "$dir" skipped - not a directory
+        continue
     fi
 
     (cd "$dir"; 
-        if [ -d .git ]; then git pull -q --rebase || echo "$dir": failed; fi
+        if [ -d .git ]; then git pull -q || echo "$dir": failed; fi
         if [ -f .gitmodules ]; then git submodule update --init --recursive; fi
         if [ -f .gitmodules ]; then git submodule foreach --recursive 'git checkout master'; fi
         if [ -d .svn ]; then svn update; fi
