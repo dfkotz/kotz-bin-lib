@@ -1,4 +1,5 @@
 # settings for 'mutt' email program, to allow me to send mail via iCloud
+# see README below
 
 set use_from
 set from="David Kotz <dfkotz@mac.com>"
@@ -7,3 +8,39 @@ set use_envelope_from
 set envelope_from_address="David Kotz <dfkotz@mac.com>"
 
 set reply_to
+
+#######################################################
+### README ###
+# For mutt to be able to send mail from my mac, I followed the instructions
+#   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
+# See my comment on that page at
+#   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e#gistcomment-3434439
+# 
+# I put the following in /etc/postfix/sasl_passwd 
+#   smtp.mail.me.com:587 dfkotz@mac.com:PASSWORD
+# where I obtained PASSWORD by getting app-specific password from
+#   https://appleid.apple.com/account/manage
+# following some advice from
+#   https://support.apple.com/en-us/HT202304
+#
+# I had to adapt the loziju instruction step 1, replacing Gmail with:
+#   relayhost=smtp.mail.me.com:587
+# The resulting change to main.cf is as follows.
+#
+# # Added by DFK, adapting these instructions:
+# #   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
+# #   https://support.apple.com/en-us/HT202304
+# # 
+# # Postfix as relay
+# #
+# # iCloud SMTP
+# relayhost=smtp.mail.me.com:587
+# # Enable SASL authentication in the Postfix SMTP client.
+# smtp_sasl_auth_enable=yes
+# smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd
+# smtp_sasl_security_options=noanonymous
+# smtp_sasl_mechanism_filter=plain
+# # Enable Transport Layer Security (TLS), i.e. SSL.
+# smtp_use_tls=yes
+# smtp_tls_security_level=encrypt
+# tls_random_source=dev:/dev/urandom
