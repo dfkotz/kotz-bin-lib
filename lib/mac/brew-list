@@ -51,6 +51,7 @@ hicolor-icon-theme
 icu4c
 ilmbase
 imagemagick
+jansson
 jpeg
 jpeginfo
 libassuan
