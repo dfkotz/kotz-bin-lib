@@ -21,29 +21,8 @@ TERM=VT100
 
 # MAIL
 # mm hh day month weekday command
-# save a copy of my mailing lists, every night.
-00 1 * * * find /net/quimby/other-lists -user dfk -exec rsync -a '{}' /u/dfk/lib/cs/maillist/ \;
-05 1 * * * cd /u/dfk/lib/cs && git-commit-quietly "crontab maillist" maillist
 # rotate my procmail logs
 10 00 * * * logrotate -s /u/dfk/.procmail/logrotate.status /u/dfk/.procmail/logrotate
-
-# TECH REPORTS
-# mm hh day month weekday command
-# bi-monthly mailing of TR digest
-00 06 1 2,4,6,8,10,12 *  /u/trdata/TRdata/send-digest
-# backup any changes to the TR database
-01 04 * * * tr-backup
-# Check weekly for old, pending TR assignments 
-02 06 * * 1 find /u/trdata/TRdata/pending -mtime +7 -name \*.xbib -print | xargs grep -H REQUESTED-
-
-# BIBLIO
-# Kotzgroup, THaW, Amulet, Auracle
-# update bibliographies, every day
-# mm hh day month weekday command
-02 12 * * * cd /u/dfk/projects/bib-kotzgroup    &&    bib-mendeley/bin/cron.sh bib-mendeley/group/kotzgroup kotzgroup.bib
-04 12 * * * cd /u/dfk/projects/thaw-papers      &&    bib-mendeley/bin/cron.sh user-thaw.json thaw.bib
-06 12 * * * cd /u/dfk/projects/amulet-docs/web  && ../bib-mendeley/bin/cron.sh user-amulet.json amulet.bib
-08 12 * * * cd /u/dfk/projects/auracle-docs/web && ../bib-mendeley/bin/cron.sh user-auracle.json auracle.bib
 
 ###################################################
 # GIT and SVN REPOs
