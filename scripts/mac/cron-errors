@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# cron-errors: receive on stdin the output of a cron job;
+#              if non-empty, use 'mutt' to email it to $MAILTO.
+#
+# This tool is necessary because it is not possible to control "From"
+# address in crontab, whereas I can do so using mutt.
+#
+# usage (in a crontab):
+#   5 * * * * (cd directory && command args) |& cron-errors
+#
+# David Kotz September 2020
+
+tmp=/tmp/cron-errors$$
+
+cat > $tmp
+
+if [ -s $tmp ]; then
+   mutt -s "cron error" $MAILTO < $tmp
+fi
+       
+rm -f $tmp
