@@ -16,7 +16,7 @@ tmp=/tmp/cron-errors$$
 cat > $tmp
 
 if [ -s $tmp ]; then
-   mutt -s "cron error" $MAILTO < $tmp
+   mutt -s "cron output on $(hostname)" $MAILTO < $tmp
 fi
        
 rm -f $tmp
