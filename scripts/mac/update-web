@@ -17,8 +17,12 @@ else
     quiet=-v
     echo rsync...
 fi
-rsync -raH $quiet -e 'ssh -q' --delete \
-      --exclude=.git --exclude=.gitignore --exclude=blog \
+rsync -rlpHc $quiet -e 'ssh -q' --delete \
+      --exclude=blog \
+      --exclude-from=.gitignore --exclude=.gitignore \
+      --exclude-from=research/.gitignore --exclude=research/.gitignore \
+      --exclude=.git \
+      --exclude='.DS_Store' \
       --exclude='name.txt' \
       --exclude='*.htmlf' \
       --exclude='*.htmltop' \
