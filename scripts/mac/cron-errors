@@ -7,7 +7,8 @@
 # address in crontab, whereas I can do so using mutt.
 #
 # usage (in a crontab):
-#   5 * * * * (cd directory && command args) |& cron-errors
+#   5 * * * * (cd directory && command args) |& cron-errors description
+# where 'description' is a short (ideally one word) tag for this cronjob.
 #
 # David Kotz September 2020
 
@@ -16,7 +17,7 @@ tmp=/tmp/cron-errors$$
 cat > $tmp
 
 if [ -s $tmp ]; then
-   mutt -s "cron output on $(hostname)" $MAILTO < $tmp
+   mutt -s "[cron] $1 on $(hostname)" $MAILTO < $tmp
 fi
        
 rm -f $tmp
