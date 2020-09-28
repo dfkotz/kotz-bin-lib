@@ -14,11 +14,6 @@ TERM=VT100
 20 05 * * * crontab -l > /u/dfk/lib/cs/crontab-flume
 25 05 * * * cd /u/dfk/lib/cs && git-commit-quietly "crontab" crontab-flume
 
-# WEBSITE
-# mm hh day month weekday command
-# Update my website, hourly
-55 * * * * update-web -q
-
 # MAIL
 # mm hh day month weekday command
 # rotate my procmail logs
