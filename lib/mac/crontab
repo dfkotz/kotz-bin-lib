@@ -30,7 +30,7 @@ MAILFROM=dfk
 # show me what files are left uncommitted
 # mm hh day month weekday command
 2 9 * * *   git-to-commit projects/* 
-4 9 * * *   svn-to-commit projects/* 
+# 4 9 * * *   svn-to-commit projects/* 
 # 6 9 * * * cvs-to-commit projects/*
 
 # warn me if there are any changes to published research bibs,
