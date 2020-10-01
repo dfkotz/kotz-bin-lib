@@ -8,19 +8,17 @@
 255.255.255.255	broadcasthost
 ::1             localhost
 
-129.170.212.100 mail
-129.170.212.100 mail.cs.dartmouth.edu
-129.170.17.107  mailhub.dartmouth.edu
-129.170.213.101 crawdad
-129.170.213.101 crawdad.cs.dartmouth.edu
-129.170.214.59	topdog.cs.dartmouth.edu
-129.170.212.20 tahoe
-129.170.212.20 tahoe.cs.dartmouth.edu 
-129.170.214.149 cvs
-129.170.214.149 cvs.cs.dartmouth.edu
+129.170.214.102 galehead
+129.170.214.102 galehead.cs.dartmouth.edu
 129.170.213.106	eckert
-129.170.214.96 svn
-129.170.214.96 svn.cs.dartmouth.edu
-129.170.8.135 login.vpn.dartmouth.edu
+129.170.213.106	eckert.cs.dartmouth.edu
 129.170.214.115 flume
 129.170.214.115 flume.cs.dartmouth.edu
+
+# available when on VPN only
+10.24.34.73 kotzwifi1
+10.24.34.73 kotzwifi1.dartmouth.edu
+10.24.2.16  kotzwifi2
+10.24.2.16  kotzwifi2.dartmouth.edu
+129.170.226.126 katahdin
+129.170.226.126 katahdin.dartmouth.edu
