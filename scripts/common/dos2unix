@@ -5,7 +5,7 @@
 
 if ($#argv >= 1) then
     foreach i ($argv:q)
-	sed -i s'/$//' $i:q
+	sed -i "" s'/$//' $i:q
     end
 else
     echo usage: dos2unix filename...
