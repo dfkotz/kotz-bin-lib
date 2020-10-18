@@ -3,8 +3,8 @@
 export environset=true
 
 #### extend the PATH
-PATH=$PATH:/usr/local/bin
-PATH=$PATH:~/projects/bib-tools:~/bin:~/scripts/common:~/projects/vita/bin
+PATH=/usr/local/bin:$PATH
+PATH=$PATH:~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
