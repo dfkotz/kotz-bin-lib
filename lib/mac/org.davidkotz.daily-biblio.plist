@@ -5,9 +5,12 @@
 <!-- This file belongs in ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist -->
 <!-- For more information on these values, see the manual page for launchd.plist and the following page: -->
 <!-- https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html -->
-<!-- after editing this file, first unload and then reload this agent: -->
-<!-- launchctl bootout gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist -->
-<!-- launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist -->
+<!-- after editing this file, first unload and then reload this agent:
+       launchctl bootout gui/501 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
+       launchctl bootstrap gui/501 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
+<!-- to force it to run right away,
+     launchctl kickstart gui/501/org.davidkotz.daily-biblio
+ -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
@@ -22,7 +25,7 @@
         <key>Hour</key>
         <integer>06</integer>
         <key>Minute</key>
-        <integer>10</integer>
+        <integer>15</integer>
     </dict>
     <key>StandardOutPath</key>
     <string>/Users/dfk/Desktop/daily-biblio.log</string>
