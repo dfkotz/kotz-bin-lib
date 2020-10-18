@@ -1,6 +1,7 @@
 #!/bin/sh
 # This script is run daily by launchd
 # see ~/Library/LaunchAgents/org.davidkotz.daily-email.plist
+cd
 
 DAVE=dfkotz@mac.com
 PAM=pcjenkins@mac.com
@@ -24,5 +25,5 @@ comic-fbfw               $DAVE
 daily-calendar $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL
 
 # Save a copy of the launch agent, in case I get a new laptop
-plist=org.davidkotz.dailyEmail.plist
-(cd lib/mac && rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-email plist" $plist)
+plist=org.davidkotz.daily-email.plist
+(cd ~/lib/mac && rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-email plist" $plist)
