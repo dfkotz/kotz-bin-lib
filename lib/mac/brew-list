@@ -107,6 +107,7 @@ protobuf
 py3cairo
 python@2
 python@3.8
+python@3.9
 qt
 quvi
 readline
