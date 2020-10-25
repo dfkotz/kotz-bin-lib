@@ -21,7 +21,7 @@ MAILFROM=dfk
 
 # track what I have installed with homebrew
 # mm hh day month weekday command
-8 7 * * * cd $HOME/lib/mac && brew ls > brew-list && git-commit-quietly "crontab" brew-list
+8 7 * * * cd $HOME/lib/mac && brew list --formula > brew-list && git-commit-quietly "crontab" brew-list
 
 # pull any changes to lib, dot, scripts
 # mm hh day month weekday command
