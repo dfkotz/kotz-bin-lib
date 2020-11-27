@@ -1,8 +1,27 @@
+# DFK crontab (iMac)
+# see also Launchd scripts
+
+# Basic environment variables
 SHELL=/usr/local/bin/bash
 PATH=/Users/dfk/scripts/mac:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-
 MAILTO=dfkotz@mac.com
-
 TERM=VT100
 
-# no jobs
+# location for this machine's lib
+LIB=/Users/dfk/lib/iMac
+
+# pull any changes to lib, dot, scripts
+# mm hh day month weekday command
+0 6 * * *   cd kotz-bin-lib && git pull --quiet
+
+# don't forget my crontab
+# mm hh day month weekday command
+2 6 * * * cd $LIB && crontab -l > crontab && git-commit-quietly "crontab commit" crontab
+
+# don't forget my hosts file
+# mm hh day month weekday command
+4 6 * * * cd $LIB && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab commit" etc-hosts
+
+# track what I have installed with homebrew
+# mm hh day month weekday command
+8 6 * * * cd $LIB && brew list --formula > brew-list && git-commit-quietly "crontab commit" brew-list
