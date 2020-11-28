@@ -1,6 +1,7 @@
 adns
 bash
 bdw-gc
+c-ares
 emacs
 gdbm
 gettext
@@ -10,7 +11,9 @@ gnutls
 gpgme
 guile
 jansson
+jemalloc
 libassuan
+libev
 libevent
 libffi
 libgcrypt
@@ -23,12 +26,14 @@ libunistring
 libusb
 mutt
 nettle
+nghttp2
 npth
 openssl@1.1
 p11-kit
 pinentry
 pkg-config
 python@3.8
+python@3.9
 readline
 sqlite
 tokyo-cabinet
