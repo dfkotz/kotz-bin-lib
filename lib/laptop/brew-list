@@ -9,6 +9,7 @@ bash
 bdw-gc
 bfg
 bibclean
+c-ares
 cabal-install
 cairo
 cloc
@@ -52,6 +53,7 @@ icu4c
 ilmbase
 imagemagick
 jansson
+jemalloc
 jpeg
 jpeginfo
 libassuan
@@ -59,6 +61,7 @@ libcerf
 libcroco
 libde265
 libepoxy
+libev
 libevent
 libffi
 libgcrypt
@@ -88,6 +91,7 @@ mosh
 mpfr
 mutt
 nettle
+nghttp2
 npth
 openexr
 openjdk
