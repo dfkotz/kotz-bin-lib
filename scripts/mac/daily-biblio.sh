@@ -17,6 +17,6 @@ cd
 (cd projects/auracle-docs/web && ../bib-mendeley/bin/cron.sh user-auracle.json auracle.bib) |& cron-errors auracle-docs
 
 # LAUNCH AGENT
-# Save a copy of the launch agent, in case I get a new laptop
+# Save a copy of the launch agent, in case I get a new computer
 plist=org.davidkotz.daily-biblio.plist
-( cd lib/mac; rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-biblio plist" $plist)
+( cd lib/iMac; rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-biblio plist" $plist)

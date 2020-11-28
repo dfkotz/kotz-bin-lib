@@ -24,6 +24,6 @@ comic-fbfw               $DAVE
 # send the Kotz daily calendar
 daily-calendar $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL
 
-# Save a copy of the launch agent, in case I get a new laptop
+# Save a copy of the launch agent, in case I get a new computer
 plist=org.davidkotz.daily-email.plist
-(cd ~/lib/mac && rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-email plist" $plist)
+(cd ~/lib/iMac && rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-email plist" $plist)
