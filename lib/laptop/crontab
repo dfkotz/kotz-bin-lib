@@ -1,5 +1,4 @@
-# DFK crontab (Mac)
-# see also Launchd scripts
+# DFK crontab (laptop)
 
 # Basic environment variables
 HOME=/Users/dfk
@@ -11,26 +10,26 @@ TERM=VT100
 MAILTO=dfk
 MAILFROM=dfk
 
+# pull any changes to lib, dot, scripts
+# mm hh day month weekday command
+0 7 * * *   cd projects/kotz-bin-lib && git pull --quiet
+
 # don't forget my crontab
 # mm hh day month weekday command
-0 7 * * * cd $HOME/lib/mac && crontab -l > crontab && git-commit-quietly "crontab" crontab
+2 7 * * * cd $HOME/lib/laptop && crontab -l > crontab && git-commit-quietly "crontab commit" crontab
 
 # don't forget my hosts file
 # mm hh day month weekday command
-4 7 * * * cd $HOME/lib/mac && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab" etc-hosts
+4 7 * * * cd $HOME/lib/laptop && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab commit" etc-hosts
 
 # track what I have installed with homebrew
 # mm hh day month weekday command
-8 7 * * * cd $HOME/lib/mac && brew list --formula > brew-list && git-commit-quietly "crontab" brew-list
-
-# pull any changes to lib, dot, scripts
-# mm hh day month weekday command
-0 9 * * *   cd projects/kotz-bin-lib && git pull --quiet
+8 7 * * * cd $HOME/lib/laptop && brew list --formula > brew-list && git-commit-quietly "crontab commit" brew-list
 
 # show me what files are left uncommitted
 # mm hh day month weekday command
 2 9 * * *   git-to-commit projects/* 
-# 4 9 * * *   svn-to-commit projects/* 
+# 4 9 * * * svn-to-commit projects/* 
 # 6 9 * * * cvs-to-commit projects/*
 
 # warn me if there are any changes to published research bibs,
