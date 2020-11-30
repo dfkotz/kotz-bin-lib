@@ -3,7 +3,7 @@
 
 # Basic environment variables
 SHELL=/usr/local/bin/bash
-PATH=/Users/dfk/scripts/mac:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PATH=/Users/dfk/scripts/mac:/Users/dfk/scripts/common:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 MAILTO=dfkotz@mac.com
 TERM=VT100
 
