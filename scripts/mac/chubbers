@@ -59,7 +59,7 @@ foreach address (chubbers@dartmouth.edu $extras)
     mutt -s "$subject" "$address" < chubbers-message
 end
 
-mv -f chubbers-clean chubbers-old
+mv -f chubbers-clean chubbers-old && git add chubbers-old
 
 cleanup:
 rm -f chubbers-blank chubbers-clean chubbers-diffs chubbers-message
