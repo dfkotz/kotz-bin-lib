@@ -6,7 +6,7 @@ cd
 
 # SCRIPTS, LIB, CRONTABS
 # pull updates into lib and scripts once a day
-(cd kotz-bin-lib && git pull --quiet) |& cron-errors kotz-bin-lib
+(cd projects/kotz-bin-lib && git pull --quiet) |& cron-errors kotz-bin-lib
 
 # BIBLIO
 # Kotzgroup, THaW, Amulet, Auracle
