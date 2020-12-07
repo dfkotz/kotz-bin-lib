@@ -19,4 +19,4 @@ cd
 # LAUNCH AGENT
 # Save a copy of the launch agent, in case I get a new computer
 plist=org.davidkotz.daily-biblio.plist
-( cd lib/iMac; rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-biblio plist" $plist)
+( cd lib/laptop; rsync -a ~/Library/LaunchAgents/$plist $plist && git-commit-quietly "daily-biblio plist" $plist)
