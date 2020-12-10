@@ -61,15 +61,26 @@
 ;(global-set-key "\M-[" 'backward-paragraph)
 ;(global-set-key "\M-]" 'forward-paragraph)
 
-(global-set-key "\C-xg" 'goto-line)
-(global-set-key "\C-xc" 'compile)
-(setq compile-command "make -k ")
-
 (global-set-key "\M-s" 'tags-search)
 (global-set-key "\M-r" 'tags-query-replace)
 (global-set-key "\M-n" 'tags-loop-continue)
 
 (global-set-key "\C-x%" 'query-replace-regexp)
+(global-set-key "\C-xg" 'goto-line)
+(global-set-key "\C-xc" 'compile)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Compilation-mode hook
+; Add a pattern to recognize the output of linkchecker,
+; so C-x ` will jump to next error
+(setq compile-command "make -k ")
+(setq compilation-mode-hook
+      '(lambda ()
+         (setq linkchecker (list "^Parent URL file://\\(/[^,]*\\), line \\([1-9][0-9]*\\), col \\([1-9][0-9]*\\)$" 1 2 3))
+         (setq compilation-error-regexp-alist (cons 'linkchecker compilation-error-regexp-alist))
+         (setq compilation-error-regexp-alist-alist (cons (cons 'linkchecker linkchecker) compilation-error-regexp-alist-alist))
+	 )
+      )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Filename extensions, and those to ignore during filename completion
