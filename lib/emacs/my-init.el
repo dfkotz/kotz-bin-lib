@@ -76,7 +76,7 @@
 (setq compile-command "make -k ")
 (setq compilation-mode-hook
       '(lambda ()
-         (setq linkchecker (list "^Parent URL file://\\(/[^,]*\\), line \\([1-9][0-9]*\\), col \\([1-9][0-9]*\\)$" 1 2 3))
+         (setq linkchecker (list "^Parent URL [A-Za-z]*://\\(/[^,]*\\), line \\([1-9][0-9]*\\), col \\([1-9][0-9]*\\)$" 1 2 3))
          (setq compilation-error-regexp-alist (cons 'linkchecker compilation-error-regexp-alist))
          (setq compilation-error-regexp-alist-alist (cons (cons 'linkchecker linkchecker) compilation-error-regexp-alist-alist))
 	 )
