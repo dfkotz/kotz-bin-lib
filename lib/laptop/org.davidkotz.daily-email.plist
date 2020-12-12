@@ -28,8 +28,8 @@
         <integer>01</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/dfk/Desktop/daily-email.log</string>
+    <string>/tmp/daily-email.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/dfk/Desktop/daily-email.log</string>
+    <string>/tmp/daily-email.log</string>
 </dict>
 </plist>
