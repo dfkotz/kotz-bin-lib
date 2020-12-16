@@ -122,6 +122,7 @@ shellcheck
 sphinx-doc
 sqlite
 subversion
+telnet
 terminal-notifier
 tokyo-cabinet
 tree
