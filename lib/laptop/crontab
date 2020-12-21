@@ -22,6 +22,10 @@ MAILFROM=dfk
 # mm hh day month weekday command
 4 7 * * * cd $HOME/lib/laptop && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab commit" etc-hosts
 
+# don't forget my launchd files
+# mm hh day month weekday command
+6 7 * * * cd $HOME/lib/laptop && rsync -a ~/Library/LaunchAgents/org.davidkotz.*.plist . && git-commit-quietly "crontab commit" *.plist
+
 # track what I have installed with homebrew
 # mm hh day month weekday command
 8 7 * * * cd $HOME/lib/laptop && brew list --formula > brew-list && git-commit-quietly "crontab commit" brew-list
