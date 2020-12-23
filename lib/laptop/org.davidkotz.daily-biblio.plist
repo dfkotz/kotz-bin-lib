@@ -28,8 +28,8 @@
         <integer>15</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/dfk/Desktop/daily-biblio.log</string>
+    <string>/tmp/daily-biblio-stdout.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/dfk/Desktop/daily-biblio.log</string>
+    <string>/tmp/daily-biblio-stderr.log</string>
 </dict>
 </plist>
