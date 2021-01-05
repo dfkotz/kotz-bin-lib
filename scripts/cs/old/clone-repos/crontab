@@ -1,0 +1,21 @@
+###################################################
+# GIT and SVN REPOs
+# mm hh day month weekday command
+
+# track what repos exist in kotzgroup on GitHub
+00 3 * * * cd /u/dfk/lib/cs && repolist.py > repolist && git-commit-quietly "crontab" repolist
+
+# pull a copy of our bitbucket repos, every night
+# 00 4 * * * sh /net/kotz/projects-no-backup/clone-repos-bitbucket/gitpull-cron.sh
+
+# pull a copy of our svn repos, every night
+00 4 * * * sh /net/kotz/projects-no-backup/clone-repos-svn/svnupdate-cron.sh
+
+# pull a copy of our gitlab repos, every night
+# 14 4 * * * sh /net/kotz/projects-no-backup/clone-repos-gitlab/gitpull-cron.sh
+
+# track new branches on our github repos, every night
+24 4 * * * sh /net/kotz/projects-no-backup/clone-repos-github/gitpull-track.sh
+
+# pull a copy of our github repos, every night
+34 4 * * * sh /net/kotz/projects-no-backup/clone-repos-github/gitpull-cron.sh
