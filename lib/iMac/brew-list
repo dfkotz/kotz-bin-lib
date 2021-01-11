@@ -5,10 +5,12 @@ c-ares
 emacs
 gdbm
 gettext
+git-annex
 gmp
 gnupg
 gnutls
 gpgme
+gsasl
 guile
 jansson
 jemalloc
@@ -20,10 +22,13 @@ libgcrypt
 libgpg-error
 libidn2
 libksba
+libmagic
+libquvi
 libtasn1
 libtool
 libunistring
 libusb
+lua@5.1
 mutt
 nettle
 nghttp2
@@ -34,8 +39,10 @@ pinentry
 pkg-config
 python@3.8
 python@3.9
+quvi
 readline
 sqlite
+tcl-tk
 tokyo-cabinet
 unbound
 wget
