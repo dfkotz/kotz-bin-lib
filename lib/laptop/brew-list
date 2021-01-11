@@ -1,6 +1,7 @@
 a2ps
 adns
 adwaita-icon-theme
+aom
 apr
 apr-util
 aspell
@@ -123,6 +124,7 @@ shellcheck
 sphinx-doc
 sqlite
 subversion
+tcl-tk
 telnet
 terminal-notifier
 tokyo-cabinet
