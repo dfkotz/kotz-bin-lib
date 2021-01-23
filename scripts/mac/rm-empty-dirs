@@ -1,8 +1,11 @@
 #!/bin/bash
 # remove all the directories that are empty,
 # within any of the directories provided on the commandline. 
+
 if [ $# -gt 0 ]; then
     # This actually tries to remove all directories, but only 
     # the empty ones will successfully delete.
     find "$@" -type d -delete 
+else
+    echo usage: $0 dir...
 fi
