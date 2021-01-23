@@ -4,6 +4,11 @@
 # to the directory named as $2 on the command line.
 #
 
+if [ $# != 2 ]; then
+    echo usage: $0 from-directory to-directory
+    exit 1
+fi
+
 rsync -ravH --exclude-from=- "$1"/ "$2"/ <<EOF
 .DS_Store
 Icon?
