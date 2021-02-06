@@ -7,7 +7,6 @@ aspell
 bash
 bdw-gc
 bfg
-bibclean
 c-ares
 cairo
 cloc
@@ -83,7 +82,6 @@ openjpeg
 openssl@1.1
 p11-kit
 pandoc
-pandoc-citeproc
 pango
 pcre
 pcre2
@@ -107,7 +105,6 @@ terminal-notifier
 tokyo-cabinet
 tree
 unbound
-unrar
 utf8proc
 webp
 wget
