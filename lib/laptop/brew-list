@@ -82,6 +82,7 @@ mosh
 mpdecimal
 mpfr
 mutt
+ncurses
 nettle
 nghttp2
 npth
@@ -111,6 +112,7 @@ subversion
 tcl-tk
 telnet
 terminal-notifier
+tmux
 tokyo-cabinet
 tree
 unbound
