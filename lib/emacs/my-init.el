@@ -63,7 +63,7 @@
 
 (global-set-key "\M-s" 'tags-search)
 (global-set-key "\M-r" 'tags-query-replace)
-(global-set-key "\M-n" 'tags-loop-continue)
+(global-set-key "\M-n" 'fileloop-continue)
 
 (global-set-key "\C-x%" 'query-replace-regexp)
 (global-set-key "\C-xg" 'goto-line)
