@@ -25,10 +25,7 @@ no_exit_on_failed_exec=
 command_oriented_history=
 
 # --------------------------------------------------------------------
-# aliases used for cs50
-
-alias mygcc='gcc -Wall -pedantic -std=c11 -ggdb'
-alias myvalgrind='valgrind --leak-check=full --show-leak-kinds=all'
+# aliases used by David Kotz
 
 # safety aliases
 alias rm='rm -i'
@@ -42,9 +39,6 @@ alias which='type -all'
 alias du='du -kh'
 alias df='df -kTh'
 
-# --------------------------------------------------------------------
-# aliases used by David Kotz
-
 # pretty printing
 alias print='a2ps --landscape -2'
 alias print1='a2ps --portrait  -1'
@@ -56,16 +50,15 @@ alias abut=paste
 # convert ps to pdf
 alias distill='ps2pdf14 -dSubsetFonts=true -dEmbedAllFonts=true'
 
+# Dartmouth name directory - this will fail soon
 if [ $(uname) == "Darwin" ]; then
    # MacOS
-   # Dartmouth Name Directory
-   alias dnd='ssh flume.cs.dartmouth.edu scripts/cs/dnd'
-   alias ssh-plank='ssh d31379t@plank.thayer.dartmouth.edu'
+   alias dnd='ssh dfk@flume.cs.dartmouth.edu scripts/cs/dnd'
+elif [ $(hostname) == "plank" ]; then
+   alias dnd='ssh dfk@flume.cs.dartmouth.edu scripts/cs/dnd'
 else
-   # Linux
+   # CS Linux
    alias dnd="$HOME/scripts/cs/dnd"
-   alias ssh-polaris='ssh d31379t@polaris.dartmouth.edu'
-   alias ssh-katahdin='ssh d31379t@katahdin.dartmouth.edu'
 fi
 
 # --------------------------------------------------------------------
