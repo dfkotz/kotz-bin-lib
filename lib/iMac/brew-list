@@ -29,6 +29,7 @@ libtool
 libunistring
 libusb
 lua@5.1
+m4
 mpdecimal
 mutt
 nettle
