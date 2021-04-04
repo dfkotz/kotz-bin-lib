@@ -1,0 +1,121 @@
+#!/bin/env /bin/python3
+#
+# Command-line directory lookup tool using REST lookup API
+#
+#    Query the Dartmouth Directory and retrieve fields from the matching entries.
+#    A single query may be specified on the command line, or a series of
+#    queries, one to a line, will be read from stdin.
+#
+#    By default, the query may be either a name or a netid. The words in the query
+#    are checked against the common name (cn), nickname (eduPersonNickname) and
+#    netid (uid) fields. Use the "--netid" flag to search by netid only.
+#
+#
+#
+#    Fields from matching entries are written to stdout, one line per match,
+#    separated by a comma.  The number and order of the ‐f options determine
+#    which fields are printed in what order.  If no ‐f option appears, then
+#    the 'displayName', 'eduPersonNickname', and 'eduPersonPrimaryAffiliation'
+#    fields are printed.
+#
+#   Any publically readable LDAP field may be requested, including:
+#       uid
+#       eduPersonAffiliation
+#       eduPersonPrimaryAffiliation
+#       dcAffiliation
+#       givenName
+#       dcDeptclass
+#       dcDartid
+#       eduPersonNickname
+#       initials
+#       dcMailaddr
+#       dcDctsnum
+#       mail
+#       dcAdvanceid
+#       sn
+#       o
+#       objectClass
+#       dcDieboldnum
+#       dcHinmanaddr
+#       cn
+#       telephoneNumber
+#       displayName
+#       dcDndUid
+#       dcUrl
+#
+import requests,argparse,json,sys
+import logging as log
+#
+# Parse command line args.
+def parseArgs():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('namewords', nargs='*',help="name/netid to search for")
+    parser.add_argument('--field', '-f', action='append')
+    parser.add_argument('--netid', action='store_true')
+    parser.add_argument('--url', default='https://api-lookup.dartmouth.edu/v1/lookup')
+    parser.add_argument('--debug', action='store_true', help='write debugging info (to stderr)')
+    args = parser.parse_args()
+    if not args.field:
+        args.field = [ 'displayName', 'eduPersonNickname', 'eduPersonPrimaryAffiliation']
+
+#    args.url = "http://localhost:8080/v1/lookup" #### testing ###
+
+    if args.debug:
+        log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
+    else:
+        log.basicConfig(format="%(levelname)s: %(message)s")
+
+    return args;
+
+# run one query, printing the requested fields
+# Successful results are printed to stdout, in CSV format
+# Errors to stderr
+def doQuery(url, query, field, netid):
+    queryArgs = { "field" : field }
+    if netid:
+        queryArgs["netid"] = query     # "netid" flag means query by netid only, not fuzzy
+    else:
+        queryArgs["q"] = query
+
+
+    response = requests.get(url, params=queryArgs)
+
+    log.debug("%s", response.text)
+
+    if response.status_code == requests.codes.ok:
+        results = response.json()
+        users = results["users"]
+        if len(users) == 0:                 # no matches is an error
+            queryErrPrint(query, 'no match')
+        else:                               # loop through all results
+            for u in users:
+                line = []
+                for f in field:             # return fields in requested order
+                    line.append(u.get(f, '')) # note - empty string if undefined LDAP field
+                print(",".join(line))   # CSV-format output
+    else:
+        try:            # Response *should* be in JSON format
+            err = response.json()
+            queryErrPrint(query, err["error"])
+        except json.decoder.JSONDecodeError:
+            queryErrPrint(query, response.text)
+
+def main():
+    args = parseArgs()
+
+    if args.namewords:       # query specified on command line
+        doQuery(args.url, " ".join(args.namewords), args.field, args.netid)
+    else:                   # nothing on command line
+        for line in sys.stdin:  # lookup running queries from stdin
+            doQuery(args.url, line.strip(), args.field, args.netid)
+
+
+# utility: print to stderr
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+def queryErrPrint(query, message):
+    eprint('>> "',query,'": ', message, sep='')
+
+if __name__=="__main__":
+   main()
