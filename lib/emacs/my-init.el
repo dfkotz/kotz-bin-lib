@@ -67,9 +67,6 @@
     (global-set-key "\M-n" 'tags-loop-continue)
   (global-set-key "\M-n" 'fileloop-continue)
   )
-(if (version< emacs-version "27")
-    (message "too old")
-  (message "good"))
 
 (global-set-key "\C-x%" 'query-replace-regexp)
 (global-set-key "\C-xg" 'goto-line)
