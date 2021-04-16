@@ -3,7 +3,13 @@
 # convert to jpg all photos listed as arguments 
 #
 
-for i in "$@"
+for heic in "$@"
 do
-  convert "$i" "${i%HEIC}jpg"
+    if [[ "$heic" =~ .*\.HEIC$ ]]; then
+        convert "$heic" "${heic%.HEIC}.jpg"
+    elif [[ "$heic" =~ .*\.heic$ ]]; then
+        convert "$heic" "${heic%.heic}.jpg"
+    else
+        echo 1>&2 "unknown file type $heic"
+    fi
 done
