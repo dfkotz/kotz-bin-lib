@@ -112,6 +112,7 @@ rcs
 readline
 ruby
 shared-mime-info
+six
 sqlite
 subversion
 tcl-tk
