@@ -47,6 +47,7 @@ imagemagick
 imath
 jansson
 jasper
+jbig2dec
 jemalloc
 jpeg
 jpeginfo
@@ -60,6 +61,7 @@ libffi
 libgcrypt
 libgpg-error
 libheif
+libidn
 libidn2
 libksba
 liblqr
