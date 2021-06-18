@@ -4,7 +4,7 @@
 #
 # Be sure to commit everything (needed) before running this script!
 #
-# David Kotz, 2020  <kotz@dartmouth.edu>
+# David Kotz, 2020,21  <kotz@dartmouth.edu>
 
 if [[ $# != 1 ]]; then
    echo usage: $0 tagname
@@ -15,5 +15,5 @@ fi
 
 git push --delete origin "$tagname" # remove the existing tag from remote
 git tag --force "$tagname"          # move the local tag to the new commit
-git push origin master              # push commits to GitHub remote
+git push                            # push commits to GitHub remote
 git push origin "$tagname"          # push tag to GitHub remote
