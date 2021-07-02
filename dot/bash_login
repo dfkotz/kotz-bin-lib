@@ -22,7 +22,7 @@ source ~/.bash_environset
 if [ $(uname) == "Darwin" ]; then
    # MacOS
    PS1='[MacOS:\w]\$ '
-   CDPATH=.:~:~/cs50:~/projects:~/Desktop:~/Documents
+   CDPATH=.:~:~/projects:~/Desktop:~/Documents
 else
    # Linux
    PS1='[\u@\h \w]\$ '
