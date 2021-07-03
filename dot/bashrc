@@ -50,15 +50,4 @@ alias abut=paste
 # convert ps to pdf
 alias distill='ps2pdf14 -dSubsetFonts=true -dEmbedAllFonts=true'
 
-# Dartmouth name directory - this will fail soon
-if [ $(uname) == "Darwin" ]; then
-   # MacOS
-   alias dnd='ssh dfk@flume.cs.dartmouth.edu scripts/cs/dnd'
-elif [ $(hostname) == "plank" ]; then
-   alias dnd='ssh dfk@flume.cs.dartmouth.edu scripts/cs/dnd'
-else
-   # CS Linux
-   alias dnd="$HOME/scripts/cs/dnd"
-fi
-
 # --------------------------------------------------------------------

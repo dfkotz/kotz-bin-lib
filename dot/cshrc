@@ -66,12 +66,3 @@ alias abut paste
 
 # convert ps to pdf
 alias distill 'ps2pdf14 -dSubsetFonts=true -dEmbedAllFonts=true'
-
-if ( `uname` == "Darwin") then
-   # MacOS
-   # Dartmouth Name Directory
-   alias dnd 'ssh flume.cs.dartmouth.edu scripts/cs/dnd'
-else
-   # Linux
-   alias dnd 'scripts/cs/dnd'
-endif

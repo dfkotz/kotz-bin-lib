@@ -1,4 +1,4 @@
-#!/bin/env /bin/python3
+#!/usr/bin/env python3
 #
 # Command-line directory lookup tool using REST lookup API
 #
