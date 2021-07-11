@@ -72,7 +72,7 @@ else
     else
 	echo Copy the new photo files into $newDir:q
 	(cd $photos:q \
-	     && rsync -aHv --files-from=$tmp.newpaths . $newDir/)
+	     && rsync -avHO --files-from=$tmp.newpaths . $newDir/)
 	cp $tmp.newpaths $newDir/manifest.txt
     endif
 endif

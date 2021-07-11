@@ -38,7 +38,7 @@ function backupOther() {
         echo ""; echo backup \""$from"\"
         to="$dest/$from"
         mkdir -p "$to" && \
-            (cd && rsync -Hav --exclude .DS_Store "$from/" "$to/")
+            (cd && rsync -avHO --exclude .DS_Store "$from/" "$to/")
     done
 }
 
