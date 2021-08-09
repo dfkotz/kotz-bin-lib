@@ -32,7 +32,7 @@ MAILFROM=dfk
 
 # show me what files are left uncommitted
 # mm hh day month weekday command
-2 9 * * *   git-to-commit projects/* 
+2 9 * * *   git-to-commit projects/* projects/crawdad/* projects/cs50/*
 # 4 9 * * * svn-to-commit projects/* 
 # 6 9 * * * cvs-to-commit projects/*
 
