@@ -25,7 +25,7 @@ set reply_to
 #
 # I had to adapt the loziju instruction step 1, replacing Gmail with:
 #   relayhost=smtp.mail.me.com:587
-# The resulting change to main.cf is as follows.
+# The resulting change to /etc/postfix/main.cf is as follows.
 #
 # # Added by DFK, adapting these instructions:
 # #   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
