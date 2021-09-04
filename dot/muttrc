@@ -22,6 +22,8 @@ set reply_to
 #   https://appleid.apple.com/account/manage
 # following some advice from
 #   https://support.apple.com/en-us/HT202304
+# After editing /etc/postfix/sasl_passwd you must
+#   sudo postmap /etc/postfix/sasl_passwd
 #
 # I had to adapt the loziju instruction step 1, replacing Gmail with:
 #   relayhost=smtp.mail.me.com:587
