@@ -1,6 +1,7 @@
 #!/bin/sh
 # This script is run daily by launchd
 # see ~/Library/LaunchAgents/org.davidkotz.daily-email.plist
+
 cd
 
 DAVE=dfkotz@mac.com
