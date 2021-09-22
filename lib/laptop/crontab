@@ -10,10 +10,6 @@ TERM=VT100
 MAILTO=dfk
 MAILFROM=dfk
 
-# pull any changes to lib, dot, scripts
-# mm hh day month weekday command
-0 7 * * *   cd projects/kotz-bin-lib && git pull --quiet
-
 # don't forget my crontab
 # mm hh day month weekday command
 2 7 * * * cd $HOME/lib/laptop && crontab -l > crontab && git-commit-quietly "crontab commit" crontab
