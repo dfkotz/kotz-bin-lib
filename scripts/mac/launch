@@ -8,4 +8,7 @@ source ~/.bash_environset
 # and the cron-like MAILTO
 export MAILTO=dfkotz@mac.com
 
+# pause a few seconds, in case we just woke up and network is not ready
+sleep 10
+
 exec "$@"
