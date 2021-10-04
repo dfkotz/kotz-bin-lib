@@ -41,6 +41,7 @@ gpgme
 graphite2
 guile
 harfbuzz
+hunspell
 icu4c
 ilmbase
 imagemagick
