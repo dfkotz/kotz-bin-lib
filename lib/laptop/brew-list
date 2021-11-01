@@ -9,6 +9,7 @@ bash
 bdw-gc
 brotli
 c-ares
+ca-certificates
 cairo
 cloc
 coreutils
@@ -28,6 +29,7 @@ gdb
 gdbm
 gettext
 ghostscript
+giflib
 git
 git-lfs
 glib
@@ -51,6 +53,7 @@ jasper
 jbig2dec
 jemalloc
 jpeg
+jpeg-xl
 jpeginfo
 libassuan
 libb2
@@ -75,6 +78,7 @@ libtiff
 libtool
 libunistring
 libusb
+libvmaf
 libx11
 libxau
 libxcb
@@ -87,6 +91,7 @@ lua
 lz4
 lzo
 m4
+md4c
 mosh
 mpdecimal
 mpfr
