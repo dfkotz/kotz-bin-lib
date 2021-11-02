@@ -69,6 +69,7 @@ libidn
 libidn2
 libksba
 liblqr
+libnghttp2
 libomp
 libpng
 libproxy
@@ -112,6 +113,7 @@ pinentry
 pixman
 pkg-config
 protobuf
+python@3.10
 python@3.8
 python@3.9
 qt
