@@ -13,11 +13,17 @@ function backup-then-eject() {
     if [ -d "/Volumes/$backup" ]; then
         # start Time Machine backup
         echo "start Time Machine backup to $backup..."
-        tmutil startbackup --block --destination "$UUID"
-        eject "$backup"
-        return 0
-    else
-        return 1
+        if tmutil startbackup --block --destination "$UUID"; then
+            echo "SUCCESS"
+            eject "$backup"
+            return 0
+        else # Time Machine failed
+            echo "FAILED - Time Machine exited non-zero"
+            eject "$backup"
+            return 1
+        fi
+    else # backup disk not found
+        return 2
     fi
 }
 
@@ -33,6 +39,6 @@ if (( $black == 0 || $blue == 0 )); then
     echo at least one backup succeeded
     exit 0
 else
-    echo NO BACKUP DRIVES FOUND
-    exit 1
+    echo BACKUP FAILED
+    exit 99
 fi
