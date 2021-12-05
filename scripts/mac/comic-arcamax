@@ -55,9 +55,9 @@ endif
 #    goto cleanup
 #endif
 
-echo " " | mutt -s "Comic strip: $strip" -a $img:t -- $argv[2-]:q
+echo "$page" | mutt -s "Comic strip: $strip" -a $img:t -- $argv[2-]:q
 if ($status) then
-    echo mailx failed
+    echo mutt failed when sending mail
     goto cleanup
 endif
 
