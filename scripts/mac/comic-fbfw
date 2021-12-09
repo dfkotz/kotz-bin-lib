@@ -55,7 +55,7 @@ endif
 #endif
 
 # mail me the image
-echo " " | mutt -s "Comic strip: For Better or For Worse" -a $img:t -- $argv:q
+echo "$page" | mutt -s "Comic strip: For Better or For Worse" -a $img:t -- $argv:q
 if ($status) then
     echo mailx failed
     goto cleanup
