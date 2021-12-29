@@ -10,6 +10,13 @@
 
 dirs=( ~/Personal/Photos/Lightroom ~/Dropbox/Lightroom )
 
+# look for newly arrived subdirectories - which should maybe be checked
+
+for dir in "${dirs[@]}";
+do
+    (cd "$dir"; pwd; ls | diff .ls - ) || exit 1
+done
+
 log=/tmp/daily-backup$$.log
 
 # check photo collections for new files
