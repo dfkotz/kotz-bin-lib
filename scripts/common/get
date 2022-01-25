@@ -16,7 +16,9 @@ do
     (cd "$dir"; 
         if [ -d .git ]; then git pull -q || echo "$dir": failed; fi
         if [ -f .gitmodules ]; then git submodule update --init --recursive; fi
+        # unfortunately some repos use 'master' and some use 'main'
         if [ -f .gitmodules ]; then git submodule foreach --recursive 'git checkout master'; fi
+        if [ -f .gitmodules ]; then git submodule foreach --recursive 'git checkout main'; fi
         if [ -d .svn ]; then svn update; fi
         if [ -d CVS ]; then cvs update; fi
     )
