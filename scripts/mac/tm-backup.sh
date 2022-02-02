@@ -8,7 +8,7 @@
 function is-mounted() {
     name="$1"
     echo "looking for $name"
-    if [ -d "/Volumes/$name/Backups.backupdb" ]; then
+    if [ -d "/Volumes/$name/.Spotlight-V100/" ]; then
         return 0
     else
         return 1
