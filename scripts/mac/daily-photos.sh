@@ -2,13 +2,13 @@
 #
 # daily-photos - a daily checkup of my photos
 #
-# BUGS: photo-directory names must not have embedded spaces.
 
 dirs=( ~/Personal/Photos/Lightroom ~/Dropbox/Lightroom )
 
 log=/tmp/daily-photos$$.log
 
-# look for newly arrived subdirectories - which should maybe be checked
+# look for newly arrived subdirectories - which should maybe be checked -
+# or for subdirectories that have disappeared.
 for dir in "${dirs[@]}";
 do
     (cd "$dir"; pwd; ls | diff .ls - ) > $log \
