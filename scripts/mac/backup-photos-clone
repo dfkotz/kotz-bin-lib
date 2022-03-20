@@ -5,7 +5,10 @@
 # creates a 'clone' backup of photos from the source collection to
 # the destination folder.
 #
-# David Kotz 2018
+# NOTE: it does not copy zero-length files, as a workaround for Dropbox's
+# tendency to make files appear to have zero length when they are online-only.
+#
+# David Kotz 2018, 2022
 
 if ($#argv != 2) then
     echo usage: backup-photos-clone sourceDir destDir
@@ -27,9 +30,9 @@ if (! -d $destDir:q) then
 endif
 
 # Use rsync to update the destination to be exactly like the original,
-# excluding certain unnecessary files.
+# excluding zero-length and certain unnecessary files.
 echo backup \"$sourceDir:q\"
-rsync -avHO --delete --delete-excluded \
+rsync -avHO --min-size=1b --delete \
       --exclude .DS_Store --exclude \*Previews.lrdata --exclude Backups \
       --exclude Plug-ins --exclude 'Lightroom Settings' \
       $sourceDir:q/ $destDir:q
