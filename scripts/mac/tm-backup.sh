@@ -23,7 +23,7 @@ do
     is-mounted "$name" && break
 
     name=Kotz-TM-SSD-blue
-    UUID=FB2E7472-CF6D-430F-9510-75B51F233DDB
+    UUID=05B61232-31F8-4C54-A30F-D52BCA928A04
     is-mounted "$name" && break
 
     name=
