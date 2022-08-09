@@ -28,7 +28,7 @@ else
    setenv CLASSPATH .:"$CLASSPATH":$myclasspath
 endif
 
-set myinfopath=/usr/share/info:/usr/local/share/info
+set myinfopath=/usr/share/info:/usr/local/share/info:/opt/homebrew/share/info
 if (! $?INFOPATH) then
    setenv INFOPATH .:$myinfopath
 else

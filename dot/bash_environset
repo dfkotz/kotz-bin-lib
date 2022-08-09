@@ -4,9 +4,10 @@ export environset=true
 
 #### extend the PATH
 
-prefix=/usr/local/sbin:/usr/local/bin:/usr/local/lib/ruby/gems/3.1.0/bin
+prefix1=/usr/local/sbin:/opt/homebrew/sbin:/usr/local/bin:/opt/homebrew/bin
+prefix2=/usr/local/lib/ruby/gems/3.1.0/bin
 suffix=~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
-PATH=$prefix:$PATH:$suffix
+PATH=$prefix1:$prefix2:$PATH:$suffix
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
@@ -57,11 +58,14 @@ export LESS='-s -w -M -R'
 export LESSHISTFILE=-
 
 #### editor: What editor should we use?
-if [ -x /usr/bin/emacs ]; then
-   export EDITOR=/usr/bin/emacs
-else
-   export EDITOR=/usr/local/bin/emacs
-fi
+EDITOR=/usr/bin/vi
+for e in /usr/bin  /usr/local/bin  /opt/homebrew/bin
+do
+  editor=$e/emacs
+  if [ -x $editor ]; then
+    export EDITOR=$editor
+  fi
+done
 export VISUAL="$EDITOR"
 
 #### printing: do not allow printing with lpr
