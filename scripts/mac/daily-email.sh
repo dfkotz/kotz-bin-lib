@@ -1,6 +1,6 @@
 #!/bin/sh
 # This script is run daily by launchd
-# see ~/Library/LaunchAgents/org.davidkotz.daily-email.plist
+# see ~/lib/laptop/org.davidkotz.daily-email.plist
 
 cd
 

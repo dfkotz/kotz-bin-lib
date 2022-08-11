@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 # This script is a wrapper for scripts run by launchd
 # from /Users/dfk/Library/LaunchAgents/*.plist
 
