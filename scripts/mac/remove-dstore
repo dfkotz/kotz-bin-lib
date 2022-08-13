@@ -1,0 +1,12 @@
+#!/bin/csh -f
+#
+# remove .DS_Store file in subtree of cwd (default) or dirs listed
+#
+
+if ($#argv == 0) then
+   set dirs=(.)
+else
+   set dirs=($argv:q)
+endif
+
+find $dirs:q -name .DS_Store -print0 | xargs -0 rm
