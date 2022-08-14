@@ -1,5 +1,7 @@
 #!/bin/csh -f
 #
+# DEPRECATED - this script is no longer used, but its tricks may be handy!
+#
 # archives photos from my collection to this disk, without
 # ever deleting or overwriting files on this disk.
 #
