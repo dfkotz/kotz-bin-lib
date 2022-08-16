@@ -30,9 +30,10 @@ if (! -d $destDir:q) then
 endif
 
 # Use rsync to update the destination to be exactly like the original,
-# excluding zero-length and certain unnecessary files.
+# excluding permissions (because Google Drive seems to use different perms.)
+# If I resume using Dropbox, add --min-size=1b  to deal with zero-size files.
 echo backup \"$sourceDir:q\"
-rsync -avHO --min-size=1b --delete \
+    rsync -rltvHO --delete \
       --exclude .DS_Store --exclude \*Previews.lrdata --exclude Backups \
       --exclude Plug-ins --exclude 'Lightroom Settings' \
       $sourceDir:q/ $destDir:q

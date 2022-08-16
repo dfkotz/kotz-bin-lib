@@ -82,7 +82,7 @@ trap exit ERR
 
 # photo directories
 newerPhotos=~/Personal/Photos/Lightroom
-olderPhotos=~/Dropbox/Lightroom
+olderPhotos=~/Lightroom
 # other things (relative to ~)
 plugins=Personal/Photos/Lightroom/Plug-ins 
 organizing=Personal/Photos/photo-organizing
