@@ -22,9 +22,9 @@ function checkdirs()
     time metacheck --verify "$@" > "$log" \
         || mail -s "metacheck-verify" $USER < "$log"
 
-    echo hashcheck --random...
-    time hashcheck --random "$@" > "$log" \
-        || mail -s "hashcheck-random" $USER < "$log"
+    echo hashcheck --sample...
+    time hashcheck --sample "$@" > "$log" \
+        || mail -s "hashcheck-sample" $USER < "$log"
 }
 
 echo LAPTOP DIRECTORIES...
