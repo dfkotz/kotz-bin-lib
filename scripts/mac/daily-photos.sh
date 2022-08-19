@@ -28,10 +28,10 @@ function checkdirs()
 }
 
 echo LAPTOP DIRECTORIES...
-cd ~/Personal/Photos/Lightroom/ && checkdirs *
+checkdirs ~/Personal/Photos/Lightroom/
 
 echo
 echo GOOGLE DIRECTORIES...
-cd ~/Lightroom/ && checkdirs *
+checkdirs ~/Lightroom/
 
 rm -f "$log"
