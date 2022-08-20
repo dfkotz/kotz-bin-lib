@@ -10,20 +10,20 @@ function checkdirs()
 {
     # check photo collections for new files, and add them
     echo metacheck --expand...
-    time metacheck --expand "$@"  > "$log" \
+    metacheck --expand "$@"  > "$log" \
         || mail -s "metacheck-expand" $USER < "$log"
 
     echo hashcheck --update...
-    time hashcheck --update "$@" > "$log" \
+    hashcheck --update "$@" > "$log" \
         || mail -s "hashcheck-update" $USER < "$log"
 
     # check photo collections for integrity
     echo metacheck --verify...
-    time metacheck --verify "$@" > "$log" \
+    metacheck --verify "$@" > "$log" \
         || mail -s "metacheck-verify" $USER < "$log"
 
     echo hashcheck --sample...
-    time hashcheck --sample "$@" > "$log" \
+    hashcheck --sample "$@" > "$log" \
         || mail -s "hashcheck-sample" $USER < "$log"
 }
 
