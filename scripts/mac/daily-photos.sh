@@ -25,6 +25,22 @@ function checkdirs()
     echo hashcheck --sample...
     hashcheck --sample "$@" > "$log" \
         || mail -s "hashcheck-sample" $USER < "$log"
+
+    echo look for new YYYY directories...
+    for dir in "$@"
+    do
+        for subdir in "$dir"/[1-2][0-9][0-9][0-9]*
+        do
+            if [[ -d "$subdir" ]]; then
+                for f in .hashcheck .metacheck
+                do
+                    if [ ! -f "$subdir/$f" ]; then
+                        echo WARNING: missing "$subdir/$f"
+                    fi
+                done
+            fi
+        done
+    done
 }
 
 echo LAPTOP DIRECTORIES...
