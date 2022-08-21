@@ -31,8 +31,7 @@ if [ "$1" == "" ]; then
     echo usage: cr3 destname
     exit 1
 else
-#    destvol=/Volumes/KotzPhotoBackup
-    destvol=~/cr3test
+    destvol=/Volumes/Kotz-photos-SSD/CR3
     destname="$1"
     destdir="$destvol/$destname"
 fi
