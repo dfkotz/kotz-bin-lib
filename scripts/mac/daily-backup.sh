@@ -6,7 +6,12 @@
 #   Check the photo directories for integrity;
 #   Time-Machine backup to local hard drive.
 
+echo -n "daily-photos start: "; date
+
 daily-photos.sh
+
+echo
+echo -n "Time machine start: "; date
 
 # run the Time Machine backup, and check its exit status
 if tm-backup.sh
@@ -15,3 +20,6 @@ then
 else
     terminal-notifier -title "daily-backup" -sound Basso -message "backup failed"
 fi
+
+echo
+echo -n "DONE: "; date
