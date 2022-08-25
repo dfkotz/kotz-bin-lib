@@ -33,7 +33,7 @@ endif
 # excluding permissions (because Google Drive seems to use different perms.)
 # If I resume using Dropbox, add --min-size=1b  to deal with zero-size files.
 echo backup \"$sourceDir:q\"
-    rsync -rltvHO --delete \
+    rsync -i -rltvHO --delete \
       --exclude .DS_Store --exclude \*Previews.lrdata --exclude Backups \
       --exclude Plug-ins --exclude 'Lightroom Settings' \
       $sourceDir:q/ $destDir:q
