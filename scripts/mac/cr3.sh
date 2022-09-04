@@ -9,23 +9,6 @@
 #
 # David Kotz 2022
 
-# SOURCE
-source=/Volumes/EOS_DIGITAL
-photos="$source/DCIM/100CANON"
-if [ -d "$photos" ]; then
-    echo "Found source $photos"
-else
-    echo "Missing source $photos"
-    exit 4
-fi
-
-n=$(ls "$photos" | wc -l)
-if [[ $n == 0 ]]; then
-    echo "No photos on source volume"
-    exit 5
-fi
-
-
 # DESTINATION
 if [ "$1" == "" ]; then
     echo usage: cr3 destname
@@ -51,8 +34,26 @@ else
     exit 3
 fi
 
-# COPY new photos to destination,
-# duplicating (not overwriting) same-named files
-echo Sync $n photos from source to destination
-rsync -rai --backup "$photos"/ "$destpath"/ && echo SUCCESS
+# SOURCE(S)
+source=/Volumes/EOS_DIGITAL
+if [ ! -d "$source" ]; then
+    echo "Missing source $source"
+    exit 4
+fi
+
+for photos in "$source"/DCIM/1??CANON
+do
+    echo "Found source $photos"
+
+    n=$(ls "$photos"/ | wc -l)
+    if [[ $n == 0 ]]; then
+        echo "No photos in $photos"
+        continue
+    fi
+
+    # COPY new photos to destination,
+    # duplicating (not overwriting) same-named files
+    echo "Sync $n photos from $photos"
+    rsync -rai --backup "$photos"/ "$destpath"/ && echo SUCCESS
+done
 exit $?
