@@ -5,6 +5,7 @@ apr
 apr-util
 aspell
 assimp
+autoconf
 bash
 bdw-gc
 brotli
@@ -140,6 +141,7 @@ pinentry
 pixman
 pkg-config
 protobuf
+pyenv
 python@3.10
 python@3.8
 python@3.9
