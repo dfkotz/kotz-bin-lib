@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 # This script is run daily by launchd
 # see ~/lib/laptop/org.davidkotz.daily-biblio.plist
 
