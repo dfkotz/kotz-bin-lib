@@ -5,7 +5,10 @@
 <!-- This file belongs in ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist -->
 <!-- For more information on these values, see the manual page for launchd.plist and the following page: -->
 <!-- https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html -->
-<!-- after editing this file, first unload and then reload this agent:
+<!-- to install this file, copy it into place and then load this agent:
+       cp org.davidkotz.daily-biblio.plist ~/Library/LaunchAgents/
+       launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
+<!-- after editing the installed file, first unload and then reload this agent:
        launchctl bootout gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
        launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
      to force it to run right away,
