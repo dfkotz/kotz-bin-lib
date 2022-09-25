@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#
+# hash-photos - print a hash of the *image* within each file found in
+# given directories. We use the 'convert' tool, which expects the file
+# to be an image file (like jpg or gif); it prints a hash of the image itself,
+# not of the file.  This is useful for detecting changes in the image data
+# independent of changes to the metadata.
+# CAREFUL: Files are processed in no particular order, which means the output
+# may need to be sorted prior to comparing new output with historical output.
+#
+# USAGE: hash-photos directory...
+# OUTPUT: One line per file, with the hash followed by filename (not pathname).
+#
+# David Kotz, 2022
+
+if [ $# -eq 0 ]; then
+    echo "usage: hash-photos directory..."
+    exit 1
+fi
+
+find -E "$@" \
+ -iregex '.*\.(dng|gif|heic|jpeg|jpg|png|psd|tif|tiff)' \
+ -exec convert '{}' -print "%# %f\n" null: \;
