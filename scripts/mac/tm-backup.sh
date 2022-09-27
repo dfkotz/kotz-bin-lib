@@ -18,12 +18,16 @@ function is-mounted() {
 # Wait for one drive to be mounted; give up after fifteen minutes
 for try in {1..30};
 do
-    name=Kotz-TM-SSD-black
-    UUID=596A9425-4CBD-48CF-A090-5B868B9983F2
+    name=Kotz-TM-SSD-red
+    UUID=D3CA35EF-FE8E-48C0-8C29-0AD1488CF2C5
     is-mounted "$name" && break
 
     name=Kotz-TM-SSD-blue
     UUID=05B61232-31F8-4C54-A30F-D52BCA928A04
+    is-mounted "$name" && break
+
+    name=Kotz-TM-SSD-black
+    UUID=596A9425-4CBD-48CF-A090-5B868B9983F2
     is-mounted "$name" && break
 
     name=
