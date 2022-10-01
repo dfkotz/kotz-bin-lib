@@ -50,6 +50,7 @@ gpgme
 graphite2
 guile
 harfbuzz
+highway
 hunspell
 icu4c
 ilmbase
