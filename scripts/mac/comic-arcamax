@@ -36,7 +36,7 @@ endif
 
 # now download the image
 #echo downloading "$img"
-wget -q "$img"
+wget -q --no-check-certificate "$img"
 if ($status) then
     echo wget img failed
     echo "$img"
