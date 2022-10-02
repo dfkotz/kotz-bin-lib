@@ -7,7 +7,9 @@ if ($#argv < 1) then
     exit 1
 endif
 
-set tmp=/tmp/stripfix$$
+set strip="For Better or For Worse"
+
+set tmp=/tmp/comic-fbfw-$$
 
 onintr cleanup
 mkdir $tmp && cd $tmp
@@ -22,7 +24,7 @@ wget -q -k "$page"
 if ($status) then
     echo wget page failed
     echo "$page"
-    goto cleanup
+    goto alternate
 endif
 
 # extract the image URL from the page
@@ -31,7 +33,7 @@ set img=`sed -n 's+.*src="\(https:.*/strip_fix/strips/[^"]*\)".*+\1+p' "$page:t"
 if ("$img" == "") then
     echo failed to extract img address from "$page:t"
     grep strip_fix/strips "$page:t"
-    goto cleanup
+    goto alternate
 endif
 
 # now download the image
@@ -39,7 +41,7 @@ wget -q "$img"
 if ($status) then
     echo wget img failed
     echo "$img"
-    goto cleanup
+    goto alternate
 endif
 
 ## show me the image (for debugging)
@@ -55,17 +57,25 @@ endif
 #endif
 
 # mail me the image
-echo "$page" | mutt -s "Comic strip: For Better or For Worse" -a $img:t -- $argv:q
+echo "$page" | mutt -s "Comic strip: $strip" -a $img:t -- $argv:q
 if ($status) then
-    echo mutt failed when sending mail
+    echo mutt failed when sending mail with embedded image
     goto cleanup
 endif
 
-# mpack -s "Comic strip: For Better or For Worse" -c image/gif $img:t $argv:q
-# if ($status) then
-#     echo mpack failed
-#     goto cleanup
-# endif
+# success!
+goto cleanup
 
+#####################################################################
+# if there are failures above, send a message without embedded image.
+alternate:
+echo "Today's strip: $page" | mutt -s "Comic strip: $strip" -- $argv[2-]:q
+if ($status) then
+    echo mutt failed when sending alternate mail
+    goto cleanup
+endif
+#####################################################################
+
+# end point for all outcomes
 cleanup:
 rm -rf $tmp

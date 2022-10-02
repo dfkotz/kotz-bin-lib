@@ -9,7 +9,7 @@ endif
 
 set strip=$1:q
 
-set tmp=/tmp/comic$$
+set tmp=/tmp/comic-arcamax-$$
 
 onintr cleanup
 mkdir $tmp && cd $tmp
@@ -24,14 +24,14 @@ wget -q -k "$page"
 if ($status) then
     echo wget page failed
     echo "$page"
-    goto cleanup
+    goto alternate
 endif
 
 # extract the image URL from the page -- just the first one
 set img=`grep /newspics/ $strip | grep ^.img | sed '2,$d' | sed -e 's/.*src="//' -e 's/".*//'`
 if ("$img" == "") then
     echo image name is empty, web page may have changed format
-    goto cleanup
+    goto alternate
 endif
 
 # now download the image
@@ -40,7 +40,7 @@ wget -q "$img"
 if ($status) then
     echo wget img failed
     echo "$img"
-    goto cleanup
+    goto alternate
 endif
 
 ## show me the image (for debugging)
@@ -57,15 +57,23 @@ endif
 
 echo "$page" | mutt -s "Comic strip: $strip" -a $img:t -- $argv[2-]:q
 if ($status) then
-    echo mutt failed when sending mail
+    echo mutt failed when sending mail with embedded img
     goto cleanup
 endif
 
-# mpack -s "Comic strip: $strip" -c image/gif $img:t $argv[2-]:q
-# if ($status) then
-#     echo mpack failed
-#     goto cleanup
-# endif
+# success!
+goto cleanup
 
+#####################################################################
+# if there are failures above, send a message without embedded image.
+alternate:
+echo "Today's strip: $page" | mutt -s "Comic strip: $strip" -- $argv[2-]:q
+if ($status) then
+    echo mutt failed when sending alternate mail
+    goto cleanup
+endif
+#####################################################################
+
+# end point for all outcomes
 cleanup:
 rm -rf $tmp
