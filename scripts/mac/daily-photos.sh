@@ -5,7 +5,10 @@
 
 log=/tmp/daily-photos$$.log
 
-# check all arguments (directories) for new and missing files
+# check all arguments (directories) for new and missing files;
+# hash a random sample (about 3%) of all existing files.
+# (Why 3%? we want to sample about 1/30 per day because Google has a 30-day
+#  limit on the restoration of missing files or older versions.)
 function checkdirs()
 {
     # check photo collections for new files, and add them
@@ -22,7 +25,15 @@ function checkdirs()
     metacheck --verify "$@" > "$log" \
         || mail -s "metacheck-verify" $USER < "$log"
 
-    echo hashcheck --sample...
+    echo hashcheck --sample... first pass
+    hashcheck --sample "$@" > "$log" \
+        || mail -s "hashcheck-sample" $USER < "$log"
+
+    echo hashcheck --sample... second pass
+    hashcheck --sample "$@" > "$log" \
+        || mail -s "hashcheck-sample" $USER < "$log"
+
+    echo hashcheck --sample... third pass
     hashcheck --sample "$@" > "$log" \
         || mail -s "hashcheck-sample" $USER < "$log"
 
