@@ -12,29 +12,29 @@ log=/tmp/daily-photos$$.log
 function checkdirs()
 {
     # check photo collections for new files, and add them
-    echo metacheck --expand...
-    metacheck --expand "$@"  > "$log" \
+    echo metacheck expand...
+    metacheck expand "$@"  > "$log" \
         || mail -s "metacheck-expand" $USER < "$log"
 
-    echo hashcheck --update...
-    hashcheck --update "$@" > "$log" \
+    echo hashcheck update...
+    hashcheck update "$@" > "$log" \
         || mail -s "hashcheck-update" $USER < "$log"
 
     # check photo collections for integrity
-    echo metacheck --verify...
-    metacheck --verify "$@" > "$log" \
+    echo metacheck verify...
+    metacheck verify "$@" > "$log" \
         || mail -s "metacheck-verify" $USER < "$log"
 
-    echo hashcheck --sample... first pass
-    hashcheck --sample "$@" > "$log" \
+    echo hashcheck sample... first pass
+    hashcheck sample "$@" > "$log" \
         || mail -s "hashcheck-sample" $USER < "$log"
 
-    echo hashcheck --sample... second pass
-    hashcheck --sample "$@" > "$log" \
+    echo hashcheck sample... second pass
+    hashcheck sample "$@" > "$log" \
         || mail -s "hashcheck-sample" $USER < "$log"
 
-    echo hashcheck --sample... third pass
-    hashcheck --sample "$@" > "$log" \
+    echo hashcheck sample... third pass
+    hashcheck sample "$@" > "$log" \
         || mail -s "hashcheck-sample" $USER < "$log"
 
     echo look for new YYYY directories...
