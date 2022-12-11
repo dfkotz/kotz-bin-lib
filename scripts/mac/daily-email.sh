@@ -23,4 +23,4 @@ comic-fbfw               $DAVE
 
 # CALENDAR
 # send the Kotz daily calendar
-daily-calendar $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL $DOE
+daily-calendar -- $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL $DOE
