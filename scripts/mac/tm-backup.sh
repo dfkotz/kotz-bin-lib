@@ -45,9 +45,9 @@ echo "backing up to $name..."
 if tmutil startbackup --block --destination "$UUID"; then
     eject "$name"
     echo backup succeeded
-    exit 0
+    terminal-notifier -title "daily-backup" -sound Hero -message "backup succee    exit 0
 else
     eject "$name"
     echo BACKUP FAILED
-    exit 1
+    terminal-notifier -title "daily-backup" -sound Basso -message "backup faile    exit 1
 fi

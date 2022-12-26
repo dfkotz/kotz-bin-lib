@@ -2,24 +2,42 @@
 #
 # daily-backup - a daily backup of my laptop
 #
-# Two aspects:
-#   Check the photo directories for integrity;
-#   Time-Machine backup to local hard drive.
+# usage:
+#  daily-backup.sh [sample]
+#
+# Three phases:
+#   Time-Machine backup to local hard drive;
+#   Check photo directories for additions and changes;
+#   Sample photo directories for unexpected changes [optional].
+# The third phase only runs if $1 is 'sample'.
 
 echo
 echo -n "Time machine start: "; date
+tm-backup.sh
 
-# run the Time Machine backup, and check its exit status
-if tm-backup.sh
+echo
+echo -n "Photos checkup: "; date
+
+echo
+echo CHECK LAPTOP DIRECTORIES...; date
+photos-check.sh ~/Personal/Photos/Lightroom/
+
+echo
+echo CHECK GOOGLE DIRECTORIES...; date
+photos-check.sh ~/Lightroom/
+
+if [ "$1" == "sample" ]
 then
-    terminal-notifier -title "daily-backup" -sound Hero -message "backup succeeded"
-else
-    terminal-notifier -title "daily-backup" -sound Basso -message "backup failed"
+    echo -n "Photos sample: "; date
+
+    echo
+    echo SAMPLE LAPTOP DIRECTORIES...; date
+    photos-check.sh ~/Personal/Photos/Lightroom/
+
+    echo
+    echo SAMPLE GOOGLE DIRECTORIES...; date
+    photos-check.sh ~/Lightroom/
 fi
-
-echo -n "daily-photos start: "; date
-
-daily-photos.sh
 
 echo
 echo -n "DONE: "; date
