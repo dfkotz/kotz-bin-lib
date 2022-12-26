@@ -8,6 +8,11 @@
 
 log=/tmp/daily-photos$$.log
 
+if [ $# -eq 0 ]; then
+    echo usage: photos-check.sh dir...
+    exit 1
+fi
+
 # check photo collections for new files, and add them
 echo metacheck expand...
 metacheck expand "$@"  > "$log" \

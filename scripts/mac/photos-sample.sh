@@ -9,6 +9,11 @@
 
 log=/tmp/daily-photos$$.log
 
+if [ $# -eq 0 ]; then
+    echo usage: photos-sample.sh dir...
+    exit 1
+fi
+
 echo hashcheck sample... first pass
 hashcheck sample "$@" > "$log" \
     || mail -s "hashcheck-sample" $USER < "$log"
