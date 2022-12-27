@@ -27,20 +27,45 @@ echo metacheck verify...
 metacheck verify "$@" > "$log" \
     || mail -s "metacheck-verify" $USER < "$log"
 
-echo look for new YYYY directories...
+# check for missing hashcheck/metacheck files
+echo look for missing directories...
+ls */.metacheck | diff metachecklist - > "$log" \
+    || mail -s "metacheck-missing" $USER < "$log"
+ls */.hashcheck | diff hashchecklist - > "$log" \
+    || mail -s "hashcheck-missing" $USER < "$log"
+
+# look for new directories that are missing either file,
+# or for directories that have both, but with different length
+echo examine all YYYY directories...
+rm -f "$log"
 for dir in "$@"
 do
+    # look at all subdirs whose name starts with YYYY
     for subdir in "$dir"/[1-2][0-9][0-9][0-9]*
     do
         if [[ -d "$subdir" ]]; then
-            for f in .hashcheck .metacheck
-            do
-                if [ ! -f "$subdir/$f" ]; then
-                    echo WARNING: missing "$subdir/$f"
-                fi
-            done
+            # ensure this directory has each required file
+            if [[ ! -f "$subdir/.hashcheck" ]]; then
+                echo WARNING: missing "$subdir/.hashcheck" >> "$log"
+            fi
+            if [[ ! -f "$subdir/.metacheck" ]]; then
+                echo WARNING: missing "$subdir/.metacheck" >> "$log"
+            fi
+
+            # if it has both files, they should be the same length
+            if [[ -f "$subdir/.hashcheck" && -f "$subdir/.metacheck" ]]; then
+               mcl=$(wc -l < "$subdir/.metacheck")
+               hcl=$(wc -l < "$subdir/.hashcheck")
+               if (( $mcl != $hcl )) ; then
+                   echo "$subdir has $mcl in .meta and $hcl in .hash" >> "$log"
+               fi
+            fi
         fi
     done
 done
+
+if [[ -s "$log" ]]; then
+    mail -s "meta/hashcheck missing or inconsistent" $USER < "$log"
+fi
 
 rm -f "$log"
