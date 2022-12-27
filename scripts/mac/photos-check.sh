@@ -29,10 +29,18 @@ metacheck verify "$@" > "$log" \
 
 # check for missing hashcheck/metacheck files
 echo look for missing directories...
-ls */.metacheck | diff metachecklist - > "$log" \
-    || mail -s "metacheck-missing" $USER < "$log"
-ls */.hashcheck | diff hashchecklist - > "$log" \
-    || mail -s "hashcheck-missing" $USER < "$log"
+rm -f "$log"
+for dir in "$@"
+do
+    ls "$dir"/*/.metacheck | diff "$dir"/metachecklist - >> "$log" \
+        || mail -s "metacheck-missing" $USER < "$log"
+    ls "$dir"/*/.hashcheck | diff "$dir"/hashchecklist - >> "$log" \
+        || mail -s "hashcheck-missing" $USER < "$log"
+done
+
+if [[ -s "$log" ]]; then
+    mail -s "missing expected directories" $USER < "$log"
+fi
 
 # look for new directories that are missing either file,
 # or for directories that have both, but with different length
