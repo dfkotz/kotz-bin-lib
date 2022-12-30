@@ -32,11 +32,11 @@ then
 
     echo
     echo SAMPLE LAPTOP DIRECTORIES...; date
-    photos-check.sh ~/Personal/Photos/Lightroom/
+    photos-sample.sh ~/Personal/Photos/Lightroom/
 
     echo
     echo SAMPLE GOOGLE DIRECTORIES...; date
-    photos-check.sh ~/Lightroom/
+    photos-sample.sh ~/Lightroom/
 fi
 
 echo
