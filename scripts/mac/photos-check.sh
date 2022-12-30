@@ -32,8 +32,10 @@ echo look for missing directories...
 rm -f "$log"
 for dir in "$@"
 do
-    ls "$dir"/*/.metacheck | diff "$dir"/metachecklist - >> "$log"
-    ls "$dir"/*/.hashcheck | diff "$dir"/hashchecklist - >> "$log"
+    (cd "$dir";
+     ls */.metacheck | diff .metachecklist - >> "$log";
+     ls */.hashcheck | diff .hashchecklist - >> "$log"
+    )
 done
 
 if [[ -s "$log" ]]; then
