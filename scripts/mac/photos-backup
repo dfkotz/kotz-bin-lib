@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-# Backup photo collection to a drive/folder specified as the first argument
+# photos-backup:
+#   Backup photo collection to a drive/folder specified as the first argument.
 #
-# See https://www.lightroomqueen.com/backup-lightroom-files/
+# About others, see https://www.lightroomqueen.com/backup-lightroom-files/
 
 function usage() {
     echo "usage: $0:t destination-directory { older | newer | other }..."
@@ -12,10 +13,10 @@ function backupOlder() {
     echo ""; echo "====================================-"
     echo Clone the older photos, for recovery purposes
     clone="$dest/photos-older-clone"
-    if "$bin/backup-photos-clone" "$olderPhotos" "$clone" ; then
+    if "$bin/photos-backup-clone" "$olderPhotos" "$clone" ; then
         echo >>"$clone/BACKUP" "cloned from $olderPhotos on" `date`
     else
-        echo >>$errors " backup-photos-clone (older) FAILED"
+        echo >>$errors " photos-backup-clone (older) FAILED"
     fi
 }
 
@@ -23,17 +24,17 @@ function backupNewer() {
     echo ""; echo "====================================-"
     echo Clone the newer photos, for recovery purposes
     clone="$dest/photos-newer-clone"
-    if "$bin/backup-photos-clone" "$newerPhotos" "$clone" ; then
+    if "$bin/photos-backup-clone" "$newerPhotos" "$clone" ; then
 	echo >>"$clone/BACKUP" "cloned from $newerPhotos on" `date`
     else
-	echo >>$errors " backup-photos-clone (newer) FAILED"
+	echo >>$errors " photos-backup-clone (newer) FAILED"
     fi
 }
 
 function backupOther() {
     echo ""; echo "====================================-"
     echo Back up other material
-    for from in "$organizing" "$plugins" "$support1" "$support2"
+    for from in "$plugins" "$support1" "$support2"
     do
         echo ""; echo backup \""$from"\"
         to="$dest/$from"
@@ -73,9 +74,9 @@ fi
 echo "backup $@ to $dest"
 
 # set up
-self=`which backup-photos`
+self=`which photos-backup`
 bin="${self%/*}"
-errors=/tmp/backup-photos
+errors=/tmp/photos-backup
 cat > $errors < /dev/null
 trap cleanup sigint
 trap exit ERR
@@ -85,12 +86,11 @@ newerPhotos=~/Personal/Photos/Lightroom
 olderPhotos=~/Lightroom
 # other things (relative to ~)
 plugins=Personal/Photos/Lightroom/Plug-ins 
-organizing=Personal/Photos/photo-organizing
 support1=Library/Application\ Support/Adobe/Lightroom 
 support2=Library/Application\ Support/Adobe/CameraRaw/Settings/User\ Presets 
 
 # check the source locations
-for source in "$newerPhotos" "$olderPhotos" ~/"$plugins" ~/"$organizing" ~/"$support1" ~/"$support2"
+for source in "$newerPhotos" "$olderPhotos" ~/"$plugins" ~/"$support1" ~/"$support2"
 do
     if [ ! -d "$source" ]; then
         echo "missing source directory $source"

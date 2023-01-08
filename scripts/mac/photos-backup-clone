@@ -1,17 +1,14 @@
 #!/bin/csh -f
 #
-# usage: backup-photos-clone sourceDir destDir
+# usage: photos-backup-clone sourceDir destDir
 #
 # creates a 'clone' backup of photos from the source collection to
 # the destination folder.
 #
-# NOTE: it does not copy zero-length files, as a workaround for Dropbox's
-# tendency to make files appear to have zero length when they are online-only.
-#
-# David Kotz 2018, 2022
+# David Kotz 2018, 2022, 2023
 
 if ($#argv != 2) then
-    echo usage: backup-photos-clone sourceDir destDir
+    echo usage: photos-backup-clone sourceDir destDir
     exit 1
 endif
 
