@@ -34,7 +34,7 @@ function backupNewer() {
 function backupOther() {
     echo ""; echo "====================================-"
     echo Back up other material
-    for from in "$plugins" "$support1" "$support2"
+    for from in "$plugins" "$support1" "$support2" "$support3"
     do
         echo ""; echo backup \""$from"\"
         to="$dest/$from"
@@ -87,10 +87,11 @@ olderPhotos=~/Lightroom
 # other things (relative to ~)
 plugins=Personal/Photos/Lightroom/Plug-ins 
 support1=Library/Application\ Support/Adobe/Lightroom 
-support2=Library/Application\ Support/Adobe/CameraRaw/Settings/User\ Presets 
+support2=Library/Application\ Support/Adobe/CameraRaw
+support3=Library/Preferences/com.adobe.LightroomClassicCC*.plist
 
 # check the source locations
-for source in "$newerPhotos" "$olderPhotos" ~/"$plugins" ~/"$support1" ~/"$support2"
+for source in "$newerPhotos" "$olderPhotos" ~/"$plugins" ~/"$support1" ~/"$support2" ~/"$support3"
 do
     if [ ! -d "$source" ]; then
         echo "missing source directory $source"
