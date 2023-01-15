@@ -1,28 +1,18 @@
 #!/bin/bash
 #
 # photos-sample - spot-check all arguments (directories):
-# hash a random sample (about 3%) of all existing files.
-# (Why 3%? we want to sample about 1/30 per day because Google has a 30-day
-#  limit on the restoration of missing files or older versions.)
+# hash a random sample (about 1%) of all existing files.
 #
 # usage: photos-sample.sh dir...
 
-log=/tmp/daily-photos$$.log
+log=/tmp/photos-sample$$.log
 
 if [ $# -eq 0 ]; then
     echo usage: photos-sample.sh dir...
     exit 1
 fi
 
-echo hashcheck sample... first pass
-hashcheck sample "$@" > "$log" \
-    || mail -s "hashcheck-sample" $USER < "$log"
-
-echo hashcheck sample... second pass
-hashcheck sample "$@" > "$log" \
-    || mail -s "hashcheck-sample" $USER < "$log"
-
-echo hashcheck sample... third pass
+echo hashcheck sample...
 hashcheck sample "$@" > "$log" \
     || mail -s "hashcheck-sample" $USER < "$log"
 
