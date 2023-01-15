@@ -22,10 +22,6 @@ echo
 echo CHECK LAPTOP DIRECTORIES...; date
 photos-check.sh ~/Personal/Photos/Lightroom/
 
-echo
-echo CHECK GOOGLE DIRECTORIES...; date
-photos-check.sh ~/Lightroom/
-
 if [ "$1" == "sample" ]
 then
     echo
@@ -34,10 +30,6 @@ then
     echo
     echo SAMPLE LAPTOP DIRECTORIES...; date
     photos-sample.sh ~/Personal/Photos/Lightroom/
-
-    echo
-    echo SAMPLE GOOGLE DIRECTORIES...; date
-    photos-sample.sh ~/Lightroom/
 fi
 
 echo
