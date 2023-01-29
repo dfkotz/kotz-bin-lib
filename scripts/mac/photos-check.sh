@@ -44,29 +44,27 @@ fi
 
 # look for new directories that are missing either file,
 # or for directories that have both, but with different length
-echo examine all YYYY directories...
+echo examine all subdirectories...
 rm -f "$log"
 for dir in "$@"
 do
-    # look at all subdirs whose name starts with YYYY
-    for subdir in "$dir"/[1-2][0-9][0-9][0-9]*
+    # look at all subdirs
+    for subdir in "$dir"/*/
     do
-        if [[ -d "$subdir" ]]; then
-            # ensure this directory has each required file
-            if [[ ! -f "$subdir/.hashcheck" ]]; then
-                echo WARNING: missing "$subdir/.hashcheck" >> "$log"
-            fi
-            if [[ ! -f "$subdir/.metacheck" ]]; then
-                echo WARNING: missing "$subdir/.metacheck" >> "$log"
-            fi
-
-            # if it has both files, they should be the same length
-            if [[ -f "$subdir/.hashcheck" && -f "$subdir/.metacheck" ]]; then
-               mcl=$(wc -l < "$subdir/.metacheck")
-               hcl=$(wc -l < "$subdir/.hashcheck")
-               if (( $mcl != $hcl )) ; then
-                   echo "$subdir has $mcl in .meta and $hcl in .hash" >> "$log"
-               fi
+        # ensure this directory has each required file
+        if [[ ! -f "$subdir/.hashcheck" ]]; then
+            echo WARNING: missing "$subdir/.hashcheck" >> "$log"
+        fi
+        if [[ ! -f "$subdir/.metacheck" ]]; then
+            echo WARNING: missing "$subdir/.metacheck" >> "$log"
+        fi
+        
+        # if it has both files, they should be the same length
+        if [[ -f "$subdir/.hashcheck" && -f "$subdir/.metacheck" ]]; then
+            mcl=$(wc -l < "$subdir/.metacheck")
+            hcl=$(wc -l < "$subdir/.hashcheck")
+            if (( $mcl != $hcl )) ; then
+                echo "$subdir has $mcl in .meta and $hcl in .hash" >> "$log"
             fi
         fi
     done

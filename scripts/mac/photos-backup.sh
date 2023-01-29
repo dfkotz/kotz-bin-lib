@@ -22,7 +22,7 @@ if [ ! -d "$backup" ]; then
     exit 2
 fi
 
-rsyncargs="-vi --delete -raHO"
+rsyncargs="-vi --delete -raHO --exclude .DS_Store"
 
 echo "TEST RUN..."
 echo rsync -n $rsyncargs ./ "$backup"/
