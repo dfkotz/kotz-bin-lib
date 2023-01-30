@@ -2,7 +2,7 @@
 # Backup master Lightroom photos to Google Drive
 #
 
-photos-backup-to.sh ~/my-drive
+photos-backup-to.sh ~/my-drive/LightroomBackup
 exit $?
 
 
