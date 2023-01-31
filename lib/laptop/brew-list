@@ -3,6 +3,7 @@ adns
 aom
 apr
 apr-util
+aribb24
 aspell
 assimp
 autoconf
@@ -134,6 +135,7 @@ opencore-amr
 openexr
 openjpeg
 openssl@1.1
+openssl@3
 opus
 p11-kit
 pandoc
@@ -162,6 +164,7 @@ speex
 sqlite
 srt
 subversion
+svt-av1
 tcl-tk
 terminal-notifier
 tesseract
