@@ -27,7 +27,7 @@ tr \\r \\n \
 | tr -d '[\302\240]' \
 | tr -s '[:blank:]' ' '  \
 | sed  -e '/^[A-Z][a-z]*: /d' -e '/^$/d' -e '/^\*/d' -e 's/"//g' \
-| awk '{ printf "%-30s %s\n", gensub(/^[^ ]+ */, "", 1), $1 }' \
+| gawk '{ printf "%-30s %s\n", gensub(/^[^ ]+ */, "", 1), $1 }' \
 | sort -f -k2 >> chubbers-clean
 
 # sanity check: it should have a substantial number of addresses!
