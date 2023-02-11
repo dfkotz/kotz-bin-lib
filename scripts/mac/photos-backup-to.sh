@@ -15,7 +15,7 @@ fi
 echo backup catalog...
 master=~/Personal/Photos/LightroomCatalog
 backup="$dest/LightroomCatalog"
-if rsync -rav "$master"/*.lrcat "$backup/"
+if rsync -ravi "$master"/*.lrcat "$backup/"
 then
     date > "$backup/BACKUP_DATE.txt"
     echo success
