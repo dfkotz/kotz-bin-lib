@@ -9,9 +9,9 @@
 ::1             localhost
 
 # available when on VPN only
-10.24.34.73 kotzwifi1
-10.24.34.73 kotzwifi1.dartmouth.edu
-10.24.2.16  kotzwifi2
-10.24.2.16  kotzwifi2.dartmouth.edu
+#10.24.34.73 kotzwifi1
+#10.24.34.73 kotzwifi1.dartmouth.edu
+#10.24.2.16  kotzwifi2
+#10.24.2.16  kotzwifi2.dartmouth.edu
 129.170.136.10 katahdin
 129.170.136.10 katahdin.dartmouth.edu
