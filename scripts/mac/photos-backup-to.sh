@@ -12,6 +12,7 @@ if [ ! -d "$dest" ]; then
     exit 2
 fi
 
+echo ====================================
 echo backup catalog...
 master=~/Personal/Photos/LightroomCatalog
 backup="$dest/LightroomCatalog"
@@ -24,6 +25,7 @@ else
     exit 11
 fi
 
+echo ====================================
 echo
 echo backup laptop...
 master=~/Personal/Photos/Lightroom
@@ -37,6 +39,7 @@ else
     exit 12
 fi
 
+echo ====================================
 echo
 echo backup disk...
 master=/Volumes/kotz-photos-master/Lightroom
