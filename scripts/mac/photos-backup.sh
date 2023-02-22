@@ -28,9 +28,11 @@ echo "TEST RUN..."
 pwd
 echo rsync -n $rsyncargs ./ "$backup"/
 if rsync -n $rsyncargs ./ "$backup"/ | more ; then
-    echo "PROCEED with the following? hit return if yes, otherwise ^C"
+    echo
+    echo "PROCEED with the following?"
     pwd
     echo rsync $rsyncargs ./ "$backup"/
+    echo "hit return if yes, otherwise ^C: "
     read proceed
     
     echo "ACTUAL RUN..."
