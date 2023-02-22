@@ -25,9 +25,12 @@ fi
 rsyncargs="-vi --delete -raHO --exclude .DS_Store"
 
 echo "TEST RUN..."
+pwd
 echo rsync -n $rsyncargs ./ "$backup"/
-if rsync -n $rsyncargs ./ "$backup"/ | less ; then
-    echo "PROCEED? hit return if yes, otherwise ^C"
+if rsync -n $rsyncargs ./ "$backup"/ | more ; then
+    echo "PROCEED with the following? hit return if yes, otherwise ^C"
+    pwd
+    echo rsync $rsyncargs ./ "$backup"/
     read proceed
     
     echo "ACTUAL RUN..."
