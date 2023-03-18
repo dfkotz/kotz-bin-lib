@@ -89,6 +89,7 @@ libmng
 libnghttp2
 libogg
 libomp
+libpaper
 libpng
 libproxy
 libpthread-stubs
