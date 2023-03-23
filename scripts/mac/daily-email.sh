@@ -13,7 +13,7 @@ DAD=johnkotz@mac.com
 MOM=katiekotz@icloud.com
 AMY=aejenkins1263@gmail.com
 ISABEL=isabel_eich@hotmail.com
-DOE=jenkd@musc.edu
+DOE=doe.jenkins@gmail.com
 
 # COMICS
 # send me the daily comic strips (timed for morning delivery)
