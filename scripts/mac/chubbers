@@ -11,12 +11,12 @@ cd ~/lib/laptop/chubbers
 
 onintr cleanup
 
-##################
-# Prepare this month's report as chubbers-clean
+#########################################
+# Prepare this month's report as list-new
 
-echo "CHUBBERNET as of "`date +%D` > chubbers-clean
-echo "  Name                         Email    " >> chubbers-clean
-echo "----------------------------------------" >> chubbers-clean
+echo "CHUBBERNET as of "`date +%D` > list-new
+echo "  Name                         Email    " >> list-new
+echo "----------------------------------------" >> list-new
 
 # Make sure that it has Unix, not Macintosh, line terminators,
 # remove non-printing characters resulting from Mail.app use,
@@ -28,38 +28,60 @@ tr \\r \\n \
 | tr -s '[:blank:]' ' '  \
 | sed  -e '/^[A-Z][a-z]*: /d' -e '/^$/d' -e '/^\*/d' -e 's/"//g' \
 | gawk '{ printf "%-30s %s\n", gensub(/^[^ ]+ */, "", 1), $1 }' \
-| sort -f -k2 >> chubbers-clean
+| sort -f -k2 >> list-new
 
 # sanity check: it should have a substantial number of addresses!
 # (stop now if we get empty or corrupt input!)
-set count =  `grep @ chubbers-clean | wc -l`
+set count =  `grep @ list-new | wc -l`
 if ( "$count" < 50 ) then
     echo 'ERROR: input does not look like what I expect.'
-    echo 'chubbers-clean now contains the following (top 10 lines):'
-    head chubbers-clean
+    echo 'list-new now contains the following (top 10 lines):'
+    head list-new
     goto cleanup
 endif
 
-#################
+#############################
 # Diff with last month's list
-echo "" > chubbers-diffs
-echo "Changes since last month (if any) (- left, + joined):" >>chubbers-diffs
-diff chubbers-old chubbers-clean | sed -e '/^[-0-9]/d' -e 's/^</-/' -e 's/^>/+/' >> chubbers-diffs
+grep @ list-old > tmp.old
+grep @ list-new > tmp.new
+diff tmp.old tmp.new > tmp.diffs
+if ( -z tmp.diffs ) then
+    echo "The list of subscribers has not changed since last month." > diffs
+else
+    echo "List changes since last month (- left, + joined):" > diffs
+    sed -e '/^[-0-9]/d' -e 's/^</-/' -e 's/^>/+/' tmp.diffs >> diffs
+endif
 
-echo "" > chubbers-blank
+###############################
+# construct the message to send
+cat >  message intro
+cat >> message sep diffs
+cat >> message sep notes
+cat >> message sep officers
+cat >> message sep partners
+cat >> message sep name-changes
+cat >> message sep extras
+cat >> message sep list-new
+cat >> message sep end
 
-cat chubbers-{intro,clean,diffs,notes,blank,extras} > chubbers-message
+##################
+# send the message
 
 set subject="Monthly ChubberNet Update"
-set extras=`extract-emails chubbers-extras`
+set extras=`extract-emails extras`
 
 # email to the list and to each of the extras
 foreach address (chubbers@dartmouth.edu $extras)
     echo email to "$address"
-    mutt -s "$subject" "$address" < chubbers-message
+    mutt -s "$subject" "$address" < message
 end
 
-mv -f chubbers-clean chubbers-old && git add chubbers-old
+#################################
+# remember the list for next time
+mv -f list-new list-old && git add list-old
 
+##################
+# cleanup
 cleanup:
-rm -f chubbers-blank chubbers-clean chubbers-diffs chubbers-message
+rm -f diffs tmp.{old,new,diffs}
+rm -f list-new message
