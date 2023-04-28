@@ -10,21 +10,13 @@ TERM=VT100
 MAILTO=dfk
 MAILFROM=dfk
 
-# don't forget my crontab
+# don't forget my crontab, hosts file, homebrew installs, launchd files; commit to git
 # mm hh day month weekday command
-2 7 * * * cd $HOME/lib/laptop && crontab -l > crontab && git-commit-quietly "crontab commit" crontab
-
-# don't forget my hosts file
-# mm hh day month weekday command
-4 7 * * * cd $HOME/lib/laptop && cat /etc/hosts > etc-hosts && git-commit-quietly "crontab commit" etc-hosts
-
-# don't forget my launchd files
-# mm hh day month weekday command
-6 7 * * * cd $HOME/lib/laptop && rsync -a ~/Library/LaunchAgents/org.davidkotz.*.plist . && git-commit-quietly "crontab commit" *.plist
-
-# track what I have installed with homebrew
-# mm hh day month weekday command
-8 7 * * * cd $HOME/lib/laptop && brew list --formula > brew-list && git-commit-quietly "crontab commit" brew-list
+00 7 * * * cd $HOME/lib/laptop && crontab -l > crontab
+00 7 * * * cd $HOME/lib/laptop && cat /etc/hosts > etc-hosts
+00 7 * * * cd $HOME/lib/laptop && brew list --formula > brew-list
+00 7 * * * cd $HOME/lib/laptop && rsync -a ~/Library/LaunchAgents/org.davidkotz.*.plist .
+10 7 * * * cd $HOME/lib/laptop && git-commit-quietly "crontab commit" crontab etc-hosts brew-list *.plist
 
 # show me what files are left uncommitted
 # mm hh day month weekday command
