@@ -47,11 +47,11 @@ Too much email?
  If you feel ChubberNet is overfilling your inbox, here are some
  tips; not all are suitable for everyone, or in combination.
 
- 6a. If you use GMail, I'm told it "has a handy 'mute' feature in the
+ a. If you use GMail, I'm told it "has a handy 'mute' feature in the
  'more options/three horizontal dots' part of the header bar on every
  email that will mute future replies" on the thread.
 
- 6b. Put ChubberNet into "digest" mode, which means you'll get (at
+ b. Put ChubberNet into "digest" mode, which means you'll get (at
  most) one message per day from the listserv; that message will include
  all that day's messages rolled into one.  Two approaches: (1) visit
  the listserv website, log in, and set Digest Mode. (2) Using the
@@ -61,7 +61,7 @@ Too much email?
  If you take this approach, take care when you reply to
  ensure you're replying to the right message within the digest.
 
- 6c. Take advantage of mail filters.  Almost every email client (Apple
+ c. Take advantage of mail filters.  Almost every email client (Apple
  Mail, GMail, Outlook, etc.) has a mechanism to filter your inbound
  email.  I use Apple Mail and set up a rule to sort ChubberNet email
  (and most other personal communications) into a "low-priority inbox"
