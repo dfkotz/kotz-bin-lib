@@ -23,7 +23,7 @@ if ("$1" == "-c") then
 endif
 
 cat $* \
-| tr -c -s 'a-zA-Z0-9@._+-' \\n | grep @ \
+| tr -c -s "a-zA-Z0-9@._+-'" \\n | grep @ \
 | grep -v -i ^nobody@ \
 | sort -u \
 | sed -e 's/$/'"$eol"/
