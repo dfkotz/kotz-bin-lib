@@ -136,6 +136,7 @@ npth
 opencore-amr
 openexr
 openjpeg
+openldap
 openssl@1.1
 openssl@3
 opus
