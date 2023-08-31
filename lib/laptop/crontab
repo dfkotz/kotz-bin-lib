@@ -15,8 +15,9 @@ MAILFROM=dfk
 00 7 * * * cd $HOME/lib/laptop && crontab -l > crontab
 00 7 * * * cd $HOME/lib/laptop && cat /etc/hosts > etc-hosts
 00 7 * * * cd $HOME/lib/laptop && brew list --formula > brew-list
+00 7 * * * cd $HOME/lib/laptop && pip list > pip-list
 00 7 * * * cd $HOME/lib/laptop && rsync -a ~/Library/LaunchAgents/org.davidkotz.*.plist .
-10 7 * * * cd $HOME/lib/laptop && git-commit-quietly "crontab commit" crontab etc-hosts brew-list *.plist
+10 7 * * * cd $HOME/lib/laptop && git-commit-quietly "crontab commit" crontab etc-hosts brew-list pip-list *.plist
 
 # show me what files are left uncommitted
 # mm hh day month weekday command
