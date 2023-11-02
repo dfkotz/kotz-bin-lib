@@ -143,7 +143,6 @@ openssl@1.1
 openssl@3
 opus
 p11-kit
-pandoc
 pango
 pcre
 pcre2
@@ -169,7 +168,6 @@ snappy
 speex
 sqlite
 srt
-subversion
 svt-av1
 tcl-tk
 terminal-notifier
