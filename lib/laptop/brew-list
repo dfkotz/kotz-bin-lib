@@ -152,7 +152,6 @@ pkg-config
 protobuf
 pyenv
 python-setuptools
-python@3.10
 python@3.11
 qt
 qt@5
