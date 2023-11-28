@@ -12,6 +12,8 @@ if [ ! -d "$dest" ]; then
     exit 2
 fi
 
+let failures=0
+
 echo ====================================
 echo backup catalog...
 master=~/Personal/Photos/LightroomCatalog
@@ -22,7 +24,7 @@ then
     echo success
 else
     echo FAILED
-    exit 11
+    let failures++
 fi
 
 echo ====================================
@@ -36,7 +38,7 @@ then
     echo success
 else
     echo FAILED
-    exit 12
+    let failures++
 fi
 
 echo ====================================
@@ -50,7 +52,13 @@ then
     echo success
 else
     echo FAILED
-    exit 13
+    let failures++
 fi
 
-exit 0
+if (( $failures > 0 )); then
+    echo "SOMETHING FAILED ($failures failures)"
+else
+    echo "Success ($failures failures)"
+fi
+
+exit $failures
