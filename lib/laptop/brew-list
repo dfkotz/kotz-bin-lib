@@ -88,6 +88,7 @@ libidn
 libidn2
 libksba
 liblqr
+libmicrohttpd
 libmng
 libnghttp2
 libogg
