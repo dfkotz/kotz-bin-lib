@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# cp-gps-position: copy the GPSposition tag from one image to others
+#
+# usage: cp-gps-position fromImage.jpg toImageOrMovie.xxx...
+#  (fromImage can be any file readable by exiftool, and toImageOrMovie
+#   can be any file for which exiftool can write location metadata).
+
+if [[ $#argv < 2 ]]; then
+   echo usage: cp-gps-position fromImage.jpg toImageOrMovie.xxx...
+   exit 1
+fi
+   
+from="$1"
+shift
+
+exiftool -TagsFromFile "$from" -GPSPosition "$@"
