@@ -7,6 +7,7 @@
 # usage: photos-check.sh dir...
 
 log=/tmp/daily-photos$$.log
+msg=/tmp/daily-photos$$.msg
 
 if [ $# -eq 0 ]; then
     echo usage: photos-check.sh dir...
@@ -29,18 +30,32 @@ metacheck verify "$@" > "$log" \
 
 # check for missing hashcheck/metacheck files
 echo look for missing directories...
-rm -f "$log"
+cat > "$msg" <<EOF
+Detected differences between the checklist and the set of checkfiles.
+Either
+a. a new directory (with checkfile) appeared, but is in the checklist,
+b. a new directory is in the checklist, but is missing a checkfile.
+Below is the diff;
+< means the checkfile is missing, but is listed in the checkfile;
+> means the checkfile exists, but is not listed in the checkfile.
+To rebuild:
+  cd to the directory above
+  ls */.hashcheck > .hashchecklist
+  ls */.metacheck > .metachecklist
+EOF
+
 for dir in "$@"
 do
+    rm -f "$log"
     (cd "$dir";
      ls */.metacheck | diff .metachecklist - >> "$log";
      ls */.hashcheck | diff .hashchecklist - >> "$log"
     )
+    if [[ -s "$log" ]]; then
+        echo "$dir" | cat - "$msg" "$log" \
+            | mail -s "missing expected directories in $dir" $USER
+    fi
 done
-
-if [[ -s "$log" ]]; then
-    mail -s "missing expected directories" $USER < "$log"
-fi
 
 # look for new directories that are missing either file,
 # or for directories that have both, but with different length
