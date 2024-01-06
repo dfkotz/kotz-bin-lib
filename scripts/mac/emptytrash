@@ -11,7 +11,7 @@ foreach trash (*/.Trashes)
 
   echo -n "Empty trash on $vol? "
   set ans=$<
-  if ("$ans" =~ [Yy]*) rm -rf "$trash"
+  if ("$ans" =~ [Yy]*) rm -rf "$trash/*"
 end
 
 echo if no match, then there are no central trashes.
