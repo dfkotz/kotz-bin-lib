@@ -103,6 +103,7 @@ libsamplerate
 libsndfile
 libsodium
 libsoxr
+libssh
 libtasn1
 libtiff
 libtool
