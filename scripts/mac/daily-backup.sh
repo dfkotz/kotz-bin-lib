@@ -22,7 +22,7 @@ echo
 echo CHECK LAPTOP DIRECTORIES...; date
 photos-check.sh ~/Personal/Photos/Lightroom/
 
-if [ "$1" == "sample" ]
+if [[ $? && "$1" == "sample" ]]
 then
     echo
     echo -n "Photos sample: "; date

@@ -8,29 +8,35 @@
 
 log=/tmp/daily-photos$$.log
 msg=/tmp/daily-photos$$.msg
+top=/tmp/daily-photos$$.top
+let errors=0
 
 if [ $# -eq 0 ]; then
     echo usage: photos-check.sh dir...
     exit 1
 fi
 
+# mail an error message;
+# subject line is in string $1, message is in file $2
+function mailerr {
+    mail -s "$1" $USER < "$2"
+    let errors++
+}
+
 # check photo collections for new files, and add them
 echo metacheck expand...
-metacheck expand "$@"  > "$log" \
-    || mail -s "metacheck-expand" $USER < "$log"
+metacheck expand "$@"  > $log || mailerr "metacheck-expand" $log
 
 echo hashcheck update...
-hashcheck update "$@" > "$log" \
-    || mail -s "hashcheck-update" $USER < "$log"
+hashcheck update "$@" > $log || mailerr "hashcheck-update" $log
 
 # check photo collections for integrity
 echo metacheck verify...
-metacheck verify "$@" > "$log" \
-    || mail -s "metacheck-verify" $USER < "$log"
+metacheck verify "$@" > $log || mailerr "metacheck-verify" $log
 
 # check for missing hashcheck/metacheck files
 echo look for missing directories...
-cat > "$msg" <<EOF
+cat > $top <<EOF
 Detected differences between the checklist and the set of checkfiles.
 Either
 a. a new directory (with checkfile) appeared, but is in the checklist,
@@ -39,28 +45,29 @@ Below is the diff;
 < means the checkfile is missing, but is listed in the checkfile;
 > means the checkfile exists, but is not listed in the checkfile.
 To rebuild:
-  cd to the directory above
+  cd to the directory listed below
   ls */.hashcheck > .hashchecklist
   ls */.metacheck > .metachecklist
+The directory involved is:
 EOF
 
 for dir in "$@"
 do
-    rm -f "$log"
+    rm -f $log
     (cd "$dir";
-     ls */.metacheck | diff .metachecklist - >> "$log";
-     ls */.hashcheck | diff .hashchecklist - >> "$log"
+     ls */.metacheck | diff .metachecklist - >> $log;
+     ls */.hashcheck | diff .hashchecklist - >> $log
     )
-    if [[ -s "$log" ]]; then
-        echo "$dir" | cat - "$msg" "$log" \
-            | mail -s "missing expected directories in $dir" $USER
+    if [[ -s $log ]]; then
+        echo "$dir" | cat $top - $log > $msg
+        mailerr "missing expected directories in $dir" $msg
     fi
 done
 
 # look for new directories that are missing either file,
 # or for directories that have both, but with different length
 echo examine all subdirectories...
-rm -f "$log"
+rm -f $msg
 for dir in "$@"
 do
     # look at all subdirs
@@ -68,10 +75,10 @@ do
     do
         # ensure this directory has each required file
         if [[ ! -f "$subdir/.hashcheck" ]]; then
-            echo WARNING: missing "$subdir/.hashcheck" >> "$log"
+            echo WARNING: missing "$subdir/.hashcheck" >> $msg
         fi
         if [[ ! -f "$subdir/.metacheck" ]]; then
-            echo WARNING: missing "$subdir/.metacheck" >> "$log"
+            echo WARNING: missing "$subdir/.metacheck" >> $msg
         fi
         
         # if it has both files, they should be the same length
@@ -79,14 +86,15 @@ do
             mcl=$(wc -l < "$subdir/.metacheck")
             hcl=$(wc -l < "$subdir/.hashcheck")
             if (( $mcl != $hcl )) ; then
-                echo "$subdir has $mcl in .meta and $hcl in .hash" >> "$log"
+                echo "$subdir has $mcl in .meta and $hcl in .hash" >> $msg
             fi
         fi
     done
 done
 
-if [[ -s "$log" ]]; then
-    mail -s "meta/hashcheck missing or inconsistent" $USER < "$log"
+if [[ -s $msg ]]; then
+    mailerr "meta/hashcheck missing or inconsistent" $msg
 fi
 
-rm -f "$log"
+rm -f $log $top $msg
+exit $errors
