@@ -12,7 +12,7 @@ cd
 # update Mendeley bibliographies, every day
 (cd projects/bib-kotzgroup    &&    bib-mendeley/bin/cron.sh bib-mendeley/group/kotzgroup kotzgroup.bib) |& cron-errors bib-kotzgroup
 # update Zotero bibliographies, every day
-(cd projects/auracle-docs/bib && ./cron.sh) |& cron-errors auracle-docs/bib
+#(cd projects/auracle-docs/bib && ./cron.sh) |& cron-errors auracle-docs/bib
 #(cd projects/amulet-docs/bib && ./cron.sh) |& cron-errors amulet-docs/bib
 (cd projects/splice/bib && ./cron.sh) |& cron-errors splice/bib
 (cd projects/crawdad/bib && ./cron.sh) |& cron-errors crawdad/bib
