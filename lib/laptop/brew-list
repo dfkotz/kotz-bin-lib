@@ -34,6 +34,7 @@ freetype
 frei0r
 fribidi
 gawk
+gcc
 gd
 gdb
 gdbm
@@ -55,10 +56,12 @@ guile
 harfbuzz
 highway
 hunspell
+hwloc
 icu4c
 ilmbase
 imagemagick
 imath
+isl
 jansson
 jasper
 jbig2dec
@@ -90,6 +93,7 @@ libksba
 liblqr
 libmicrohttpd
 libmng
+libmpc
 libnghttp2
 libogg
 libomp
@@ -137,12 +141,15 @@ ncurses
 nettle
 nghttp2
 npth
+numpy
+openblas
 opencore-amr
 openexr
 openjpeg
 openldap
 openssl@1.1
 openssl@3
+openvino
 opus
 p11-kit
 pango
@@ -152,6 +159,7 @@ pinentry
 pixman
 pkg-config
 protobuf
+pugixml
 pyenv
 python-setuptools
 python@3.11
@@ -170,6 +178,7 @@ speex
 sqlite
 srt
 svt-av1
+tbb
 tcl-tk
 terminal-notifier
 tesseract
