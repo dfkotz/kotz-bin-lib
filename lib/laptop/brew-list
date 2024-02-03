@@ -27,7 +27,6 @@ double-conversion
 duktape
 emacs
 exiftool
-ffmpeg
 flac
 fontconfig
 freetype
@@ -141,7 +140,6 @@ ncurses
 nettle
 nghttp2
 npth
-numpy
 openblas
 opencore-amr
 openexr
@@ -149,7 +147,6 @@ openjpeg
 openldap
 openssl@1.1
 openssl@3
-openvino
 opus
 p11-kit
 pango
