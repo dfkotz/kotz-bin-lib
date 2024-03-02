@@ -160,6 +160,7 @@ pugixml
 pyenv
 python-setuptools
 python@3.11
+python@3.12
 qt
 qt@5
 rav1e
