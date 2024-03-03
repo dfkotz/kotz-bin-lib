@@ -158,7 +158,12 @@ pkg-config
 protobuf
 pugixml
 pyenv
+python-certifi
+python-charset-normalizer
+python-idna
+python-requests
 python-setuptools
+python-urllib3
 python@3.11
 python@3.12
 qt
