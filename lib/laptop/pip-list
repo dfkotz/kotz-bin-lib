@@ -6,7 +6,7 @@ gpg        1.23.2
 pip        24.0
 protobuf   4.25.3
 requests   2.31.0
-setuptools 69.1.1
+setuptools 69.2.0
 TBB        0.2
 urllib3    2.2.1
 wheel      0.42.0
