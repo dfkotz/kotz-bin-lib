@@ -1,10 +1,10 @@
 Package    Version
----------- -------
+---------- --------
 gpg        1.23.2
-gpg        1.23.2
-gpg        1.23.2
+numpy      1.26.4
+openvino   2024.0.0
+packaging  24.0
 pip        24.0
-protobuf   4.25.3
 requests   2.31.0
 setuptools 69.2.0
 TBB        0.2

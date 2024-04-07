@@ -33,3 +33,13 @@ MAILFROM=dfk
 # CHUBBERS - monthly mailing to ChubberNet
 # mm hh day month weekday command
 01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
+
+####### experimental: download and backup the host and subnet files from ITC
+JOB=/Users/dfk/projects/wifi-collect/cronjobs
+
+# snag a copy of the latest network structure once a day
+31 06 * * * $JOB/update-info 'ftp://ftplocal.dartmouth.edu/networks/networks-report' $HOME/campus subnets
+33 06 * * * $JOB/update-info 'ftp://ftplocal.dartmouth.edu/networks/hosts-report' $HOME/campus hosts
+
+# backup data to central archive
+40 06 * * * $JOB/backup-laptop-to-jumbo
