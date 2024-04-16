@@ -1,0 +1,16 @@
+To update the welcome message on the listserv:
+
+1. login to
+https://listserv.dartmouth.edu/scripts/wa.exe?ACTMGR1=CHUBBERS-ALUM&z=2&X=027D326945E475F5E0&Y=david.f.kotz%40Dartmouth.edu
+
+2. left pane menu:
+List Management... Mail Templates... WELCOME
+
+3. check the Subject line.
+
+4. copy the message:
+cat welcome sep notes | pbcopy
+
+5. paste into the message box
+
+6. click UPDATE.
