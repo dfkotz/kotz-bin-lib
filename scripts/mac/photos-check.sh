@@ -97,4 +97,5 @@ if [[ -s $msg ]]; then
 fi
 
 rm -f $log $top $msg
+echo $errors errors noted
 exit $errors

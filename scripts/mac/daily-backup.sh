@@ -21,8 +21,9 @@ echo -n "Photos checkup: "; date
 echo
 echo CHECK LAPTOP DIRECTORIES...; date
 photos-check.sh ~/Personal/Photos/Lightroom/
+errors=$?
 
-if [[ $? && "$1" == "sample" ]]
+if [[ $errors == 0 && "$1" == "sample" ]]
 then
     echo
     echo -n "Photos sample: "; date
