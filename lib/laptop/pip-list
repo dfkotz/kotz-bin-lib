@@ -1,8 +1,6 @@
-Package  Version
--------- --------
-certifi  2024.6.2
-gpg      1.23.2
-pip      24.0
-requests 2.31.0
-urllib3  2.2.1
-wheel    0.43.0
+Package Version
+------- -------
+gpg     1.23.2
+pip     24.0
+urllib3 2.2.1
+wheel   0.43.0
