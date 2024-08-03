@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# sdcp: copy contents off a mounted SD card;
+# each "MEDIA" directory will become a Desktop/cardNN directory.
+
+if (( $(ls -d /Volumes/*/DCIM | wc -l) != 1 )); then
+   echo "missing SD card, or too many SD cards:"
+   ls -d /Volumes/*/DCIM
+   exit 1
+else
+    card=(/Volumes/*/DCIM)
+fi
+
+# copy all dirs from that card to the new directory
+# (all source dirs into the same new directory!)
+for dir in "$card"/*MEDIA
+do
+
+    # pick a destination name, skipping over any that exist
+    let destnum=0
+    while 
+        let destnum++
+        dest=~/Desktop/card$destnum
+        test -e $dest
+    do true; done
+    
+    # create destination directory
+    mkdir -p $dest || exit $?
+    
+    echo copying "$dir" to "$dest"
+    rsync -av "$dir"/ "$dest"/ || exit $?
+done
+
+exit 0
