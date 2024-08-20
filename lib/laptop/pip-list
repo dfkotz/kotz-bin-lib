@@ -1,6 +1,6 @@
 Package Version
 ------- -------
 gpg     1.23.2
-pip     24.0
+pip     24.2
 urllib3 2.2.1
-wheel   0.43.0
+wheel   0.44.0
