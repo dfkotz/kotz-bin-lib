@@ -35,4 +35,4 @@ MAILFROM=dfk
 01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
 
 # check Dropbox for 'campus' data files, daily
-0 7 * * * echo "New files listed below?"; find $HOME/campus/ -mtime -1 -type f
+0 5 * * * echo "New files listed below?"; find $HOME/campus/ -mtime -1 -type f
