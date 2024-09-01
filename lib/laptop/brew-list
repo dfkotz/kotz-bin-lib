@@ -64,7 +64,6 @@ libbluray
 libcerf
 libde265
 libevent
-libffi
 libgcrypt
 libgpg-error
 libheif
@@ -122,12 +121,10 @@ opencore-amr
 openexr
 openjpeg
 openldap
-openssl@1.1
 openssl@3
 opus
 p11-kit
 pango
-pcre
 pcre2
 pinentry
 pixman
