@@ -31,4 +31,8 @@ do
     rsync -av "$dir"/ "$dest"/ || exit $?
 done
 
+volumeDir="${card%/*}"
+volumeName="${volumeDir##*/}"
+eject $volumeName
+
 exit 0
