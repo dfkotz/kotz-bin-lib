@@ -33,6 +33,6 @@ done
 
 volumeDir="${card%/*}"
 volumeName="${volumeDir##*/}"
-eject $volumeName
+eject "$volumeName"
 
 exit 0
