@@ -131,6 +131,7 @@ pixman
 pkg-config
 protobuf
 pyenv
+python-packaging
 python-urllib3
 python@3.11
 python@3.12
