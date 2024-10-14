@@ -45,6 +45,7 @@ harfbuzz
 highway
 hunspell
 icu4c
+icu4c@75
 imagemagick
 imath
 jansson
@@ -63,6 +64,7 @@ libb2
 libbluray
 libcerf
 libde265
+libdeflate
 libevent
 libgcrypt
 libgpg-error
