@@ -130,7 +130,7 @@ pango
 pcre2
 pinentry
 pixman
-pkg-config
+pkgconf
 protobuf
 pyenv
 python-packaging
