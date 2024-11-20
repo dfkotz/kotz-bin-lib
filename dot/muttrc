@@ -13,8 +13,8 @@ set reply_to
 ### README ###
 # For mutt to be able to send mail from my mac, I followed the instructions
 #   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
-# See my comment on that page at
-#   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e#gistcomment-3434439
+# See my 2022 comment on that page at
+#   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e?permalink_comment_id=4265918#gistcomment-4265918
 # 
 # I put the following in /etc/postfix/sasl_passwd 
 #   smtp.mail.me.com:587 dfkotz@mac.com:PASSWORD
