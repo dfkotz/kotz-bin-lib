@@ -1,0 +1,15 @@
+#!/bin/csh -f
+# recursively unlock all files that are locked.
+# MacOS only.
+
+if ($#argv == 0) then
+  echo usage: $0 folder...
+  exit 1
+endif
+
+# -a l: unlock file
+# -c '': clear Creator
+# -a c: no custom icon
+# -a E: hide extension
+#find $argv:q -type f -print -exec SetFile -a l '{}' \;
+find $argv:q -type f -print0 | xargs -0 SetFile -a l
