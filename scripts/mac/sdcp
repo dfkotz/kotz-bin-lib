@@ -1,38 +1,64 @@
 #!/bin/bash
 #
-# sdcp: copy contents off a mounted SD card;
-# each "MEDIA" directory will become a Desktop/cardNN directory.
+# sdcp: copy contents off a mounted SD card
+# to a new subdirectory of ~/Desktop.
+#
 
+# look for an SD card containing photos
 if (( $(ls -d /Volumes/*/DCIM | wc -l) != 1 )); then
    echo "missing SD card, or too many SD cards:"
    ls -d /Volumes/*/DCIM
    exit 1
 else
     card=(/Volumes/*/DCIM)
+    echo found "$card"
+fi
+
+# find (and open) one of the media subfolders
+for dir in "$card"/*MEDIA
+do
+    open "$dir" || exit 2
+    echo -n "what letter camera produced photos on this card? "
+    read letter
+    break
+done
+
+# make a directory named after that letter
+dest=~/Desktop/"card$letter"
+if test -e "$dest" ; then
+    echo "ERROR: $dest already exists"
+    exit 3
+fi
+    
+if mkdir -p "$dest" ; then
+    echo "created $dest"
+else
+    echo "ERROR: failed to create $dest"
+    exit 4
 fi
 
 # copy all dirs from that card to the new directory
 # (all source dirs into the same new directory!)
 for dir in "$card"/*MEDIA
 do
-
-    # pick a destination name, skipping over any that exist
-    let destnum=0
-    while 
-        let destnum++
-        dest=~/Desktop/card$destnum
-        test -e $dest
-    do true; done
-    
-    # create destination directory
-    mkdir -p $dest || exit $?
-    
     echo copying "$dir" to "$dest"
-    rsync -av "$dir"/ "$dest"/ || exit $?
+    if rsync -av "$dir"/ "$dest"/ ; then
+        true
+    else
+        echo "ERROR: failed to copy $dir"
+        exit 5
+    fi
+
+    echo "renaming photos in $dest"
+    for ext in jpg avi mov heic; do
+        exiftool '-filename<FileModifyDate' -d %Y%m%d_%H%M%S%%-c.%%le -ext $ext -r "$dest" || exit 6
+    done
+
+    echo "SUCCESS: copied $dir and renamed its files"
 done
 
 volumeDir="${card%/*}"
 volumeName="${volumeDir##*/}"
-eject "$volumeName"
+eject "$volumeName" && echo ejected "$volumeName"
 
 exit 0
