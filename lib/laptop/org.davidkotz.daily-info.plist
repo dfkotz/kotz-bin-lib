@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- David Kotz 2022 -->
+<!-- This file belongs in ~/Library/LaunchAgents/org.davidkotz.daily-info.plist -->
+<!-- For more information on these values, see the manual page for launchd.plist and the following page: -->
+<!-- https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html -->
+<!-- to install,
+       cp org.davidkotz.daily-info.plist ~/Library/LaunchAgents/
+       launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-info.plist
+     after editing, first unload and then reload this agent:
+       launchctl bootout gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-info.plist
+       launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-info.plist
+     to force it to run right away,
+       launchctl kickstart gui/502/org.davidkotz.daily-info
+ -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>org.davidkotz.daily-info</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/dfk/scripts/mac/launch</string>
+        <string>/Users/dfk/projects/wifi-collect/cronjobs/update-info-laptop</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>03</integer>
+        <key>Minute</key>
+        <integer>31</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/daily-info.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/daily-info.log</string>
+</dict>
+</plist>
