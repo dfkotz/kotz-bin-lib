@@ -45,9 +45,9 @@ harfbuzz
 highway
 hunspell
 icu4c@76
+icu4c@77
 imagemagick
 imath
-jansson
 jasper
 jbig2dec
 jpeg-turbo
@@ -121,7 +121,6 @@ npth
 opencore-amr
 openexr
 openjpeg
-openldap
 openssl@3
 opus
 p11-kit
