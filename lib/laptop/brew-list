@@ -19,6 +19,7 @@ dbus
 double-conversion
 emacs
 exiftool
+expat
 ffmpeg
 flac
 fontconfig
