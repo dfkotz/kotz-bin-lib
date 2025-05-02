@@ -1,6 +1,5 @@
-Package   Version
---------- -------
-gpg       1.24.2
-packaging 25.0
-pip       25.0
-wheel     0.45.1
+Package Version
+------- -------
+gpg     1.24.2
+pip     25.0
+wheel   0.45.1

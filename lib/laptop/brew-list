@@ -45,7 +45,6 @@ graphite2
 harfbuzz
 highway
 hunspell
-icu4c@76
 icu4c@77
 imagemagick
 imath
@@ -132,7 +131,6 @@ pixman
 pkgconf
 protobuf
 pyenv
-python-packaging
 python-urllib3
 python@3.11
 python@3.12
