@@ -47,7 +47,7 @@ else
 fi
 
 #### location of BibTeX BST files
-export BSTINPUTS=.:/u/dfk/projects/bib-styles
+export BSTINPUTS=.:$HOME/projects/bib-styles
 
 #### pager: less is more
 # Use less as a paginator instead of more (e.g. for man pages).
