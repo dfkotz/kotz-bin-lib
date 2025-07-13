@@ -1,0 +1,6 @@
+The file brew-needed is a list of packages I have manually installed.
+Hopefully I keep it up to date!
+
+I need python@3.9 to support the old Mendeley packages; see daily-biblio.sh.
+
+I need python@3.12 to support linkchecker.
