@@ -3,7 +3,7 @@
 # Basic environment variables
 HOME=/Users/dfk
 SHELL=/bin/bash
-PATH=/usr/local/bin:/usr/bin:/bin:/Users/dfk/scripts/common:/Users/dfk/scripts/mac
+PATH=/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/Users/dfk/scripts/common:/Users/dfk/scripts/mac
 TERM=VT100
 
 # Mail-related variables

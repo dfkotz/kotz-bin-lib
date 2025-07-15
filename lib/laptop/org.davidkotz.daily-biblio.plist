@@ -13,9 +13,6 @@
        launchctl bootstrap gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
      to force it to run right away,
        launchctl kickstart gui/502/org.davidkotz.daily-biblio
-     to uninstall,
-       launchctl bootout gui/502 ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
-       rm ~/Library/LaunchAgents/org.davidkotz.daily-biblio.plist
  -->
 <plist version="1.0">
 <dict>
