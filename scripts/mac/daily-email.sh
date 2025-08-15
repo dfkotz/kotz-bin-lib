@@ -16,10 +16,13 @@ ISABEL=isabel_eich@hotmail.com
 DOE=doe.jenkins@gmail.com
 
 # COMICS
-# send me the daily comic strips (timed for morning delivery)
+# send the daily comic strips
 comic-arcamax doonesbury $DAVE  $DAD $MOM
 comic-arcamax babyblues  $DAVE
 comic-fbfw               $DAVE
+
+# pause briefly so the comics stay grouped within inbox
+sleep 10
 
 # CALENDAR
 # send the Kotz daily calendar
