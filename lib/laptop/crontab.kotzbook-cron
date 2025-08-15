@@ -1,0 +1,14 @@
+# DFK crontab for old laptop (Kotzbook22b)
+
+# Basic environment variables
+HOME=/Users/dfk
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin:/Users/dfk/scripts/common:/Users/dfk/scripts/mac
+TERM=VT100
+
+# Mail-related variables
+MAILTO=dfk
+MAILFROM=dfk
+
+# pull updates into lib and scripts once a day
+30 00 * * * cd projects/kotz-bin-lib && git pull -q
