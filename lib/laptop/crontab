@@ -10,7 +10,10 @@ TERM=VT100
 MAILTO=dfk
 MAILFROM=dfk
 
-# don't forget my crontab, hosts file, homebrew installs, launchd files; commit to git
+## DOUBLE COMMENTED are paused while traveling; restart after travel
+
+# don't forget my crontab, hosts file, homebrew installs, launchd files;
+# commit to git.
 # mm hh day month weekday command
 00 7 * * * cd $HOME/lib/laptop && crontab -l > crontab
 00 7 * * * cd $HOME/lib/laptop && cat /etc/hosts > etc-hosts
