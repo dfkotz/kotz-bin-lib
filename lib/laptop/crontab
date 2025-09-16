@@ -31,7 +31,7 @@ MAILFROM=dfk
 # warn me if there are any changes to published research bibs,
 # that may require me to update the respective index.htmltop
 # mm hh day month weekday command
-0 10 * * 7 cd $HOME/projects/web && git diff tags/research research/project*/kotz-project-*.bib
+0 10 * * 7 cd $HOME/projects/web && git diff tags/research research/project/*/kotz-project-*.bib
 
 # CHUBBERS - monthly mailing to ChubberNet
 # mm hh day month weekday command
