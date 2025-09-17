@@ -93,6 +93,7 @@ numpy
 openblas
 openexr
 openjpeg
+openjph
 openssl@3
 p11-kit
 pango
