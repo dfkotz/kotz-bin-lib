@@ -23,6 +23,7 @@ gd
 gdb
 gdbm
 gettext
+ghostscript
 giflib
 git
 glib
@@ -40,8 +41,11 @@ imagemagick
 imath
 isl
 jasper
+jbig2dec
 jpeg-turbo
 jpeg-xl
+leptonica
+libarchive
 libassuan
 libavif
 libb2
@@ -52,6 +56,7 @@ libevent
 libgcrypt
 libgpg-error
 libheif
+libidn
 libidn2
 libimagequant
 libksba
@@ -98,6 +103,7 @@ openssl@3
 p11-kit
 pango
 pcre2
+pdf2image
 pillow
 pinentry
 pixman
@@ -115,6 +121,7 @@ readline
 shared-mime-info
 sqlite
 terminal-notifier
+tesseract
 tokyo-cabinet
 tree
 tree-sitter
