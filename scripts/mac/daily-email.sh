@@ -21,9 +21,16 @@ comic-arcamax doonesbury $DAVE  $DAD $MOM
 comic-arcamax babyblues  $DAVE
 comic-fbfw               $DAVE
 
+# flush the sendmail queue
 # pause briefly so the comics stay grouped within inbox
-sleep 10
+postqueue -f >& /dev/null
+sleep 5
 
 # CALENDAR
 # send the Kotz daily calendar
 daily-calendar -- $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL $DOE
+
+# flush the sendmail queue
+# pause briefly to ensure queue is drained before system sleeps
+postqueue -f >& /dev/null
+sleep 5
