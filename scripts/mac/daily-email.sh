@@ -34,3 +34,5 @@ daily-calendar -- $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL $DOE
 # pause briefly to ensure queue is drained before system sleeps
 postqueue -f >& /dev/null
 sleep 5
+
+date | mutt -s "stuffing the mail queue" dfkotz@mac.com
