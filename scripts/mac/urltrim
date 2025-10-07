@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+#
+# urltrim -  produce a 'clean' URL, by trimming a URI
+#            from the '?' onwards and from the '#' onwards.
+#
+# for example, 
+#    https://www.nytimes.com/2025/10/02/technology/openai-sora-video-app.html?campaign_id=158&emc=edit_ot_20251006&instance_id=163762&nl=on-tech&regi_id=3428777&segment_id=
+# becomes
+#    https://www.nytimes.com/2025/10/02/technology/openai-sora-video-app.html
+#
+#    https://www.macosxautomation.com/applescript/sbrt/sbrt-10.html#:~:text=Droplets%20are%20specialized%20AppleScript%20applets,their%20status%20as%20a%20droplet.
+# becomes
+#    https://www.macosxautomation.com/applescript/sbrt/sbrt-10.html
+#
+# usage:
+#   (copy the URL to clipboard)
+#   urltrim
+#   (result is in clipboard)
+#
+# David Kotz 2025
+#
+
+pbpaste | sed -e 's/\?.*//' -e 's/\#.*//' | pbcopy
