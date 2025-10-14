@@ -10,6 +10,7 @@ brotli
 ca-certificates
 cairo
 cvs
+dav1d
 dbus
 double-conversion
 emacs
@@ -116,6 +117,7 @@ pyenv
 python-matplotlib
 python@3.12
 python@3.13
+python@3.14
 python@3.9
 qhull
 qt
