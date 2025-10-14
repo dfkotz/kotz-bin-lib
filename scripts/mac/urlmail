@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+# urlmail -  Compose a new mail message, with body containing URL from stdin.
+#            The URL is 'trimmed' first with urltrim script.
+#
+# usage:
+#   (copy the URL to clipboard)
+#   urlmail
+#   (Mail.app opens with a new message)
+#
+# David Kotz 2025
+#
+
+open -a Mail.app "mailto:nobody@mac.com?body=$(pbpaste | urltrim)"

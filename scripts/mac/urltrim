@@ -14,10 +14,10 @@
 #
 # usage:
 #   (copy the URL to clipboard)
-#   urltrim
+#   pbpaste | urltrim | pbcopy
 #   (result is in clipboard)
 #
 # David Kotz 2025
 #
 
-pbpaste | sed -e 's/\?.*//' -e 's/\#.*//' | pbcopy
+sed -e 's/\?.*//' -e 's/\#.*//'
