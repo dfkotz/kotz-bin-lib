@@ -7,6 +7,7 @@ autoconf
 bash
 bdw-gc
 brotli
+c-ares
 ca-certificates
 cairo
 cvs
@@ -66,6 +67,8 @@ liblqr
 libmng
 libmpc
 libnghttp2
+libnghttp3
+libngtcp2
 libomp
 libpaper
 libpng
@@ -76,6 +79,7 @@ libtiff
 libtool
 libunistring
 libusb
+libuv
 libvmaf
 libx11
 libxau
@@ -98,6 +102,7 @@ mpfr
 mutt
 ncurses
 nettle
+node
 npth
 numpy
 openblas
@@ -161,6 +166,7 @@ qtwebview
 rcs
 readline
 shared-mime-info
+simdjson
 sqlite
 terminal-notifier
 tesseract
@@ -168,6 +174,7 @@ tokyo-cabinet
 tree
 tree-sitter
 unbound
+uvwasi
 webp
 wget
 x265
