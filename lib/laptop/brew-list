@@ -78,6 +78,7 @@ libraw
 libtasn1
 libtiff
 libtool
+libultrahdr
 libunistring
 libusb
 libuv
