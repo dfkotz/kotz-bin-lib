@@ -6,8 +6,9 @@ export environset=true
 
 prefix1=/usr/local/sbin:/opt/homebrew/sbin:/usr/local/bin:/opt/homebrew/bin
 prefix2=/usr/local/lib/ruby/gems/3.1.0/bin
+vscode="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 suffix=~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
-PATH=$prefix1:$prefix2:$PATH:$suffix
+PATH=$prefix1:$prefix2:"$vscode":$PATH:$suffix
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
