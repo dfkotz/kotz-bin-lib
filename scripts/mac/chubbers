@@ -70,10 +70,13 @@ cat >> message sep end
 set subject="Monthly ChubberNet Update"
 set extras=`extract-emails extras`
 
-# email to the list and to each of the extras
-foreach address (chubbers@dartmouth.edu $extras)
+# email to the list
+cat message | mutt -s "$subject" "chubbers@dartmouth.edu"
+
+# email to each of the extras, with a custom header
+foreach address ($extras)
     echo email to "$address"
-    mutt -s "$subject" "$address" < message
+    cat extras-header sep message | mutt -s "$subject" "$address"
 end
 
 #################################
