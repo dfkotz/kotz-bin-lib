@@ -31,6 +31,8 @@ Archive:
  The archive is searchable and goes back to January 2008.  You may
  need to create an account on the listserv website to be able to log
  in; that account will also allow you to manage your subscription.
+ (Update: Dartmouth moved the listserver behind its firewall; it may
+  now only be accessible to students/employees on Dartmouth VPN.)
 
 NYC-area chubbers:
  If you also want to join the "chubberMet" mailing list -- specific to
@@ -53,10 +55,9 @@ Too much email?
 
  b. Put ChubberNet into "digest" mode, which means you'll get (at
  most) one message per day from the listserv; that message will include
- all that day's messages rolled into one.  Two approaches: (1) visit
- the listserv website, log in, and set Digest Mode. (2) Using the
- account at which you receive ChubberNet email, send an email message
- to listserv@listserv.dartmouth.edu with the body being only
+ all that day's messages rolled into one.  Using the account at which
+ you receive ChubberNet email, email listserv@listserv.dartmouth.edu
+ with the message body being only
     SET CHUBBERS-ALUM DIGESTS
  If you take this approach, take care when you reply to
  ensure you're replying to the right message within the digest.
