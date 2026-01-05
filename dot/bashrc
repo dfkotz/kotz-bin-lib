@@ -38,6 +38,7 @@ alias mkdir='mkdir -p'
 alias which='type -all'
 alias du='du -kh'
 alias df='df -kTh'
+alias vscode=code
 alias biocopy='pbcopy < ~/projects/vita/bio.txt'
 
 # pretty printing
