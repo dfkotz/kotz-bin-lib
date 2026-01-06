@@ -1,16 +1,19 @@
 #!/bin/bash
 # send the daily calendar to the list of addresses on the command line
 
+admin=dfkotz@mac.com
+
 if [[ $# -lt 2 ]]; then
     echo "usage: $0 date email..."
     echo 'where `date` is either `--` representing today, or YYYY-MM-DD'
+    echo "$@" | mutt -s "too few arguments; should be 2" $admin
     exit 1
 fi
 
 dir=~/Dropbox/Family/calendar/daily
 if [[ ! -d $dir ]]; then
-   echo missing directory $dir
-   exit 2
+    ls -ld "$dir" | mutt -s "missing directory $dir" $admin
+    exit 2
 fi
 
 if [ "$1" == "--" ]; then
@@ -24,8 +27,8 @@ html="$dir/$today.html"
 jpg="$dir/$today.jpg"
 
 if [[ ! -r "$html" || ! -r "$jpg" ]]; then
-   echo "missing calendar files for $today"
-   exit 3
+    ls -ld "$html" "$jpg" | mutt -s "missing files for $today" $admin
+    exit 3
 fi
 
 mutt -e 'set content_type=text/html' -e 'set copy=no' -s "Today's calendar" < "$html" -a "$jpg" -- "$@"
