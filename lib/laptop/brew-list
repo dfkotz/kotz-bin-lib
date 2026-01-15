@@ -4,6 +4,7 @@ aom
 autoconf
 bash
 bdw-gc
+bibutils
 brotli
 c-ares
 ca-certificates
