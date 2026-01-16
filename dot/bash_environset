@@ -4,18 +4,18 @@ export environset=true
 
 #### extend the PATH
 
-prefix1=/usr/local/sbin:/opt/homebrew/sbin:/usr/local/bin:/opt/homebrew/bin
-prefix2=/usr/local/lib/ruby/gems/3.1.0/bin
-vscode="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-suffix=~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
-PATH=$prefix1:$prefix2:"$vscode":$PATH:$suffix
+local=/usr/local/sbin:/usr/local/bin
+kotzbin=~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
-   PATH=$PATH:~/scripts/mac
+   homebrew=/opt/homebrew/sbin:/opt/homebrew/bin
+   ruby=/usr/local/lib/ruby/gems/3.1.0/bin
+   vscode="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+   PATH="$local:$homebrew:$ruby:$vscode:$PATH:$kotzbin":~/scripts/mac
 else
    # Linux
-   PATH=$PATH:~/scripts/cs
+   PATH="$local:$PATH:$kotzbin":~/scripts/cs
 fi
 
 export PATH
