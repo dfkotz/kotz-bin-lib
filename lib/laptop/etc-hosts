@@ -8,10 +8,9 @@
 255.255.255.255	broadcasthost
 ::1             localhost
 
+# Dave's personal Digital Ocean droplet server
+kotz-cronserver 138.197.95.188
+
 # available when on VPN only
-#10.24.34.73 kotzwifi1
-#10.24.34.73 kotzwifi1.dartmouth.edu
-#10.24.2.16  kotzwifi2
-#10.24.2.16  kotzwifi2.dartmouth.edu
 129.170.136.10 katahdin
 129.170.136.10 katahdin.dartmouth.edu
