@@ -2,20 +2,29 @@
 
 export environset=true
 
+# for testing; see matching AFTER at bottom of script
+# echo BEFORE environset
+# echo $PATH
+
 #### extend the PATH
 
-local=/usr/local/sbin:/usr/local/bin
 kotzbin=~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
-   homebrew=/opt/homebrew/sbin:/opt/homebrew/bin
+   # already in path: /opt/homebrew/bin
+   # already in path: /Library/TeX/texbin
+   # already in path: /usr/local/bin
+   local=/usr/local/sbin
+   homebrew=/opt/homebrew/sbin
    ruby=/usr/local/lib/ruby/gems/3.1.0/bin
    vscode="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-   PATH="$local:$homebrew:$ruby:$vscode:$PATH:$kotzbin":~/scripts/mac
+   PATH="$PATH:$local:$homebrew:$ruby:$vscode:$kotzbin":~/scripts/mac
 else
    # Linux
-   PATH="$local:$PATH:$kotzbin":~/scripts/cs
+   # already in path: /usr/local/bin
+   local=/usr/local/sbin
+   PATH="$PATH:$local:$kotzbin":~/scripts/cs
 fi
 
 export PATH
@@ -95,3 +104,8 @@ unset XDG_SESSION_ID
 unset XDG_SESSION_TYPE
 # unset the BASH_FUNC_* variables:
 unset `env | sed -n 's/^BASH_FUNC_\([_a-z]*\)%%=().*/\1/p'`
+
+# for testing; see matching BEFORE at bottom of script
+# echo AFTER environset
+# echo $PATH
+
