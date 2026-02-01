@@ -12,14 +12,14 @@ kotzbin=~/bin:~/projects/bib-tools:~/scripts/common:~/projects/vita/bin
 
 if [ $(uname) == "Darwin" ]; then
    # MacOS
-   # already in path: /opt/homebrew/bin
+   # already in path: /opt/homebrew/bin (but I want it earlier)
    # already in path: /Library/TeX/texbin
    # already in path: /usr/local/bin
    local=/usr/local/sbin
-   homebrew=/opt/homebrew/sbin
+   homebrew=/opt/homebrew/bin:/opt/homebrew/sbin
    ruby=/usr/local/lib/ruby/gems/3.1.0/bin
    vscode="/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-   PATH="$PATH:$local:$homebrew:$ruby:$vscode:$kotzbin":~/scripts/mac
+   PATH="$homebrew:$PATH:$local:$ruby:$vscode:$kotzbin":~/scripts/mac
 else
    # Linux
    # already in path: /usr/local/bin
@@ -108,4 +108,3 @@ unset `env | sed -n 's/^BASH_FUNC_\([_a-z]*\)%%=().*/\1/p'`
 # for testing; see matching BEFORE at bottom of script
 # echo AFTER environset
 # echo $PATH
-
