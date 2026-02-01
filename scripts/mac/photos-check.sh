@@ -27,11 +27,11 @@ function mailerr {
 echo metacheck expand...
 metacheck expand "$@"  > $log || mailerr "metacheck-expand" $log
 
-echo hashcheck update...
+echo hashcheck update "$@"
 hashcheck update "$@" > $log || mailerr "hashcheck-update" $log
 
 # check photo collections for integrity
-echo metacheck verify...
+echo metacheck verify "$@"
 metacheck verify "$@" > $log || mailerr "metacheck-verify" $log
 
 # check for missing hashcheck/metacheck files
