@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # This script is run daily by launchd
 # see ~/lib/laptop/org.davidkotz.daily-email.plist
 
@@ -35,4 +35,4 @@ daily-calendar -- $DAVE $ANDY $PAM $MARA $JOHN $DAD $MOM $AMY $ISABEL $DOE
 postqueue -f >& /dev/null
 sleep 5
 
-date | mutt -s "stuffing the mail queue" dfkotz@mac.com
+# date | mutt -s "stuffing the mail queue" dfkotz@mac.com

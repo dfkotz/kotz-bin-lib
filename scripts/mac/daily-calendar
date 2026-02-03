@@ -11,6 +11,7 @@ if [[ $# -lt 2 ]]; then
 fi
 
 dir=~/Dropbox/Family/calendar/daily
+dir=~/daily
 if [[ ! -d $dir ]]; then
     ls -ld "$dir" | mutt -s "missing directory $dir" $admin
     exit 2
