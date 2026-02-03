@@ -1,0 +1,22 @@
+# DFK crontab (cronserver)
+
+# Basic environment variables
+HOME=/Users/dfk
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin:/Users/dfk/scripts/common:/Users/dfk/scripts/mac
+TERM=VT100
+
+# Mail-related variables
+MAILTO=dfkotz@mac.com
+MAILFROM=dfk
+
+# don't forget my crontab, hosts file, homebrew installs, launchd files;
+# commit to git.
+# mm hh day month weekday command
+00 7 * * * cd $HOME/lib/cronserver && crontab -l > crontab
+00 7 * * * cd $HOME/lib/cronserver && cat /etc/hosts > etc-hosts
+00 7 * * * cd $HOME/lib/cronserver && cat /etc/postfix/main.cf > etc-main.cf
+10 7 * * * cd $HOME/lib/cronserver && git-commit-quietly "crontab commit" crontab etc-hosts etc-main.cf
+
+# send the daily comics and calendar emails
+00 9 * * * daily-email.sh
