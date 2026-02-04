@@ -1,14 +1,14 @@
 # DFK crontab (cronserver)
 
 # Basic environment variables
-HOME=/Users/dfk
+HOME=/home/dfk
 SHELL=/bin/bash
-PATH=/usr/local/bin:/usr/bin:/bin:/Users/dfk/scripts/common:/Users/dfk/scripts/mac
+PATH=/usr/local/bin:/usr/bin:/bin:/home/dfk/scripts/common:/home/dfk/scripts/mac
 TERM=VT100
 
 # Mail-related variables
 MAILTO=dfkotz@mac.com
-MAILFROM=dfk
+MAILFROM=info@davidkotz.org
 
 # don't forget my crontab, hosts file, homebrew installs, launchd files;
 # commit to git.
