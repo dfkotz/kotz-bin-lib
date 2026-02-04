@@ -1,0 +1,43 @@
+# settings for 'mutt' email program, to allow me to send mail via SMTP2go
+# see README below
+
+set use_from
+set from="David Kotz <info@davidkotz.org>"
+
+set use_envelope_from
+set envelope_from_address="David Kotz <info@davidkotz.org>"
+
+set reply_to
+
+#######################################################
+### README for Linux server, NOT MacOS ###
+# I adapted the instructions
+#   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
+# See my 2022 comment on that page at
+#   https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e?permalink_comment_id=4265918#gistcomment-4265918
+# 
+# I put the following in /etc/postfix/sasl_passwd 
+#   mail-eu.smtp2go.com:2525 info@davidkotz.org:PASSWORD
+# where I obtained PASSWORD from
+#   https://app.smtp2go.com/sending/smtp_users/
+# After editing /etc/postfix/sasl_passwd you must
+#   sudo postmap /etc/postfix/sasl_passwd
+#
+# I had to adapt the loziju instruction step 1, replacing Gmail with:
+#   relayhost=mail-eu.smtp2go.com:2525
+#
+# The resulting changes appear at bottom of /etc/postfix/main.cf is as follows.
+#
+# # Postfix as relay
+# #
+# # SMTP2go
+# relayhost=mail-eu.smtp2go.com:2525
+# # Enable SASL authentication in the Postfix SMTP client.
+# smtp_sasl_auth_enable=yes
+# smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd
+# smtp_sasl_security_options=noanonymous
+# smtp_sasl_mechanism_filter=plain
+# # Enable Transport Layer Security (TLS), i.e. SSL.
+# smtp_use_tls=yes
+# smtp_tls_security_level=encrypt
+# tls_random_source=dev:/dev/urandom
