@@ -1,0 +1,16 @@
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+::1             localhost
+
+# Dave's personal Digital Ocean droplet server
+kotz-cronserver 138.197.95.188
+
+# available when on VPN only
+129.170.136.10 katahdin
+129.170.136.10 katahdin.dartmouth.edu
