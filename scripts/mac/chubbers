@@ -7,7 +7,7 @@
 # usage:
 #   chubbers < listserv-output
 
-cd ~/lib/laptop/chubbers
+cd ~/lib/chubbers
 
 onintr cleanup
 
