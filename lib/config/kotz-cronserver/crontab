@@ -13,6 +13,9 @@ MAILFROM=info@davidkotz.org
 # where to stash copies of system config files
 CONFIG=/home/dfk/lib/config/kotz-cronserver
 
+# fetch the latest lib, dot files, scripts, every night
+30 00 * * * cd projects/kotz-bin-lib && git pull -q
+
 # don't forget my crontab, hosts file, homebrew installs, launchd files;
 # commit to git.
 # mm hh day month weekday command
