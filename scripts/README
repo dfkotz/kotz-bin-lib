@@ -1,3 +1,0 @@
-This directory is controlled by an svn repository.  It should be
-checked out as ~/bin/scripts because several of the scripts depend on
-that path to find other scripts.
