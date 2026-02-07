@@ -25,7 +25,8 @@ CONFIG=/home/dfk/lib/config/kotz-cronserver
 10 7 * * * cd $CONFIG && git-commit-quietly "crontab commit" crontab etc-hosts etc-main.cf
 
 # update bibliography repos
-00 8 * * * daily-biblio.sh
+# (won't work without setting up python venv for outdated Mendeley package)
+# 20 8 * * * daily-biblio.sh
 
 # send the daily comics and calendar emails
 00 9 * * * daily-email.sh
