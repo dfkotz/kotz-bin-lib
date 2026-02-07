@@ -24,7 +24,8 @@ else
    # Linux
    # already in path: /usr/local/bin
    local=/usr/local/sbin
-   PATH="$PATH:$local:$kotzbin":~/scripts/cs
+   PATH="$PATH:$local:$kotzbin"
+   # need to add whatever replaces ~/scripts/cs
    # temporarily allow mac scripts
    PATH="$PATH":~/scripts/mac
 fi

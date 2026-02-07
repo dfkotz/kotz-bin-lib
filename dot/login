@@ -17,7 +17,8 @@ if (`uname` == Darwin) then
     setenv PATH "$PATH":~/scripts/mac
 else
     # Linux
-    setenv PATH "$PATH":~/scripts/cs
+    # need to add whatever replaces ~/scripts/cs
+    # setenv PATH "$PATH":~/scripts/cs
 endif
 
 # location of java libraries
