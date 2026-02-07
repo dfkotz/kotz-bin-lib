@@ -5,8 +5,8 @@
 #
 # Transformations:
 # & becomes &amp;
-# < becomes &amp;
-# > becomes &amp;
+# < becomes &lt;
+# > becomes &gt;
 # if -nbsp is given then 
 #   white space regions becomes single &nbsp;
 # if -br is given then 
