@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# cronjob - a wrapper for metahashcheck; exit quietly if all is well
+# cronwrap - a wrapper for metahashcheck; exit quietly if all is well
 #
 # David Kotz 2021
 
-tmp=/tmp/cronjob$$
+tmp=/tmp/cronwrap$$
 
 "$@" >& $tmp
 status=$?
