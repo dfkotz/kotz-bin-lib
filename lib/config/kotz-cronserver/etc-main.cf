@@ -55,6 +55,7 @@ inet_protocols = all
 #
 # SMTP2go
 #relayhost=smtp.mail.me.com:587
+# relayhost=mail.smtp2go.com:2525
 relayhost=mail-eu.smtp2go.com:2525
 # Enable SASL authentication in the Postfix SMTP client.
 smtp_sasl_auth_enable=yes
