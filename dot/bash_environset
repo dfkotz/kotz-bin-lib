@@ -59,8 +59,9 @@ else
    export INFOPATH=.:"$INFOPATH":$myinfopath
 fi
 
-#### location of BibTeX BST files
-export BSTINPUTS=.:$HOME/projects/bib-styles
+#### location of BibTeX BST files;
+# colon at the end causes it to search standard location after mine.
+export BSTINPUTS=.:$HOME/projects/bib-styles:
 
 #### pager: less is more
 # Use less as a paginator instead of more (e.g. for man pages).
