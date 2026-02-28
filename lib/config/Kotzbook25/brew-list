@@ -69,6 +69,7 @@ libmpc
 libnghttp2
 libnghttp3
 libngtcp2
+libomp
 libpaper
 libpng
 libraqm
