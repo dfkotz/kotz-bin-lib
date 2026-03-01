@@ -8,6 +8,7 @@ set use_envelope_from
 set envelope_from_address="David Kotz <info@davidkotz.org>"
 
 set reply_to
+my_hdr Reply-To: dfkotz@mac.com
 
 #######################################################
 ### README for Linux server, NOT MacOS ###

@@ -13,6 +13,8 @@ MAILFROM=info@davidkotz.org
 # where to stash copies of system config files
 CONFIG=/home/dfk/lib/config/kotz-cronserver
 
+# ALL TIMES IN LOCAL TIME OF THIS SERVER (UTC)
+
 # fetch the latest lib, dot files, scripts, every night
 30 00 * * * cd projects/kotz-bin-lib && git pull -q
 
@@ -30,3 +32,7 @@ CONFIG=/home/dfk/lib/config/kotz-cronserver
 
 # send the daily comics and calendar emails
 00 9 * * * daily-email.sh
+
+# CHUBBERS - monthly mailing to ChubberNet
+# mm hh day month weekday command
+01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
