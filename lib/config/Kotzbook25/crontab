@@ -38,8 +38,9 @@ CONFIG=/Users/dfk/lib/config/Kotzbook25
 0 10 * * 7 cd $HOME/projects/web && git diff tags/research research/project/*/kotz-project-*.bib
 
 # CHUBBERS - monthly mailing to ChubberNet
+# NOW HAPPENS ON kotz-cronserver - DELETE WHEN THAT'S WORKING
 # mm hh day month weekday command
-01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
+# 01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
 
 # check Dropbox for 'campus' data files, daily
 0 5 * * * echo "New files listed below?"; find $HOME/campus/ -mtime -1 -type f
