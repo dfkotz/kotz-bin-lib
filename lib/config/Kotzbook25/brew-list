@@ -119,6 +119,7 @@ pixman
 pkgconf
 protobuf
 pyenv
+pygments
 python-matplotlib
 python@3.12
 python@3.14
