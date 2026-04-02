@@ -14,4 +14,17 @@ fi
 from="$1"
 shift
 
-exiftool -TagsFromFile "$from" -GPSPosition "$@"
+exiftool -TagsFromFile "$from" \
+   -GPSLatitudeRef \
+   -GPSLongitudeRef \
+   -GPSAltitudeRef \
+   -GPSTimeStamp \
+   -GPSImgDirectionRef \
+   -GPSImgDirection \
+   -GPSDateStamp \
+   -GPSAltitude \
+   -GPSDateTime \
+   -GPSLatitude \
+   -GPSLongitude \
+   -GPSPosition \
+ "$@"
