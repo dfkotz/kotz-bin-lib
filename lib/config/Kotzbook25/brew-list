@@ -60,7 +60,6 @@ libevent
 libgcrypt
 libgpg-error
 libheif
-libiconv
 libidn
 libidn2
 libimagequant
@@ -94,11 +93,13 @@ lz4
 lzo
 m4
 md4c
+merve
 mosh
 mpack
 mpdecimal
 mpfr
 mutt
+nbytes
 ncurses
 nettle
 node
@@ -132,8 +133,8 @@ qtshadertools
 qtsvg
 rcs
 readline
-shared-mime-info
 simdjson
+simdutf
 sqlite
 terminal-notifier
 tesseract
