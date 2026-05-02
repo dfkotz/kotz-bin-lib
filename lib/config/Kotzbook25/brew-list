@@ -88,6 +88,7 @@ libxext
 libxrender
 little-cms2
 llhttp
+lmdb
 lua
 lz4
 lzo
