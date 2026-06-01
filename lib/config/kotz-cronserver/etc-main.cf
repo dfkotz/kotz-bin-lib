@@ -41,7 +41,7 @@ myorigin = /etc/mailname
 mydestination = $myhostname, kotz-cronserver.org, kotz-cronserver, localhost.localdomain, localhost
 # relayhost = ## overridden below
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
-mailbox_size_limit = 0
+mailbox_size_limit = 52428800
 recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = all
@@ -67,3 +67,4 @@ smtp_use_tls=yes
 smtp_tls_security_level=encrypt
 tls_random_source=dev:/dev/urandom
 
+message_size_limit = 52428800
