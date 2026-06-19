@@ -24,7 +24,8 @@ CONFIG=/Users/dfk/lib/config/Kotzbook25
 00 7 * * * cd $CONFIG && brew list --formula > brew-list
 00 7 * * * cd $CONFIG && /opt/homebrew/bin/pip3 list > pip-list
 00 7 * * * cd $CONFIG && rsync -a ~/Library/LaunchAgents/org.davidkotz.*.plist .
-10 7 * * * cd $CONFIG && git-commit-quietly "crontab commit" crontab etc-hosts etc-main.cf brew-list pip-list *.plist
+00 7 * * * cd $CONFIG && ls /Applications /Applications/Utilities > applications
+10 7 * * * cd $CONFIG && git-commit-quietly "crontab commit" crontab etc-hosts etc-main.cf brew-list pip-list *.plist applications
 
 # show me what files are left uncommitted
 # mm hh day month weekday command
