@@ -109,6 +109,18 @@ unset XDG_SESSION_TYPE
 # unset the BASH_FUNC_* variables:
 unset `env | sed -n 's/^BASH_FUNC_\([_a-z]*\)%%=().*/\1/p'`
 
+# The following was added by installation of 'uv':
+#         . "$HOME/.local/bin/env"
+# uv supports python installation and configuration.
+# It added this line to .bash_profile, .bash_login, and .bashrc files.
+# See https://docs.astral.sh/uv/ and 2026 email
+#   from Jonathan.Crossett@dartmouth.edu for more information.
+# I moved that line here because all those files source this file, via bashrc.
+# I also added a test, in case the directory does not exist.
+if [ -d "$HOME/.local/bin/env" ]; then
+   source "$HOME/.local/bin/env"
+fi
+
 # for testing; see matching BEFORE at bottom of script
 # echo AFTER environset
 # echo $PATH

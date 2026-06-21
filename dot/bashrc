@@ -74,9 +74,3 @@ alias mkdir='mkdir -p'
 alias which='type -all'
 
 # --------------------------------------------------------------------
-
-# The following was added by installation of 'uv', which supports
-# python installation and configuration. It added this line to three bash
-# configuration files.  See https://docs.astral.sh/uv/ and 2026 email
-# from Jonathan.Crossett@dartmouth.edu for more information.
-. "$HOME/.local/bin/env"
