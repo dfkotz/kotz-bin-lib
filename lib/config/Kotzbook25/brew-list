@@ -57,6 +57,7 @@ libdatrie
 libde265
 libdeflate
 libevent
+libffi
 libgcrypt
 libgpg-error
 libheif
