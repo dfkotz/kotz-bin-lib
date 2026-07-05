@@ -13,7 +13,7 @@ else
    tagname="$1"
 fi
 
-git push --delete origin "$tagname" # remove the existing tag from remote
-git tag --force "$tagname"          # move the local tag to the new commit
-git push                            # push commits to GitHub remote
-git push origin "$tagname"          # push tag to GitHub remote
+git push --delete origin "$tagname" || exit 1 # remove existing tag from remote
+git tag --force "$tagname"          || exit 2 # move local tag to latest commit
+git push                            || exit 3 # push commits to GitHub remote
+git push origin "$tagname"          || exit 4 # push tag to GitHub remote
