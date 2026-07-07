@@ -1,0 +1,4 @@
+#!/bin/bash
+# run the 'qr' program in a virtual environment
+source .venv/qrcode/bin/activate
+qr "$@"
