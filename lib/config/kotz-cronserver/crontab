@@ -31,8 +31,8 @@ CONFIG=/home/dfk/lib/config/kotz-cronserver
 # 20 8 * * * daily-biblio.sh
 
 # send the daily comics and calendar emails
-00 9 * * * daily-email.sh
+00 10 * * * daily-email.sh
 
 # CHUBBERS - monthly mailing to ChubberNet
 # mm hh day month weekday command
-01 00 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
+01 10 1 * * echo "REVIEW CHUBBERS-ALUM (NOH ALL" | mutt listserv@listserv.dartmouth.edu
